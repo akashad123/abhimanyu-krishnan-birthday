@@ -136,14 +136,53 @@ The visitor experiences complete full-screen, edge-to-edge celebratory visual ba
 - Removed foreground `<picture>`/`<img>` elements and synthetic background stripes from both sections.
 - Updated GSAP ScrollTrigger selector in `src/App.jsx` to smoothly animate the milestone card entry.
 
-**Files**
-- `src/styles/index.css`
-- `src/sections/LandingHero.jsx`
-- `src/sections/PinataSection.jsx`
-- `src/App.jsx`
-
 **Verification**
 Production build `npm run build` executed successfully without errors or warnings (`✓ built in 5.33s`).
+
+---
+
+### [2026-10-02] Cinematic Scroll-Driven Opening Animation (Multi-Layer GSAP)
+
+**Purpose**
+Implement a handcrafted, multi-layer physical celebration opening animation controlled entirely by scroll position using GSAP + ScrollTrigger and `gsap.matchMedia()`, transitioning seamlessly into the rainbow number "1" piñata reveal section.
+
+**User Flow**
+1. Visitor loads the page and sees the centered "ONE WHOLE YEAR - Abhimanyu Krishnan" plaque suspended from the rope, flanked by hanging decorations, floating balloons, clouds, and bunting garland.
+2. As the user scrolls down, the scene behaves like a real physical decoration being pulled apart:
+   - The main birthday card moves upward smoothly as if pulled by the rope (`y: 0 -> -105vh`).
+   - Left decoration parts toward the left margin with subtle swing (`x: 0 -> -38vw`, tilt: `-5deg`).
+   - Right decoration parts toward the right margin with subtle swing (`x: 0 -> +38vw`, tilt: `+5deg`).
+   - Individual balloons (red, yellow, blue, green) float upward with organic staggered vertical and horizontal offsets.
+   - Bunting and clouds create depth through subtle parallax.
+3. Continuing the scroll reveals the second section: the large rainbow-fringed number "1" piñata physically suspended from a rope with natural pendulum swinging physics, and the milestone celebration card leading into the memory gallery.
+
+**Technical Flow**
+- Extracted and prepared independent transparent PNG layers from client sticker sheet and artwork into `src/assets/birthday/common/` and `public/decorations/layers/`.
+- Created modular architecture:
+  - `src/components/BirthdayHero/BirthdayHero.jsx` & `BirthdayHero.css`
+  - `src/components/BirthdayHero/birthdayHeroAnimation.js`
+  - `src/components/BirthdayReveal/BirthdayReveal.jsx` & `BirthdayReveal.css`
+  - `src/components/BirthdayReveal/birthdayRevealAnimation.js`
+  - `src/utils/responsiveAnimation.js`
+- Master GSAP timeline with `ScrollTrigger` pinning (`pin: true, scrub: 1, anticipatePin: 1`).
+- Responsive adaptation via `gsap.matchMedia()` for mobile (`<768px`) and desktop (`>=768px`).
+- Supported `prefers-reduced-motion` for accessibility.
+
+**Files**
+- `src/utils/responsiveAnimation.js`
+- `src/components/BirthdayHero/BirthdayHero.jsx`
+- `src/components/BirthdayHero/BirthdayHero.css`
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`
+- `src/components/BirthdayReveal/BirthdayReveal.jsx`
+- `src/components/BirthdayReveal/BirthdayReveal.css`
+- `src/components/BirthdayReveal/birthdayRevealAnimation.js`
+- `src/App.jsx`
+- `src/assets/birthday/`
+- `public/decorations/layers/`
+
+**Verification**
+Production build `npm run build` executed successfully without errors or warnings (`✓ built in 4.27s`).
+
 
 
 

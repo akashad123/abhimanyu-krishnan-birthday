@@ -1,0 +1,100 @@
+/* BirthdayHero Styles & Layer Layout */
+
+.birthday-hero-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Layer positioning helpers */
+.hero-layer {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+}
+
+/* Background wallpaper */
+.hero-layer-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Clouds layer */
+.hero-layer-clouds {
+  z-index: 2;
+}
+
+/* Bunting layer */
+.hero-layer-bunting {
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 6;
+}
+
+/* Side hanging decorations */
+.hero-layer-side-left {
+  top: 15%;
+  left: 3%;
+  z-index: 4;
+}
+
+.hero-layer-side-right {
+  top: 15%;
+  right: 3%;
+  z-index: 4;
+}
+
+@media (min-width: 768px) {
+  .hero-layer-side-left {
+    top: 10%;
+    left: 8%;
+  }
+
+  .hero-layer-side-right {
+    top: 10%;
+    right: 8%;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-layer-side-left {
+    left: 14%;
+  }
+
+  .hero-layer-side-right {
+    right: 14%;
+  }
+}
+
+/* Balloons layer */
+.hero-layer-balloon {
+  z-index: 5;
+}
+
+/* Main Birthday Card Layer */
+.hero-layer-card {
+  z-index: 10;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+/* Prevent horizontal overflow during wide animations */
+body, html {
+  overflow-x: hidden !important;
+}

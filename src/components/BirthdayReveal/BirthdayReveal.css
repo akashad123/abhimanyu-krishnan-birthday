@@ -1,0 +1,46 @@
+/* BirthdayReveal (Pinata Section) Styles */
+
+.birthday-reveal-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Suspended Pinata styling */
+.pinata-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform-origin: top center;
+  will-change: transform;
+}
+
+/* Clouds and Balloons around Pinata */
+.pinata-balloon-left {
+  position: absolute;
+  top: 38%;
+  left: 6%;
+}
+
+.pinata-balloon-right {
+  position: absolute;
+  top: 42%;
+  right: 6%;
+}
+
+@media (min-width: 768px) {
+  .pinata-balloon-left {
+    left: 16%;
+  }
+
+  .pinata-balloon-right {
+    right: 16%;
+  }
+}

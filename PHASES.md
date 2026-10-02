@@ -26,18 +26,26 @@ Status: Completed
 
 ## Phase 2 — Core Experience
 
-- Hero/opening
-- First-birthday introduction
-- Memory/photo presentation
-- Supporting sections approved in discovery
+Status: Completed
+
+- Hero/opening scene with independent layer architecture
+- First-birthday introduction with baby Abhimanyu Krishnan portrait
+- Rainbow number 1 piñata milestone section
+- Memory/photo presentation gallery with lightbox
+- Anonymous no-login upload modal
 
 ## Phase 3 — Motion
 
-- Opening animation
-- Scroll reveals
-- Image transitions
-- Micro-interactions
-- Reduced-motion handling
+Status: Completed
+
+- Master GSAP ScrollTrigger timeline with scrub and pinning
+- Responsive motion with `gsap.matchMedia()` (mobile, tablet, desktop, ultra-wide)
+- Card pull-up animation connected directly to scroll
+- Left & right side decorations parting outward with subtle rotation
+- Individual balloons floating upward with staggered distances and slight tilts
+- Continuous subtle physical pendulum swinging on rainbow number "1" piñata
+- `prefers-reduced-motion` accessibility support
+
 
 ## Phase 4 — Photo Workflow
 
