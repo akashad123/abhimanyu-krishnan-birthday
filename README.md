@@ -1,4 +1,4 @@
-# Freelance Client 5 — Abhimanyu Krishnan
+# Abhimanyu Krishnan
 
 Static-first first-birthday memory album with Supabase-backed anonymous photo uploads.
 
