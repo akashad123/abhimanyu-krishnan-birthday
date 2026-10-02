@@ -84,5 +84,40 @@ Production build `npm run build` executed successfully without errors or warning
 **Documentation**
 Updated `PHASES.md`, `MEMORY.md`, `CHANGELOG.md`, `ARCHITECTURE.md`, `DESIGN.md`, and `FEATURE_LOG.md`.
 
+---
+
+### [2026-10-02] Responsive Client Visual Assets & Navbar Removal
+
+**Purpose**
+Remove the top website navbar to preserve uninterrupted storytelling and integrate the client's official high-resolution assets:
+- `abhi-mob.png` for mobile devices (<768px)
+- `abhi-pc.png` for desktop/PC devices (>=768px)
+- `pinata-mob.png` & `pinata-pc.png` for the hanging "1" milestone section
+- Real photograph of baby Abhimanyu in red kurta in `public/memories/abhimanyu-baby.jpg`.
+
+**User Flow**
+Visitor lands directly into the visual experience without any website navbar chrome. On mobile phones, the full portrait composition displays; on desktop/laptop, the 16:9 widescreen composition displays. Clicking "Scroll Down" scrolls smoothly to the matching responsive hanging "1" piñata section.
+
+**Technical Flow**
+- Replaced `<Header>` navbar with pure full-viewport hero.
+- Utilized HTML5 `<picture>` and `<source media="(min-width: 768px)">` for zero-layout-shift responsive asset delivery.
+- Updated `LandingHero.jsx` and `PinataSection.jsx` to load `abhi-mob`/`abhi-pc` and `pinata-mob`/`pinata-pc`.
+- Updated `src/data/initialMemories.js` to feature the real baby Abhimanyu photo in the red kurta.
+
+**Files**
+- `src/App.jsx`
+- `src/sections/LandingHero.jsx`
+- `src/sections/PinataSection.jsx`
+- `src/data/initialMemories.js`
+- `public/decorations/abhi-mob.png`
+- `public/decorations/abhi-pc.png`
+- `public/decorations/pinata-mob.png`
+- `public/decorations/pinata-pc.png`
+- `public/memories/abhimanyu-baby.jpg`
+
+**Verification**
+`npm run build` completed successfully (`✓ built in 12.23s`).
+
+
 
 

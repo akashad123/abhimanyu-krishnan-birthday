@@ -1,7 +1,4 @@
 import React from 'react';
-import FloatingBalloons from '../components/FloatingBalloons';
-import PaperClouds from '../components/PaperClouds';
-import ScatteredStars from '../components/ScatteredStars';
 import { ChevronDown, Sparkles } from 'lucide-react';
 import { APP_CONFIG } from '../config/appConfig';
 
@@ -17,22 +14,22 @@ export const PinataSection = () => {
       id={APP_CONFIG.sections.pinata}
       className="relative min-h-screen bg-striped-wallpaper flex flex-col items-center justify-between pt-2 pb-12 px-4 overflow-hidden"
     >
-      {/* Background Decorative Atmosphere */}
-      <PaperClouds />
-      <FloatingBalloons />
-      <ScatteredStars />
-
       {/* Centerpiece Pinata Visual */}
       <div className="relative z-10 w-full max-w-md sm:max-w-lg md:max-w-xl mx-auto flex flex-col items-center">
         
         {/* Suspended Number 1 Pinata Artwork */}
         <div className="relative w-full flex flex-col items-center drop-shadow-2xl">
-          <img
-            src="/decorations/pinata-milestone.jpg"
-            alt="Abhimanyu Krishnan Number 1 Birthday Pinata"
-            className="w-full max-w-[340px] sm:max-w-[420px] md:max-w-[460px] object-contain rounded-[42px] transition-transform duration-500 hover:scale-[1.01]"
-            loading="lazy"
-          />
+          <picture className="w-full flex justify-center items-center">
+            {/* PC / Desktop landscape version */}
+            <source media="(min-width: 768px)" srcSet="/decorations/pinata-pc.png" />
+            {/* Mobile portrait version */}
+            <img
+              src="/decorations/pinata-mob.png"
+              alt="Abhimanyu Krishnan Number 1 Birthday Pinata"
+              className="w-full max-h-[82vh] md:max-h-[88vh] w-auto object-contain drop-shadow-2xl transition-transform duration-500 hover:scale-[1.01]"
+              loading="lazy"
+            />
+          </picture>
         </div>
 
         {/* Milestone Card */}

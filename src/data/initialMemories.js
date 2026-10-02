@@ -1,16 +1,16 @@
 /**
  * Curated Initial Memories Data
- * Uses verified client photo slice from the approved reference artwork.
+ * Uses verified client photo of baby Abhimanyu Krishnan.
  * Adheres strictly to anti-hallucination rules: no invented captions or dates.
  */
 
 export const INITIAL_MEMORIES = [
   {
-    id: "memory-hero-reference",
-    public_url: "/memories/abhimanyu-reference.jpg",
-    storage_path: "memories/abhimanyu-reference.jpg",
-    caption: "Abhimanyu Krishnan — One Whole Year",
-    alt: "Abhimanyu Krishnan celebrating his first birthday",
+    id: "memory-abhimanyu-portrait",
+    public_url: "/memories/abhimanyu-baby.jpg",
+    storage_path: "memories/abhimanyu-baby.jpg",
+    caption: "Abhimanyu Krishnan — One Whole Year of Joy",
+    alt: "Baby Abhimanyu Krishnan celebrating his first birthday",
     created_at: "2026-10-02T00:00:00.000Z",
   },
 ];
