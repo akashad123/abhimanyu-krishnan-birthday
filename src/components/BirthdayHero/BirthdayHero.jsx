@@ -211,10 +211,10 @@ export const BirthdayHero = () => {
           style={{ transformOrigin: 'top center' }}
         >
           {/* Braided Rope extending from the top ceiling down to the card's knot */}
-          <div className="braided-rope w-3.5 sm:w-4 md:w-4.5 h-6 sm:h-8 md:h-5 lg:h-6" />
+          <div className="braided-rope w-3.5 sm:w-4 md:w-4.5 h-5 sm:h-7 md:h-5 lg:h-6" />
 
           {/* Central Card with Baby Abhimanyu Krishnan */}
-          <div className="relative w-full max-w-[290px] sm:max-w-[360px] md:max-w-[460px] lg:max-w-[530px] xl:max-w-[580px] -mt-1 px-2">
+          <div className="relative w-full max-w-[330px] min-[400px]:max-w-[360px] sm:max-w-[410px] md:max-w-[490px] lg:max-w-[560px] xl:max-w-[620px] -mt-1 px-1">
             <img
               src="/decorations/layers/birthday-card.png"
               alt="One Whole Year of Abhimanyu Krishnan — First Birthday Plaque"

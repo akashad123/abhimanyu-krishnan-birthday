@@ -35,3 +35,4 @@ Developer-facing record of meaningful changes.
 - Adjusted Section 2 layout from `justify-content: space-between` to `flex-start` with tight, balanced card spacing.
 - Completely removed section pinning (`pin: false`, `end: 'bottom top'`) to allow natural, uninterrupted scroll flow where Section 2 rolls up immediately as the birthday card accelerates into the ceiling, eliminating the empty gap on PC and mobile.
 - Added negative top overlap margin to Section 2 for seamless vertical continuity.
+- Increased height and width of the central Abhimanyu Krishnan baby photo plaque on mobile (`max-w-[330px]` to `max-w-[360px]`) and desktop (`max-w-[620px]`).

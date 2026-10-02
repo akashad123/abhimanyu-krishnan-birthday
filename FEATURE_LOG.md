@@ -333,10 +333,30 @@ Completely eliminate the empty holding stage on PC and mobile viewports by remov
 - In `src/components/BirthdayReveal/BirthdayReveal.jsx`:
   - Added `-mt-8 sm:-mt-12 md:-mt-16` overlap margin so Section 2 begins entering right behind Section 1's bottom elements.
 
-**Files**
-- `src/components/BirthdayHero/birthdayHeroAnimation.js`
-- `src/utils/responsiveAnimation.js`
-- `src/components/BirthdayReveal/BirthdayReveal.jsx`
-
 **Verification**
 - Production build `npm run build` executed successfully without errors or warnings (`✓ built in 11.80s`).
+
+---
+
+### [2026-10-02] Increased Height of Abhimanyu Krishnan Hanging Baby Photo Plaque
+
+**Purpose**
+Significantly increase the height and overall visual presence of the Abhimanyu Krishnan hanging plaque and baby portrait across mobile (including tall modern devices like iPhone 16 Pro Max) and desktop viewports.
+
+**User Flow**
+1. Visitor loads the hero scene on a mobile device or desktop:
+   - The central plaque featuring baby Abhimanyu is noticeably larger, taller, and more prominent (height increased by ~25% on mobile).
+   - Baby Abhimanyu's portrait in his red celebratory kurta with his teddy bear, balloons, and toy car is clearly visible with rich details.
+   - The card fills the vertical viewport comfortably while leaving elegant margin for the dangling star decorations and the "SCROLL DOWN" pill.
+
+**Technical Flow**
+- In `src/components/BirthdayHero/BirthdayHero.jsx`:
+  - Increased card wrapper sizing to `max-w-[330px] min-[400px]:max-w-[360px] sm:max-w-[410px] md:max-w-[490px] lg:max-w-[560px] xl:max-w-[620px]`.
+  - Adjusted top rope height to `h-5 sm:h-7` for a tighter vertical ceiling anchor.
+
+**Files**
+- `src/components/BirthdayHero/BirthdayHero.jsx`
+
+**Verification**
+- Production build `npm run build` executed successfully without errors or warnings (`✓ built in 5.84s`).
+- Visual check on mobile emulations (375px, 414px, 440px): card is taller and prominent, side decorations remain visible, and scroll indicator remains properly aligned.
