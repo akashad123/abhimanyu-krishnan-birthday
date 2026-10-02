@@ -21,3 +21,7 @@ Developer-facing record of meaningful changes.
 - Individual balloons float upward with organic staggered vertical and horizontal offsets.
 - Number "1" rainbow piñata section features subtle continuous physical rope pendulum swinging motion.
 - Full responsive support with `gsap.matchMedia()` and `prefers-reduced-motion` accessibility compliance.
+- Anchored all hanging elements (central card, left & right hanging clouds/stars, rainbow number 1 piñata) to originate directly from the top ceiling (`top: 0`) using `.braided-rope`.
+- Implemented natural idle pendulum swinging motion (`rotation`, `transformOrigin: 'top center'`) on hanging card and both hanging clouds/stars.
+- Adopted dual-wrapper architecture separating continuous idle swaying from scroll-triggered translations.
+- Scaled mobile card width (`max-w-[275px]`) so side parting decorations remain clearly visible on narrow mobile viewports.

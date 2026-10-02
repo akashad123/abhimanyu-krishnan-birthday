@@ -10,21 +10,34 @@ import './BirthdayHero.css';
  * Implements the layered, physical celebration scene with independent image layers:
  * - Striped wallpaper background
  * - Top bunting garland
- * - Left and right hanging paper decorations
+ * - Left and right hanging paper decorations suspended from the top ceiling
  * - Individual floating balloons (red, yellow, blue, green)
- * - Centered "ONE WHOLE YEAR" Abhimanyu Krishnan birthday plaque with top rope
- * - Suspended Scroll Down indicator
- * Controlled smoothly by GSAP ScrollTrigger timeline.
+ * - Centered "ONE WHOLE YEAR" Abhimanyu Krishnan birthday plaque hanging from top ceiling
+ * - Natural physical pendulum swaying on all hanging decorations
+ * - Scroll-driven upward card pull and outward side parting
  */
 export const BirthdayHero = () => {
   const sectionRef = useRef(null);
-  const cardRef = useRef(null);
-  const leftDecoRef = useRef(null);
-  const rightDecoRef = useRef(null);
+
+  // Card refs (scroll translation & idle pendulum swing)
+  const cardScrollRef = useRef(null);
+  const cardSwingRef = useRef(null);
+
+  // Left decoration refs
+  const leftDecoScrollRef = useRef(null);
+  const leftDecoSwingRef = useRef(null);
+
+  // Right decoration refs
+  const rightDecoScrollRef = useRef(null);
+  const rightDecoSwingRef = useRef(null);
+
+  // Balloons refs
   const balloonRedRef = useRef(null);
   const balloonYellowRef = useRef(null);
   const balloonBlueRef = useRef(null);
   const balloonGreenRef = useRef(null);
+
+  // Other layer refs
   const buntingRef = useRef(null);
   const cloudsFgRef = useRef(null);
   const cloudsBgRef = useRef(null);
@@ -36,9 +49,12 @@ export const BirthdayHero = () => {
     const cleanup = initBirthdayHeroAnimation(
       {
         sectionRef,
-        cardRef,
-        leftDecoRef,
-        rightDecoRef,
+        cardScrollRef,
+        cardSwingRef,
+        leftDecoScrollRef,
+        leftDecoSwingRef,
+        rightDecoScrollRef,
+        rightDecoSwingRef,
         balloonRedRef,
         balloonYellowRef,
         balloonBlueRef,
@@ -92,37 +108,71 @@ export const BirthdayHero = () => {
         />
       </div>
 
-      {/* Layer 3: Left Hanging Decoration */}
+      {/* Layer 3: Left Hanging Decoration (Hangs from Top Ceiling) */}
       <div
-        ref={leftDecoRef}
-        className="hero-layer hero-layer-side-left w-36 sm:w-48 md:w-60 lg:w-72"
+        ref={leftDecoScrollRef}
+        className="hero-side-assembly-left"
       >
-        <img
-          src="/decorations/layers/left-decoration.png"
-          alt="Hanging Cloud Decoration"
-          className="w-full h-auto object-contain drop-shadow-lg"
-          loading="eager"
-        />
+        <div
+          ref={leftDecoSwingRef}
+          className="flex flex-col items-center"
+          style={{ transformOrigin: 'top center' }}
+        >
+          {/* Braided Rope extending directly from the top */}
+          <div className="braided-rope w-2.5 sm:w-3.5 h-16 sm:h-24 md:h-32" />
+
+          {/* Cloud with Dangling Golden Star */}
+          <div className="relative -mt-2">
+            <img
+              src="/decorations/layers/cloud-right.png"
+              alt="Hanging Cloud Decoration"
+              className="w-24 sm:w-36 md:w-44 lg:w-52 h-auto object-contain drop-shadow-lg"
+              loading="eager"
+            />
+            <img
+              src="/decorations/layers/star-yellow.png"
+              alt="Hanging Star"
+              className="absolute -bottom-4 sm:-bottom-6 left-1/2 -translate-x-1/2 w-8 sm:w-11 md:w-14 drop-shadow-md"
+            />
+          </div>
+        </div>
       </div>
 
-      {/* Layer 4: Right Hanging Decoration */}
+      {/* Layer 4: Right Hanging Decoration (Hangs from Top Ceiling) */}
       <div
-        ref={rightDecoRef}
-        className="hero-layer hero-layer-side-right w-36 sm:w-48 md:w-60 lg:w-72"
+        ref={rightDecoScrollRef}
+        className="hero-side-assembly-right"
       >
-        <img
-          src="/decorations/layers/right-decoration.png"
-          alt="Hanging Cloud Decoration"
-          className="w-full h-auto object-contain drop-shadow-lg"
-          loading="eager"
-        />
+        <div
+          ref={rightDecoSwingRef}
+          className="flex flex-col items-center"
+          style={{ transformOrigin: 'top center' }}
+        >
+          {/* Braided Rope extending directly from the top */}
+          <div className="braided-rope w-2.5 sm:w-3.5 h-16 sm:h-24 md:h-32" />
+
+          {/* Cloud with Dangling Blue Star */}
+          <div className="relative -mt-2">
+            <img
+              src="/decorations/layers/cloud-right.png"
+              alt="Hanging Cloud Decoration"
+              className="w-24 sm:w-36 md:w-44 lg:w-52 h-auto object-contain drop-shadow-lg -scale-x-100"
+              loading="eager"
+            />
+            <img
+              src="/decorations/layers/star-blue.png"
+              alt="Hanging Star"
+              className="absolute -bottom-4 sm:-bottom-6 left-1/2 -translate-x-1/2 w-8 sm:w-11 md:w-14 drop-shadow-md"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Layer 5: Independent Floating Balloons */}
       {/* Red Balloon - Left Mid */}
       <div
         ref={balloonRedRef}
-        className="hero-layer hero-layer-balloon top-[48%] left-4 sm:left-12 md:left-20 w-16 sm:w-20 md:w-24 drop-shadow-xl"
+        className="hero-layer hero-layer-balloon top-[44%] left-3 sm:left-10 md:left-20 w-16 sm:w-20 md:w-24 drop-shadow-xl"
       >
         <img
           src="/decorations/layers/balloon-red.png"
@@ -148,7 +198,7 @@ export const BirthdayHero = () => {
       {/* Blue Balloon - Right Mid */}
       <div
         ref={balloonBlueRef}
-        className="hero-layer hero-layer-balloon top-[44%] right-4 sm:right-12 md:right-20 w-16 sm:w-20 md:w-24 drop-shadow-xl"
+        className="hero-layer hero-layer-balloon top-[42%] right-3 sm:right-10 md:right-20 w-16 sm:w-20 md:w-24 drop-shadow-xl"
       >
         <img
           src="/decorations/layers/balloon-blue.png"
@@ -171,32 +221,43 @@ export const BirthdayHero = () => {
         />
       </div>
 
-      {/* Layer 6: Main Birthday Card (Abhimanyu Krishnan Plaque) */}
+      {/* Layer 6: Main Birthday Card Assembly hanging from Top Ceiling */}
       <div
-        ref={cardRef}
-        className="hero-layer-card relative z-10 w-full max-w-[340px] sm:max-w-[420px] md:max-w-[480px] lg:max-w-[520px] mx-auto px-4 mt-2 sm:mt-4"
+        ref={cardScrollRef}
+        className="hero-card-assembly"
       >
-        <img
-          src="/decorations/layers/birthday-card.png"
-          alt="One Whole Year of Abhimanyu Krishnan — First Birthday Plaque"
-          className="w-full h-auto object-contain drop-shadow-2xl"
-          loading="eager"
-          fetchPriority="high"
-        />
-
-        {/* Suspended Scroll Down CTA */}
         <div
-          ref={scrollCtaRef}
-          className="-mt-6 sm:-mt-8 md:-mt-10 z-20"
+          ref={cardSwingRef}
+          className="flex flex-col items-center w-full"
+          style={{ transformOrigin: 'top center' }}
         >
-          <ScrollDownIndicator targetId={APP_CONFIG.sections.pinata} />
+          {/* Braided Rope extending from the top ceiling down to the card's knot */}
+          <div className="braided-rope w-3.5 sm:w-4 md:w-4.5 h-10 sm:h-14 md:h-16" />
+
+          {/* Central Card with Baby Abhimanyu Krishnan */}
+          <div className="relative w-full max-w-[275px] sm:max-w-[340px] md:max-w-[400px] lg:max-w-[450px] -mt-1 px-2">
+            <img
+              src="/decorations/layers/birthday-card.png"
+              alt="One Whole Year of Abhimanyu Krishnan — First Birthday Plaque"
+              className="w-full h-auto object-contain drop-shadow-2xl"
+              loading="eager"
+            />
+
+            {/* Suspended Scroll Down CTA */}
+            <div
+              ref={scrollCtaRef}
+              className="-mt-5 sm:-mt-7 md:-mt-9 z-20 flex justify-center"
+            >
+              <ScrollDownIndicator targetId={APP_CONFIG.sections.pinata} />
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Layer 7: Foreground Floor Paper Clouds */}
       <div
         ref={cloudsFgRef}
-        className="hero-layer inset-x-0 -bottom-8 pointer-events-none flex justify-between z-20 opacity-95"
+        className="hero-layer inset-x-0 -bottom-8 pointer-events-none flex justify-between z-25 opacity-95"
       >
         <img
           src="/decorations/layers/cloud-left.png"

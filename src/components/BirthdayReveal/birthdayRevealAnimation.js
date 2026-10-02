@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
  * @returns {Function} Cleanup function
  */
 export function initBirthdayRevealAnimation(refs, prefersReducedMotion = false) {
-  const { sectionRef, pinataRef, cardRef, balloonLeftRef, balloonRightRef } = refs;
+  const { sectionRef, pinataScrollRef, pinataSwingRef, cardRef, balloonLeftRef, balloonRightRef } = refs;
 
   if (!sectionRef?.current) return () => {};
 
@@ -23,8 +23,8 @@ export function initBirthdayRevealAnimation(refs, prefersReducedMotion = false) 
 
   const ctx = gsap.context(() => {
     // 1. Subtle, natural pendulum rope swing for the Number "1" Piñata
-    if (pinataRef?.current) {
-      gsap.to(pinataRef.current, {
+    if (pinataSwingRef?.current) {
+      gsap.to(pinataSwingRef.current, {
         rotation: 2.2,
         transformOrigin: 'top center',
         duration: 3.2,
@@ -43,9 +43,9 @@ export function initBirthdayRevealAnimation(refs, prefersReducedMotion = false) 
       },
     });
 
-    if (pinataRef?.current) {
+    if (pinataScrollRef?.current) {
       tl.from(
-        pinataRef.current,
+        pinataScrollRef.current,
         {
           y: -40,
           opacity: 0.9,

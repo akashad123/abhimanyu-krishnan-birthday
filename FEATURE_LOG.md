@@ -183,8 +183,42 @@ Implement a handcrafted, multi-layer physical celebration opening animation cont
 **Verification**
 Production build `npm run build` executed successfully without errors or warnings (`✓ built in 4.27s`).
 
+---
 
+### [2026-10-02] Ceiling-Anchored Ropes, Dual-Wrapper Idle Pendulum Sway & Side Decoration Visibility
 
+**Purpose**
+Ensure all suspended festive elements (central card, left & right hanging cloud/star assemblies, and rainbow number "1" piñata) physically anchor directly at the top ceiling (`top: 0`), ensure the left and right parting decorations remain clearly visible on mobile screens, and add organic left-to-right idle pendulum swinging motion to all hanging elements.
 
+**User Flow**
+1. Visitor loads the page:
+   - Real braided ropes originate seamlessly from the top edge (`top: 0`) of the screen down to the central birthday card and both flanking decorations.
+   - The hanging Abhimanyu Krishnan birthday card, the left hanging cloud + star, and the right hanging cloud + star gently sway left-to-right with realistic physical pendulum motion.
+   - The side hanging decorations are clearly visible on mobile viewports (proper spacing and card proportion).
+2. When the visitor scrolls down:
+   - The central card is pulled straight upward via its top rope.
+   - The left hanging decoration parts outward to the left edge while continuing its physical sway.
+   - The right hanging decoration parts outward to the right edge while continuing its physical sway.
+3. Arriving at the second section:
+   - The large rainbow number "1" piñata hangs seamlessly from the top ceiling of the section (`top: 0`) and gently swings back and forth like a real suspended party piñata.
 
+**Technical Flow**
+- Added `.braided-rope` utility class in `src/styles/index.css` with realistic linear-gradient braid texture, lighting, and shadow.
+- Built dedicated top-ceiling assemblies in `src/components/BirthdayHero/BirthdayHero.css` (`.hero-card-assembly`, `.hero-side-assembly-left`, `.hero-side-assembly-right`) anchored to `top: 0`.
+- Implemented **Dual-Wrapper Architecture** for GSAP:
+  - Outer wrapper controls scroll translation (`x`, `y` via ScrollTrigger timeline).
+  - Inner wrapper controls continuous idle pendulum swinging (`rotation` around `transformOrigin: 'top center'` via `sine.inOut` yoyo loops), preventing GSAP property collision.
+- Adjusted card max-width on mobile (`max-w-[275px]` scaling up to `400px` on desktop) ensuring left and right clouds/stars have ample visible clearance on 375px-440px mobile viewports.
+- Anchored the number "1" piñata in `BirthdayReveal` to `top: 0` with top ceiling braided-rope extension and dual-wrapper pendulum sway.
 
+**Files**
+- `src/styles/index.css`
+- `src/components/BirthdayHero/BirthdayHero.jsx`
+- `src/components/BirthdayHero/BirthdayHero.css`
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`
+- `src/components/BirthdayReveal/BirthdayReveal.jsx`
+- `src/components/BirthdayReveal/birthdayRevealAnimation.js`
+
+**Verification**
+- Production build `npm run build` executed successfully without errors or warnings (`✓ built in 37.90s`).
+- Visual positioning verified: braided ropes anchor at `top: 0` for all hanging elements; side decorations remain visible in mobile emulators (440px); continuous pendulum sway operates smoothly alongside scroll-driven translations.

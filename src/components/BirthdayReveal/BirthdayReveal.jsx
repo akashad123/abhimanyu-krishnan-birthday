@@ -13,7 +13,8 @@ import './BirthdayReveal.css';
  */
 export const BirthdayReveal = () => {
   const sectionRef = useRef(null);
-  const pinataRef = useRef(null);
+  const pinataScrollRef = useRef(null);
+  const pinataSwingRef = useRef(null);
   const cardRef = useRef(null);
   const balloonLeftRef = useRef(null);
   const balloonRightRef = useRef(null);
@@ -24,7 +25,8 @@ export const BirthdayReveal = () => {
     const cleanup = initBirthdayRevealAnimation(
       {
         sectionRef,
-        pinataRef,
+        pinataScrollRef,
+        pinataSwingRef,
         cardRef,
         balloonLeftRef,
         balloonRightRef,
@@ -39,7 +41,7 @@ export const BirthdayReveal = () => {
     <section
       id={APP_CONFIG.sections.pinata}
       ref={sectionRef}
-      className="birthday-reveal-container bg-striped-wallpaper pt-4 pb-12 px-4"
+      className="birthday-reveal-container bg-striped-wallpaper pt-0 pb-12 px-4"
     >
       {/* Background Decorative Cloud Highlights */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
@@ -80,17 +82,25 @@ export const BirthdayReveal = () => {
         />
       </div>
 
-      {/* Main Suspended Number 1 Piñata */}
+      {/* Main Suspended Number 1 Piñata hanging from top ceiling */}
       <div
-        ref={pinataRef}
-        className="pinata-wrapper relative z-10 w-full max-w-[280px] sm:max-w-[340px] md:max-w-[390px] mx-auto mt-2"
+        ref={pinataScrollRef}
+        className="pinata-wrapper relative z-10 w-full max-w-[280px] sm:max-w-[340px] md:max-w-[390px] mx-auto mt-0"
       >
-        <img
-          src="/decorations/layers/pinata.png"
-          alt="Abhimanyu Krishnan Number 1 Rainbow Piñata"
-          className="w-full h-auto object-contain drop-shadow-2xl"
-          loading="lazy"
-        />
+        <div
+          ref={pinataSwingRef}
+          className="flex flex-col items-center w-full"
+          style={{ transformOrigin: 'top center' }}
+        >
+          {/* Braided Rope extending directly from the top ceiling */}
+          <div className="braided-rope w-3 sm:w-3.5 md:w-4 h-6 sm:h-10 md:h-12 -mb-1" />
+          <img
+            src="/decorations/layers/pinata.png"
+            alt="Abhimanyu Krishnan Number 1 Rainbow Piñata"
+            className="w-full h-auto object-contain drop-shadow-2xl"
+            loading="lazy"
+          />
+        </div>
       </div>
 
       {/* Milestone Celebratory Card */}

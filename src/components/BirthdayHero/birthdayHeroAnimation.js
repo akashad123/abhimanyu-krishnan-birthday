@@ -7,23 +7,25 @@ import {
   getCloudParallax,
 } from '../../utils/responsiveAnimation';
 
-// Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Initializes the master ScrollTrigger timeline for the Birthday Hero scene.
- * Uses gsap.matchMedia() to compute responsive values for mobile, tablet, and desktop.
+ * Initializes the master ScrollTrigger timeline and natural idle pendulum sway
+ * for the Birthday Hero scene.
  * 
- * @param {Object} refs - DOM element refs for each independent layer
+ * @param {Object} refs - DOM element refs
  * @param {boolean} prefersReducedMotion - User accessibility motion preference
- * @returns {Function} Cleanup function to revert the GSAP context
+ * @returns {Function} Cleanup function to revert GSAP animations
  */
 export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
   const {
     sectionRef,
-    cardRef,
-    leftDecoRef,
-    rightDecoRef,
+    cardScrollRef,
+    cardSwingRef,
+    leftDecoScrollRef,
+    leftDecoSwingRef,
+    rightDecoScrollRef,
+    rightDecoSwingRef,
     balloonRedRef,
     balloonYellowRef,
     balloonBlueRef,
@@ -36,14 +38,76 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
 
   if (!sectionRef?.current) return () => {};
 
-  // If user prefers reduced motion, maintain clean static presentation without pinning/movement
   if (prefersReducedMotion) {
     return () => {};
   }
 
+  // 1. Natural idle pendulum swaying left-to-right for hanging decorations
+  const ctx = gsap.context(() => {
+    // Main card gently sways left to right like a real suspended plaque
+    if (cardSwingRef?.current) {
+      gsap.to(cardSwingRef.current, {
+        rotation: 2.2,
+        transformOrigin: 'top center',
+        duration: 3.6,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+    }
+
+    // Left hanging cloud & star sways left to right
+    if (leftDecoSwingRef?.current) {
+      gsap.to(leftDecoSwingRef.current, {
+        rotation: -3.2,
+        transformOrigin: 'top center',
+        duration: 4.4,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+    }
+
+    // Right hanging cloud & star sways left to right
+    if (rightDecoSwingRef?.current) {
+      gsap.to(rightDecoSwingRef.current, {
+        rotation: 3.2,
+        transformOrigin: 'top center',
+        duration: 4.0,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+    }
+
+    // Idle gentle float on balloons
+    if (balloonRedRef?.current) {
+      gsap.to(balloonRedRef.current, {
+        y: -10,
+        rotation: 2,
+        duration: 2.8,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+    }
+
+    if (balloonBlueRef?.current) {
+      gsap.to(balloonBlueRef.current, {
+        y: -14,
+        rotation: -2,
+        duration: 3.4,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+    }
+  }, sectionRef);
+
+  // 2. Responsive ScrollTrigger timeline using matchMedia()
   const mm = gsap.matchMedia();
 
-  // 1. Mobile devices (< 768px)
+  // Mobile layout (< 768px)
   mm.add('(max-width: 767px)', () => {
     const balloons = getBalloonMovement();
     const clouds = getCloudParallax();
@@ -60,41 +124,38 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       },
     });
 
-    // 1. Main Birthday Plaque pulled upward
-    if (cardRef?.current) {
+    // 1. Main Birthday Plaque pulled straight UPWARD
+    if (cardScrollRef?.current) {
       tl.to(
-        cardRef.current,
+        cardScrollRef.current,
         {
           y: () => getResponsiveCardMovement(true),
-          rotation: -1,
           ease: 'none',
         },
         0
       );
     }
 
-    // 2. Left hanging decoration moves toward left margin
-    if (leftDecoRef?.current) {
+    // 2. Left hanging decoration parts outward to the LEFT
+    if (leftDecoScrollRef?.current) {
       tl.to(
-        leftDecoRef.current,
+        leftDecoScrollRef.current,
         {
           x: () => -getResponsiveSideMovement(true),
-          rotation: -5,
-          opacity: 0.7,
+          opacity: 0.8,
           ease: 'none',
         },
         0
       );
     }
 
-    // 3. Right hanging decoration moves toward right margin
-    if (rightDecoRef?.current) {
+    // 3. Right hanging decoration parts outward to the RIGHT
+    if (rightDecoScrollRef?.current) {
       tl.to(
-        rightDecoRef.current,
+        rightDecoScrollRef.current,
         {
           x: () => getResponsiveSideMovement(true),
-          rotation: 5,
-          opacity: 0.7,
+          opacity: 0.8,
           ease: 'none',
         },
         0
@@ -108,7 +169,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         {
           y: balloons.red.y,
           x: balloons.red.x,
-          rotation: balloons.red.rot,
           ease: 'none',
         },
         0
@@ -121,7 +181,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         {
           y: balloons.yellow.y,
           x: balloons.yellow.x,
-          rotation: balloons.yellow.rot,
           ease: 'none',
         },
         0
@@ -134,7 +193,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         {
           y: balloons.blue.y,
           x: balloons.blue.x,
-          rotation: balloons.blue.rot,
           ease: 'none',
         },
         0
@@ -147,7 +205,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         {
           y: balloons.green.y,
           x: balloons.green.x,
-          rotation: balloons.green.rot,
           ease: 'none',
         },
         0
@@ -167,15 +224,15 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       tl.to(cloudsBgRef.current, { y: clouds.bg, ease: 'none' }, 0);
     }
 
-    // 6. Scroll CTA fades out early
+    // 6. Scroll CTA fades away early
     if (scrollCtaRef?.current) {
-      tl.to(scrollCtaRef.current, { opacity: 0, y: 30, ease: 'none' }, 0);
+      tl.to(scrollCtaRef.current, { opacity: 0, y: 25, ease: 'none' }, 0);
     }
 
     return () => tl.kill();
   });
 
-  // 2. Tablet, Desktop, & Large screens (>= 768px)
+  // Desktop & Tablet layout (>= 768px)
   mm.add('(min-width: 768px)', () => {
     const balloons = getBalloonMovement();
     const clouds = getCloudParallax();
@@ -192,41 +249,38 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       },
     });
 
-    // 1. Main Birthday Plaque pulled upward
-    if (cardRef?.current) {
+    // 1. Main Birthday Plaque pulled straight UPWARD
+    if (cardScrollRef?.current) {
       tl.to(
-        cardRef.current,
+        cardScrollRef.current,
         {
           y: () => getResponsiveCardMovement(false),
-          rotation: -1.5,
           ease: 'none',
         },
         0
       );
     }
 
-    // 2. Left hanging decoration moves left with subtle swing
-    if (leftDecoRef?.current) {
+    // 2. Left hanging decoration parts outward to the LEFT
+    if (leftDecoScrollRef?.current) {
       tl.to(
-        leftDecoRef.current,
+        leftDecoScrollRef.current,
         {
           x: () => -getResponsiveSideMovement(false),
-          rotation: -6,
-          opacity: 0.75,
+          opacity: 0.85,
           ease: 'none',
         },
         0
       );
     }
 
-    // 3. Right hanging decoration moves right with subtle swing
-    if (rightDecoRef?.current) {
+    // 3. Right hanging decoration parts outward to the RIGHT
+    if (rightDecoScrollRef?.current) {
       tl.to(
-        rightDecoRef.current,
+        rightDecoScrollRef.current,
         {
           x: () => getResponsiveSideMovement(false),
-          rotation: 6,
-          opacity: 0.75,
+          opacity: 0.85,
           ease: 'none',
         },
         0
@@ -240,7 +294,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         {
           y: balloons.red.y * 1.15,
           x: balloons.red.x * 1.2,
-          rotation: balloons.red.rot,
           ease: 'none',
         },
         0
@@ -253,7 +306,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         {
           y: balloons.yellow.y * 1.1,
           x: balloons.yellow.x * 1.2,
-          rotation: balloons.yellow.rot,
           ease: 'none',
         },
         0
@@ -266,7 +318,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         {
           y: balloons.blue.y * 1.2,
           x: balloons.blue.x * 1.2,
-          rotation: balloons.blue.rot,
           ease: 'none',
         },
         0
@@ -279,7 +330,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         {
           y: balloons.green.y * 1.15,
           x: balloons.green.x * 1.2,
-          rotation: balloons.green.rot,
           ease: 'none',
         },
         0
@@ -299,15 +349,16 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       tl.to(cloudsBgRef.current, { y: clouds.bg * 1.2, ease: 'none' }, 0);
     }
 
-    // 6. Scroll CTA fades out early
+    // 6. Scroll CTA fades away early
     if (scrollCtaRef?.current) {
-      tl.to(scrollCtaRef.current, { opacity: 0, y: 40, ease: 'none' }, 0);
+      tl.to(scrollCtaRef.current, { opacity: 0, y: 35, ease: 'none' }, 0);
     }
 
     return () => tl.kill();
   });
 
   return () => {
+    ctx.revert();
     mm.revert();
   };
 }

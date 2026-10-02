@@ -54,6 +54,22 @@
     border-style: solid;
   }
 
+  /* Realistic braided hanging rope texture extending from top ceiling */
+  .braided-rope {
+    background-color: #BF9056;
+    background-image: repeating-linear-gradient(
+      45deg,
+      #8F6433 0,
+      #8F6433 4px,
+      #DFC08E 4px,
+      #DFC08E 8px,
+      #BF9056 8px,
+      #BF9056 12px
+    );
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.28);
+    border-radius: 2px;
+  }
+
   /* Official Responsive Background Artworks */
   .bg-hero-artwork {
     background-image: url('/decorations/abhi-mob.png');

@@ -1,4 +1,4 @@
-/* BirthdayHero Styles & Layer Layout */
+/* BirthdayHero Styles & Physical Layer Layout */
 
 .birthday-hero-container {
   position: relative;
@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 /* Layer positioning helpers */
@@ -20,81 +20,104 @@
   will-change: transform;
 }
 
-/* Background wallpaper */
-.hero-layer-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-/* Clouds layer */
-.hero-layer-clouds {
-  z-index: 2;
-}
-
-/* Bunting layer */
+/* Top Bunting Garland */
 .hero-layer-bunting {
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
-  z-index: 6;
+  z-index: 30;
+  pointer-events: none;
 }
 
-/* Side hanging decorations */
-.hero-layer-side-left {
-  top: 15%;
-  left: 3%;
-  z-index: 4;
+/* Central Card Assembly hanging from top ceiling */
+.hero-card-assembly {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  pointer-events: auto;
+  will-change: transform;
 }
 
-.hero-layer-side-right {
-  top: 15%;
-  right: 3%;
-  z-index: 4;
+/* Left & Right Hanging Assemblies hanging from top ceiling */
+.hero-side-assembly-left {
+  position: absolute;
+  top: 0;
+  left: 2%;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.hero-side-assembly-right {
+  position: absolute;
+  top: 0;
+  right: 2%;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  will-change: transform;
+}
+
+@media (min-width: 640px) {
+  .hero-side-assembly-left {
+    left: 5%;
+  }
+
+  .hero-side-assembly-right {
+    right: 5%;
+  }
 }
 
 @media (min-width: 768px) {
-  .hero-layer-side-left {
-    top: 10%;
+  .hero-side-assembly-left {
     left: 8%;
   }
 
-  .hero-layer-side-right {
-    top: 10%;
+  .hero-side-assembly-right {
     right: 8%;
   }
 }
 
-@media (min-width: 1280px) {
-  .hero-layer-side-left {
-    left: 14%;
+@media (min-width: 1024px) {
+  .hero-side-assembly-left {
+    left: 12%;
   }
 
-  .hero-layer-side-right {
-    right: 14%;
+  .hero-side-assembly-right {
+    right: 12%;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-side-assembly-left {
+    left: 16%;
+  }
+
+  .hero-side-assembly-right {
+    right: 16%;
   }
 }
 
 /* Balloons layer */
 .hero-layer-balloon {
-  z-index: 5;
-}
-
-/* Main Birthday Card Layer */
-.hero-layer-card {
-  z-index: 10;
-  pointer-events: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  z-index: 12;
   will-change: transform;
 }
 
-/* Prevent horizontal overflow during wide animations */
-body, html {
-  overflow-x: hidden !important;
+/* Clouds depth layer */
+.hero-layer-clouds {
+  z-index: 5;
+  will-change: transform;
 }
