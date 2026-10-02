@@ -24,6 +24,11 @@ export const BirthdayHero = () => {
   const cardScrollRef = useRef(null);
   const cardSwingRef = useRef(null);
 
+  // Piñata and milestone refs
+  const pinataRef = useRef(null);
+  const pinataSwingRef = useRef(null);
+  const milestoneRef = useRef(null);
+
   // Left decoration refs
   const leftDecoScrollRef = useRef(null);
   const leftDecoSwingRef = useRef(null);
@@ -32,11 +37,15 @@ export const BirthdayHero = () => {
   const rightDecoScrollRef = useRef(null);
   const rightDecoSwingRef = useRef(null);
 
-  // Balloons refs
+  // Balloons outer (scroll) & inner (idle) refs
   const balloonRedRef = useRef(null);
+  const balloonRedInnerRef = useRef(null);
   const balloonYellowRef = useRef(null);
+  const balloonYellowInnerRef = useRef(null);
   const balloonBlueRef = useRef(null);
+  const balloonBlueInnerRef = useRef(null);
   const balloonGreenRef = useRef(null);
+  const balloonGreenInnerRef = useRef(null);
 
   // Other layer refs
   const buntingRef = useRef(null);
@@ -51,14 +60,21 @@ export const BirthdayHero = () => {
         sectionRef,
         cardScrollRef,
         cardSwingRef,
+        pinataRef,
+        pinataSwingRef,
+        milestoneRef,
         leftDecoScrollRef,
         leftDecoSwingRef,
         rightDecoScrollRef,
         rightDecoSwingRef,
         balloonRedRef,
+        balloonRedInnerRef,
         balloonYellowRef,
+        balloonYellowInnerRef,
         balloonBlueRef,
+        balloonBlueInnerRef,
         balloonGreenRef,
+        balloonGreenInnerRef,
         buntingRef,
         cloudsFgRef,
         scrollCtaRef,
@@ -73,7 +89,7 @@ export const BirthdayHero = () => {
     <section
       id={APP_CONFIG.sections.hero}
       ref={sectionRef}
-      className="birthday-hero-container bg-striped-wallpaper"
+      className="birthday-hero-container"
     >
       {/* Layer 1: Top Bunting Garland */}
       <div
@@ -154,12 +170,14 @@ export const BirthdayHero = () => {
         ref={balloonRedRef}
         className="hero-layer hero-layer-balloon top-[44%] left-3 sm:left-10 md:left-20 w-16 sm:w-20 md:w-24 drop-shadow-xl"
       >
-        <img
-          src="/decorations/layers/balloon-red.png"
-          alt="Red Celebration Balloon"
-          className="w-full h-auto object-contain"
-          loading="eager"
-        />
+        <div ref={balloonRedInnerRef} className="w-full h-full">
+          <img
+            src="/decorations/layers/balloon-red.png"
+            alt="Red Celebration Balloon"
+            className="w-full h-auto object-contain"
+            loading="eager"
+          />
+        </div>
       </div>
 
       {/* Yellow Balloon - Left Lower */}
@@ -167,12 +185,14 @@ export const BirthdayHero = () => {
         ref={balloonYellowRef}
         className="hero-layer hero-layer-balloon top-[68%] left-2 sm:left-8 md:left-16 w-14 sm:w-18 md:w-22 drop-shadow-xl"
       >
-        <img
-          src="/decorations/layers/balloon-yellow.png"
-          alt="Yellow Celebration Balloon"
-          className="w-full h-auto object-contain"
-          loading="eager"
-        />
+        <div ref={balloonYellowInnerRef} className="w-full h-full">
+          <img
+            src="/decorations/layers/balloon-yellow.png"
+            alt="Yellow Celebration Balloon"
+            className="w-full h-auto object-contain"
+            loading="eager"
+          />
+        </div>
       </div>
 
       {/* Blue Balloon - Right Mid */}
@@ -180,12 +200,14 @@ export const BirthdayHero = () => {
         ref={balloonBlueRef}
         className="hero-layer hero-layer-balloon top-[42%] right-3 sm:right-10 md:right-20 w-16 sm:w-20 md:w-24 drop-shadow-xl"
       >
-        <img
-          src="/decorations/layers/balloon-blue.png"
-          alt="Blue Celebration Balloon"
-          className="w-full h-auto object-contain"
-          loading="eager"
-        />
+        <div ref={balloonBlueInnerRef} className="w-full h-full">
+          <img
+            src="/decorations/layers/balloon-blue.png"
+            alt="Blue Celebration Balloon"
+            className="w-full h-auto object-contain"
+            loading="eager"
+          />
+        </div>
       </div>
 
       {/* Green Balloon - Right Lower */}
@@ -193,12 +215,14 @@ export const BirthdayHero = () => {
         ref={balloonGreenRef}
         className="hero-layer hero-layer-balloon top-[66%] right-2 sm:right-8 md:right-16 w-14 sm:w-18 md:w-22 drop-shadow-xl"
       >
-        <img
-          src="/decorations/layers/balloon-green.png"
-          alt="Green Celebration Balloon"
-          className="w-full h-auto object-contain"
-          loading="eager"
-        />
+        <div ref={balloonGreenInnerRef} className="w-full h-full">
+          <img
+            src="/decorations/layers/balloon-green.png"
+            alt="Green Celebration Balloon"
+            className="w-full h-auto object-contain"
+            loading="eager"
+          />
+        </div>
       </div>
 
       {/* Layer 6: Main Birthday Card Assembly hanging from Top Ceiling */}
@@ -238,18 +262,28 @@ export const BirthdayHero = () => {
           {/* Connected Suspended Rainbow Number 1 Piñata */}
           <div
             id={APP_CONFIG.sections.pinata}
+            ref={pinataRef}
             className="relative z-10 w-full max-w-[280px] sm:max-w-[340px] md:max-w-[390px] mx-auto"
           >
-            <img
-              src="/decorations/layers/pinata.png"
-              alt="Abhimanyu Krishnan Number 1 Rainbow Piñata"
-              className="w-full h-auto object-contain drop-shadow-2xl"
-              loading="lazy"
-            />
+            <div
+              ref={pinataSwingRef}
+              className="w-full h-auto"
+              style={{ transformOrigin: 'top center' }}
+            >
+              <img
+                src="/decorations/layers/pinata.png"
+                alt="Abhimanyu Krishnan Number 1 Rainbow Piñata"
+                className="w-full h-auto object-contain drop-shadow-2xl"
+                loading="lazy"
+              />
+            </div>
           </div>
 
           {/* Milestone Celebratory Card */}
-          <div className="relative z-20 w-full max-w-sm sm:max-w-md bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-6 sm:p-7 text-center shadow-paper mt-6 mb-12">
+          <div
+            ref={milestoneRef}
+            className="relative z-20 w-full max-w-sm sm:max-w-md bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-6 sm:p-7 text-center shadow-paper mt-6 mb-12"
+          >
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs mb-3">
               <Sparkles size={14} className="text-theme-yellow" />
               <span>Milestone Celebration</span>

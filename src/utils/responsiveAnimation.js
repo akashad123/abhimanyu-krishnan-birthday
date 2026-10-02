@@ -13,63 +13,36 @@
  * @returns {number} Distance in pixels to move upward (negative value)
  */
 export function getResponsiveCardMovement(isMobile = false) {
-  if (typeof window === 'undefined') return -600;
+  if (typeof window === 'undefined') return -500;
   const vh = window.innerHeight;
-  // Accelerate card upward faster than natural scroll to look physically pulled by rope
-  return -(vh * (isMobile ? 0.55 : 0.65));
+  // Pull card assembly smoothly upward into ceiling
+  return -(vh * (isMobile ? 0.45 : 0.55));
 }
 
 /**
  * Returns dynamic horizontal distance for side hanging decorations
- * to part outward toward screen edges.
+ * to slowly part outward toward screen edges.
  * 
  * @param {boolean} isMobile - True if screen width is under 768px
  * @returns {number} Distance in pixels to travel outward
  */
 export function getResponsiveSideMovement(isMobile = false) {
-  if (typeof window === 'undefined') return 300;
+  if (typeof window === 'undefined') return 200;
   const vw = window.innerWidth;
-  // On mobile move further relative to width; on desktop travel comfortably to margins
-  return isMobile ? vw * 0.48 : vw * 0.38;
+  // Slowly and gracefully part to sides so motion is clearly observable
+  return isMobile ? vw * 0.32 : vw * 0.24;
 }
 
 /**
- * Returns customized vertical and horizontal float offsets for each balloon
- * to ensure organic, staggered movement rather than uniform sliding.
+ * Returns horizontal distance for balloons to glide aside off-screen.
+ * 
+ * @param {boolean} isMobile - True if screen width is under 768px
+ * @returns {number} Distance in pixels to move aside
  */
-export function getBalloonMovement() {
-  if (typeof window === 'undefined') {
-    return {
-      red: { y: -500, x: -35, rot: -8 },
-      yellow: { y: -650, x: -25, rot: 8 },
-      blue: { y: -550, x: 35, rot: 6 },
-      green: { y: -700, x: 25, rot: -8 },
-    };
-  }
-
-  const vh = window.innerHeight;
-  return {
-    red: {
-      y: -(vh * 0.70),
-      x: -35,
-      rot: -8,
-    },
-    yellow: {
-      y: -(vh * 0.85),
-      x: -25,
-      rot: 8,
-    },
-    blue: {
-      y: -(vh * 0.75),
-      x: 35,
-      rot: 6,
-    },
-    green: {
-      y: -(vh * 0.90),
-      x: 25,
-      rot: -8,
-    },
-  };
+export function getBalloonAsideDistance(isMobile = false) {
+  if (typeof window === 'undefined') return 250;
+  const vw = window.innerWidth;
+  return isMobile ? Math.max(vw * 0.42, 220) : Math.max(vw * 0.38, 280);
 }
 
 /**

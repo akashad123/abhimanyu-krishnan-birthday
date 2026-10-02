@@ -40,3 +40,9 @@ Developer-facing record of meaningful changes.
 - Unified the celebration experience into a single section (`BirthdayHero`), eliminating the separate `BirthdayReveal` section and all disjointed scroll gaps.
 - Set `background-attachment: fixed` on the vertical striped celebration wallpaper to keep the background completely static while the hanging mobile and decorations move smoothly over it.
 - Preserved physical integrity of the hanging chain during scroll by removing artificial upward translation on the plaque and keeping the scroll CTA intact.
+- Guaranteed 100% stationary background using a dedicated `fixed inset-0` wallpaper layer in `App.jsx`, preventing background scrolling across all browsers.
+- Restored GSAP upward pull animation on the Abhimanyu Krishnan birthday card plaque and "Scroll Down" CTA button.
+- Added celebratory GSAP entrance and sway animations to the Rainbow Number "1" Piñata and "Turning The Big One!" milestone card.
+- Fixed balloon animation glitch by decoupling scroll translation from idle wobble using dual wrappers, smoothly gliding balloons aside off the screen.
+- Pinned festive bunting garland to top ceiling (`position: sticky; top: 0; z-35`) framing the celebration.
+- Adjusted side hanging clouds and stars to slowly and gracefully part to the left and right with downward resistance so they remain clearly visible throughout the scroll.

@@ -1,8 +1,9 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
+  getResponsiveCardMovement,
   getResponsiveSideMovement,
-  getBalloonMovement,
+  getBalloonAsideDistance,
   getCloudParallax,
 } from '../../utils/responsiveAnimation';
 
@@ -10,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Initializes the master ScrollTrigger timeline and natural idle pendulum sway
- * for the Birthday Hero scene.
+ * for the unified Birthday Hero celebration scene.
  * 
  * @param {Object} refs - DOM element refs
  * @param {boolean} prefersReducedMotion - User accessibility motion preference
@@ -21,17 +22,23 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
     sectionRef,
     cardScrollRef,
     cardSwingRef,
+    pinataRef,
+    pinataSwingRef,
+    milestoneRef,
     leftDecoScrollRef,
     leftDecoSwingRef,
     rightDecoScrollRef,
     rightDecoSwingRef,
     balloonRedRef,
+    balloonRedInnerRef,
     balloonYellowRef,
+    balloonYellowInnerRef,
     balloonBlueRef,
+    balloonBlueInnerRef,
     balloonGreenRef,
+    balloonGreenInnerRef,
     buntingRef,
     cloudsFgRef,
-    scrollCtaRef,
   } = refs;
 
   if (!sectionRef?.current) return () => {};
@@ -40,7 +47,7 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
     return () => {};
   }
 
-  // 1. Natural idle pendulum swaying left-to-right for hanging decorations
+  // 1. Natural idle pendulum swaying left-to-right for suspended hanging decorations
   const ctx = gsap.context(() => {
     // Main card gently sways left to right like a real suspended plaque
     if (cardSwingRef?.current) {
@@ -54,11 +61,23 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       });
     }
 
-    // Main U-shaped bunting garland sways gently left to right like real hanging festive pennants
+    // Number 1 Piñata gently sways like a real suspended festive piñata
+    if (pinataSwingRef?.current) {
+      gsap.to(pinataSwingRef.current, {
+        rotation: -2.8,
+        transformOrigin: 'top center',
+        duration: 3.4,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+    }
+
+    // Top bunting garland sways gently left to right across top ceiling
     if (buntingRef?.current) {
       gsap.to(buntingRef.current, {
         rotation: 1.2,
-        x: 8,
+        x: 6,
         transformOrigin: 'top center',
         duration: 4.6,
         repeat: -1,
@@ -91,11 +110,11 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       });
     }
 
-    // Idle gentle float on balloons
-    if (balloonRedRef?.current) {
-      gsap.to(balloonRedRef.current, {
+    // Idle gentle float on balloon inner containers (prevents transform clash with scroll)
+    if (balloonRedInnerRef?.current) {
+      gsap.to(balloonRedInnerRef.current, {
         y: -10,
-        rotation: 2,
+        rotation: 2.5,
         duration: 2.8,
         repeat: -1,
         yoyo: true,
@@ -103,33 +122,33 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       });
     }
 
-    if (balloonYellowRef?.current) {
-      gsap.to(balloonYellowRef.current, {
+    if (balloonYellowInnerRef?.current) {
+      gsap.to(balloonYellowInnerRef.current, {
         y: -12,
-        rotation: -2,
-        duration: 3.1,
+        rotation: -2.5,
+        duration: 3.2,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
       });
     }
 
-    if (balloonBlueRef?.current) {
-      gsap.to(balloonBlueRef.current, {
-        y: -14,
+    if (balloonBlueInnerRef?.current) {
+      gsap.to(balloonBlueInnerRef.current, {
+        y: -10,
         rotation: -2,
-        duration: 3.4,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      });
-    }
-
-    if (balloonGreenRef?.current) {
-      gsap.to(balloonGreenRef.current, {
-        y: -11,
-        rotation: 2,
         duration: 3.0,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+    }
+
+    if (balloonGreenInnerRef?.current) {
+      gsap.to(balloonGreenInnerRef.current, {
+        y: -12,
+        rotation: 2.5,
+        duration: 3.4,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -140,57 +159,76 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
   // 2. Responsive ScrollTrigger timeline using matchMedia()
   const mm = gsap.matchMedia();
 
-  // Mobile layout (< 768px)
-  mm.add('(max-width: 767px)', () => {
-    const balloons = getBalloonMovement();
+  /**
+   * Builds the scroll timeline for mobile (< 768px) and desktop (>= 768px).
+   * 
+   * @param {boolean} isMobile - True if mobile layout
+   * @returns {gsap.core.Timeline}
+   */
+  const createHeroScrollTimeline = (isMobile) => {
+    const asideDist = getBalloonAsideDistance(isMobile);
     const clouds = getCloudParallax();
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
         start: 'top top',
-        end: 'bottom top',
+        end: 'bottom bottom',
         scrub: 0.6,
         invalidateOnRefresh: true,
       },
     });
 
-    // Side decorations part outward to the edges on scroll
+    // 1. Birthday Card Plaque & Scroll Down pulled smoothly upward into the ceiling
+    if (cardScrollRef?.current) {
+      tl.to(
+        cardScrollRef.current,
+        {
+          y: () => getResponsiveCardMovement(isMobile),
+          ease: 'none',
+        },
+        0
+      );
+    }
+
+    // 2. Side hanging clouds slowly and gracefully part towards the edges
+    // Subtle downward resistance keeps them visible longer in upper view
     if (leftDecoScrollRef?.current) {
       tl.to(
         leftDecoScrollRef.current,
         {
-          x: () => -getResponsiveSideMovement(true),
-          opacity: 0.8,
+          x: () => -getResponsiveSideMovement(isMobile),
+          y: isMobile ? 120 : 160,
+          opacity: 0.95,
           ease: 'none',
         },
         0
       );
     }
 
-    // 3. Right hanging decoration parts outward to the RIGHT
     if (rightDecoScrollRef?.current) {
       tl.to(
         rightDecoScrollRef.current,
         {
-          x: () => getResponsiveSideMovement(true),
-          opacity: 0.8,
+          x: () => getResponsiveSideMovement(isMobile),
+          y: isMobile ? 120 : 160,
+          opacity: 0.95,
           ease: 'none',
         },
         0
       );
     }
 
-    // 4. Staggered individual balloon vertical floats (fast, flies all the way up off-screen)
+    // 3. Balloons smoothly move aside off the screen without glitching
+    // Left balloons move aside to the LEFT
     if (balloonRedRef?.current) {
       tl.to(
         balloonRedRef.current,
         {
-          y: balloons.red.y,
-          x: balloons.red.x,
-          rotation: balloons.red.rot,
-          duration: 0.65,
-          ease: 'power1.in',
+          x: -asideDist,
+          y: -140,
+          opacity: 0.4,
+          ease: 'power1.out',
         },
         0
       );
@@ -200,25 +238,24 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       tl.to(
         balloonYellowRef.current,
         {
-          y: balloons.yellow.y,
-          x: balloons.yellow.x,
-          rotation: balloons.yellow.rot,
-          duration: 0.65,
-          ease: 'power1.in',
+          x: -(asideDist * 1.08),
+          y: -100,
+          opacity: 0.4,
+          ease: 'power1.out',
         },
         0
       );
     }
 
+    // Right balloons move aside to the RIGHT
     if (balloonBlueRef?.current) {
       tl.to(
         balloonBlueRef.current,
         {
-          y: balloons.blue.y,
-          x: balloons.blue.x,
-          rotation: balloons.blue.rot,
-          duration: 0.65,
-          ease: 'power1.in',
+          x: asideDist,
+          y: -140,
+          opacity: 0.4,
+          ease: 'power1.out',
         },
         0
       );
@@ -228,135 +265,83 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       tl.to(
         balloonGreenRef.current,
         {
-          y: balloons.green.y,
-          x: balloons.green.x,
-          rotation: balloons.green.rot,
-          duration: 0.65,
-          ease: 'power1.in',
+          x: asideDist * 1.08,
+          y: -100,
+          opacity: 0.4,
+          ease: 'power1.out',
         },
         0
       );
     }
 
-    // 5. Bunting & foreground clouds subtle depth parallax
-    if (buntingRef?.current) {
-      tl.to(buntingRef.current, { y: -25, opacity: 0.85, ease: 'none' }, 0);
+    // 4. Celebratory GSAP entrance for the Rainbow Number "1" Piñata
+    if (pinataRef?.current) {
+      tl.fromTo(
+        pinataRef.current,
+        {
+          scale: 0.9,
+          rotation: -6,
+          y: 40,
+        },
+        {
+          scale: 1.05,
+          rotation: 3,
+          y: 0,
+          ease: 'power1.out',
+          duration: 0.45,
+        },
+        0.25
+      );
+
+      tl.to(
+        pinataRef.current,
+        {
+          scale: 1.0,
+          rotation: 0,
+          ease: 'power1.inOut',
+          duration: 0.3,
+        },
+        0.7
+      );
     }
 
+    // 5. Celebratory GSAP entrance for the Milestone Card ("Turning The Big One!")
+    if (milestoneRef?.current) {
+      tl.fromTo(
+        milestoneRef.current,
+        {
+          y: 70,
+          opacity: 0.25,
+          scale: 0.95,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          ease: 'power1.out',
+          duration: 0.4,
+        },
+        0.45
+      );
+    }
+
+    // 6. Foreground floor clouds subtle parallax
     if (cloudsFgRef?.current) {
-      tl.to(cloudsFgRef.current, { y: clouds.fg, ease: 'none' }, 0);
+      tl.to(cloudsFgRef.current, { y: -clouds.fg, ease: 'none' }, 0);
     }
 
+    return tl;
+  };
+
+  // Mobile layout (< 768px)
+  mm.add('(max-width: 767px)', () => {
+    const tl = createHeroScrollTimeline(true);
     return () => tl.kill();
   });
 
   // Desktop & Tablet layout (>= 768px)
   mm.add('(min-width: 768px)', () => {
-    const balloons = getBalloonMovement();
-    const clouds = getCloudParallax();
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 0.6,
-        invalidateOnRefresh: true,
-      },
-    });
-
-    // 1. Left hanging decoration parts outward to the LEFT
-    if (leftDecoScrollRef?.current) {
-      tl.to(
-        leftDecoScrollRef.current,
-        {
-          x: () => -getResponsiveSideMovement(false),
-          opacity: 0.85,
-          ease: 'none',
-        },
-        0
-      );
-    }
-
-    // 3. Right hanging decoration parts outward to the RIGHT
-    if (rightDecoScrollRef?.current) {
-      tl.to(
-        rightDecoScrollRef.current,
-        {
-          x: () => getResponsiveSideMovement(false),
-          opacity: 0.85,
-          ease: 'none',
-        },
-        0
-      );
-    }
-
-    // 4. Staggered individual balloon vertical floats (fast, flies all the way up off-screen)
-    if (balloonRedRef?.current) {
-      tl.to(
-        balloonRedRef.current,
-        {
-          y: balloons.red.y * 1.25,
-          x: balloons.red.x * 1.3,
-          rotation: balloons.red.rot * 1.3,
-          duration: 0.65,
-          ease: 'power1.in',
-        },
-        0
-      );
-    }
-
-    if (balloonYellowRef?.current) {
-      tl.to(
-        balloonYellowRef.current,
-        {
-          y: balloons.yellow.y * 1.25,
-          x: balloons.yellow.x * 1.3,
-          rotation: balloons.yellow.rot * 1.3,
-          duration: 0.65,
-          ease: 'power1.in',
-        },
-        0
-      );
-    }
-
-    if (balloonBlueRef?.current) {
-      tl.to(
-        balloonBlueRef.current,
-        {
-          y: balloons.blue.y * 1.25,
-          x: balloons.blue.x * 1.3,
-          rotation: balloons.blue.rot * 1.3,
-          duration: 0.65,
-          ease: 'power1.in',
-        },
-        0
-      );
-    }
-
-    if (balloonGreenRef?.current) {
-      tl.to(
-        balloonGreenRef.current,
-        {
-          y: balloons.green.y * 1.25,
-          x: balloons.green.x * 1.3,
-          rotation: balloons.green.rot * 1.3,
-          duration: 0.65,
-          ease: 'power1.in',
-        },
-        0
-      );
-    }
-
-    // 5. Bunting & foreground clouds subtle depth parallax
-    if (buntingRef?.current) {
-      tl.to(buntingRef.current, { y: -35, opacity: 0.85, ease: 'none' }, 0);
-    }
-
-    if (cloudsFgRef?.current) {
-      tl.to(cloudsFgRef.current, { y: clouds.fg * 1.2, ease: 'none' }, 0);
-    }
-
+    const tl = createHeroScrollTimeline(false);
     return () => tl.kill();
   });
 

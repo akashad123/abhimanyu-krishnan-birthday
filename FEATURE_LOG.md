@@ -402,3 +402,59 @@ Connect the top Abhimanyu Krishnan baby photo plaque and "Scroll Down" pill dire
 - Production build `npm run build` completed cleanly in 3.97s with 0 errors.
 - Verified in `reference/landing-reference-mobile.jpg` that the artwork is indeed a single connected hanging mobile where the rope runs from the plaque through the Scroll Down pill into the top knot of the Number 1 Piñata.
 - Verified local dev server is running and responding with HTTP 200.
+
+---
+
+### [2026-10-02] Refined GSAP Motion System: Static Background Layer, Card Pull, Piñata/Milestone Animations, Glitch-Free Balloons, and Slow Cloud Parting
+
+**Purpose**
+- Guarantee a 100% stationary background using a dedicated `fixed inset-0` wallpaper layer.
+- Restore the GSAP upward pull animation on the "One Whole Year of Abhimanyu Krishnan" plaque and "Scroll Down" pill.
+- Add celebratory GSAP entrance animations to the Rainbow Number "1" Piñata (tilt, scale pop, and idle sway) and the Milestone Card ("Turning The Big One!" slide-up and fade-in).
+- Resolve balloon animation glitching by decoupling scroll translation from idle wobble via dual wrappers, gliding balloons aside off the screen.
+- Keep the festive bunting garland suspended at the top ceiling (`position: sticky; top: 0; z-35`).
+- Ensure side hanging clouds slowly and gracefully part to the left and right, remaining clearly visible throughout the scroll.
+
+**User Flow**
+1. Visitor lands on the page:
+   - The baby-blue and warm-cream vertical striped wallpaper is physically locked in place (`position: fixed; inset: 0;`), completely static across all viewports.
+   - The festive bunting garland frames the top of the ceiling with a gentle idle sway.
+   - The Abhimanyu Krishnan baby photo plaque and "Scroll Down" button are front and center.
+2. Visitor scrolls down:
+   - The plaque and "Scroll Down" button smoothly pull upward into the ceiling via GSAP scrub.
+   - The festive bunting remains gracefully pinned across the top ceiling.
+   - The left and right hanging clouds slowly glide outward towards the edges while staying suspended in view, allowing visitors to clearly witness their gentle parting motion.
+   - The balloons glide aside off the screen (left balloons glide left, right balloons glide right) with zero jitter or glitching.
+   - The Rainbow Number "1" Piñata enters the center of the viewport with a celebratory tilt, scale pop, and continuous pendulum rope sway.
+   - The "Turning The Big One!" milestone card smoothly slides up and fades into view with celebratory elevation.
+
+**Technical Flow**
+- In `src/App.jsx`:
+  - Added dedicated `<div className="fixed inset-0 z-0 bg-striped-wallpaper pointer-events-none" />` layer, guaranteeing 100% stationary background rendering across Safari, Chrome, iOS, and Android.
+- In `src/components/BirthdayHero/BirthdayHero.css`:
+  - Styled `.hero-layer-bunting` with `position: sticky; top: 0; z-index: 35;` to keep the garland draped across the top ceiling.
+- In `src/components/BirthdayHero/BirthdayHero.jsx`:
+  - Added `balloon*InnerRef` wrappers to isolate idle floating from scroll translation.
+  - Attached `pinataRef`, `pinataSwingRef`, and `milestoneRef` to enable dedicated GSAP animations.
+- In `src/utils/responsiveAnimation.js`:
+  - Updated `getResponsiveCardMovement` to calculate upward pull `-(vh * 0.45..0.55)`.
+  - Updated `getResponsiveSideMovement` for slow, observable cloud parting (`vw * 0.24..0.32`).
+  - Added `getBalloonAsideDistance` to calculate smooth off-screen lateral glide.
+- In `src/components/BirthdayHero/birthdayHeroAnimation.js`:
+  - Restored card upward pull on `cardScrollRef`.
+  - Implemented glitch-free balloon lateral glide on `balloon*Ref` with independent idle wobble on `balloon*InnerRef`.
+  - Added Rainbow Number 1 Piñata scale pop and rotation scrub on `pinataRef` plus idle pendulum sway on `pinataSwingRef`.
+  - Added milestone card slide-up and fade-in on `milestoneRef`.
+  - Added gentle downward resistance (`y: 120..160`) to side hanging clouds so they slowly part and remain clearly visible.
+
+**Files**
+- `src/App.jsx`
+- `src/styles/index.css`
+- `src/components/BirthdayHero/BirthdayHero.css`
+- `src/components/BirthdayHero/BirthdayHero.jsx`
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`
+- `src/utils/responsiveAnimation.js`
+
+**Verification**
+- Production build `npm run build` executed successfully with 0 errors (`✓ built in 7.25s`).
+- Verified local dev server is responding with HTTP 200.

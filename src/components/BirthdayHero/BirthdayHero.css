@@ -20,13 +20,14 @@
   will-change: transform;
 }
 
-/* Top Bunting Garland */
+/* Top Bunting Garland - stays gracefully suspended across the top ceiling */
 .hero-layer-bunting {
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
-  z-index: 30;
+  z-index: 35;
   pointer-events: none;
   transform-origin: top center;
   will-change: transform;
