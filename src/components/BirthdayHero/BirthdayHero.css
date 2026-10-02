@@ -28,6 +28,8 @@
   width: 100%;
   z-index: 30;
   pointer-events: none;
+  transform-origin: top center;
+  will-change: transform;
 }
 
 /* Central Card Assembly hanging from top ceiling */
@@ -43,6 +45,12 @@
   width: 100%;
   pointer-events: auto;
   will-change: transform;
+}
+
+@media (min-width: 1024px) {
+  .hero-card-assembly {
+    top: -8px;
+  }
 }
 
 /* Left & Right Hanging Assemblies hanging from top ceiling */

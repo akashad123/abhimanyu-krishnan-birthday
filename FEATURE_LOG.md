@@ -222,3 +222,49 @@ Ensure all suspended festive elements (central card, left & right hanging cloud/
 **Verification**
 - Production build `npm run build` executed successfully without errors or warnings (`✓ built in 37.90s`).
 - Visual positioning verified: braided ropes anchor at `top: 0` for all hanging elements; side decorations remain visible in mobile emulators (440px); continuous pendulum sway operates smoothly alongside scroll-driven translations.
+
+---
+
+### [2026-10-02] Hero Card Enlargement, Bunting Garland Sway, Rapid Balloon Exit & Section 2 Directional Motion
+
+**Purpose**
+Enlarge the baby card and elevate it on PC viewports so baby Abhimanyu is prominent and clearly visible; add natural idle swaying to the main U-shaped bunting garland; accelerate the 4 hero balloons so they fly all the way up and off-screen; remove static background clouds; add directional up-left/up-right floating to Section 2 balloons; and animate Section 2 clouds to move outward left and right.
+
+**User Flow**
+1. Hero Landing Page:
+   - The central plaque featuring baby Abhimanyu is significantly larger (`max-w` up to 580px) and elevated on desktop so his photo, smile, and details are prominent and clear.
+   - The colorful U-shaped bunting banner sways gently left and right like festive party pennants fluttering in a light breeze.
+   - The redundant static clouds behind the top corners have been removed.
+2. Scroll Transition:
+   - When scrolling down, the red & yellow/orange balloons on the left and the blue & green balloons on the right accelerate upward rapidly (`y: -1.25vh` to `-1.5vh`), flying completely off the top of the screen.
+3. Section 2 (Piñata Reveal):
+   - The orange/yellow balloon floats up and left.
+   - The green balloon floats up and right.
+   - The paper clouds on the left and right drift outward to the left and right sides.
+
+**Technical Flow**
+- In `src/components/BirthdayHero/BirthdayHero.jsx` and `BirthdayHero.css`:
+  - Increased card breakpoint widths: `max-w-[290px] sm:max-w-[360px] md:max-w-[460px] lg:max-w-[530px] xl:max-w-[580px]`.
+  - Tightened desktop rope length to `h-5 lg:h-6` with `@media (min-width: 1024px) { top: -8px }` elevation.
+  - Removed `cloudsBgRef` layer.
+- In `src/utils/responsiveAnimation.js`:
+  - Increased balloon scroll offsets to `red: -1.25vh`, `yellow: -1.45vh`, `blue: -1.3vh`, `green: -1.5vh` with outward rotation.
+- In `src/components/BirthdayHero/birthdayHeroAnimation.js`:
+  - Added continuous sine wave sway to `buntingRef.current` (`rotation: 1.2`, `x: 8`, `transformOrigin: 'top center'`).
+  - Accelerated balloon animation in GSAP timeline with `duration: 0.65` and `ease: 'power1.in'`.
+- In `src/components/BirthdayReveal/BirthdayReveal.jsx` & `birthdayRevealAnimation.js`:
+  - Added refs for left and right clouds (`cloudLeftRef`, `cloudRightRef`).
+  - Added up-and-left idle & reveal motion for left orange balloon (`x: -18, y: -24` idle, `x: -40, y: -50` entrance).
+  - Added up-and-right idle & reveal motion for right green balloon (`x: 18, y: -24` idle, `x: 40, y: -50` entrance).
+  - Added outward drift for left cloud (`x: -28` idle, `x: -45` entrance) and right cloud (`x: 28` idle, `x: 45` entrance).
+
+**Files**
+- `src/utils/responsiveAnimation.js`
+- `src/components/BirthdayHero/BirthdayHero.jsx`
+- `src/components/BirthdayHero/BirthdayHero.css`
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`
+- `src/components/BirthdayReveal/BirthdayReveal.jsx`
+- `src/components/BirthdayReveal/birthdayRevealAnimation.js`
+
+**Verification**
+- Production build `npm run build` executed successfully without errors or warnings (`✓ built in 3.80s`).

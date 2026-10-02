@@ -18,6 +18,8 @@ export const BirthdayReveal = () => {
   const cardRef = useRef(null);
   const balloonLeftRef = useRef(null);
   const balloonRightRef = useRef(null);
+  const cloudLeftRef = useRef(null);
+  const cloudRightRef = useRef(null);
 
   const prefersReducedMotion = useReducedMotion();
 
@@ -30,6 +32,8 @@ export const BirthdayReveal = () => {
         cardRef,
         balloonLeftRef,
         balloonRightRef,
+        cloudLeftRef,
+        cloudRightRef,
       },
       prefersReducedMotion
     );
@@ -45,16 +49,20 @@ export const BirthdayReveal = () => {
     >
       {/* Background Decorative Cloud Highlights */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        <img
-          src="/decorations/layers/cloud-left.png"
-          alt=""
-          className="absolute top-12 -left-12 w-48 sm:w-64 opacity-85"
-        />
-        <img
-          src="/decorations/layers/cloud-right.png"
-          alt=""
-          className="absolute top-28 -right-12 w-52 sm:w-72 opacity-85"
-        />
+        <div ref={cloudLeftRef} className="absolute top-12 -left-12 w-48 sm:w-64 opacity-85">
+          <img
+            src="/decorations/layers/cloud-left.png"
+            alt=""
+            className="w-full h-auto"
+          />
+        </div>
+        <div ref={cloudRightRef} className="absolute top-28 -right-12 w-52 sm:w-72 opacity-85">
+          <img
+            src="/decorations/layers/cloud-right.png"
+            alt=""
+            className="w-full h-auto"
+          />
+        </div>
       </div>
 
       {/* Flanking Balloons around the Piñata */}

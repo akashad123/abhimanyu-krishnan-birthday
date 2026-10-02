@@ -32,7 +32,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
     balloonGreenRef,
     buntingRef,
     cloudsFgRef,
-    cloudsBgRef,
     scrollCtaRef,
   } = refs;
 
@@ -50,6 +49,19 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         rotation: 2.2,
         transformOrigin: 'top center',
         duration: 3.6,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+    }
+
+    // Main U-shaped bunting garland sways gently left to right like real hanging festive pennants
+    if (buntingRef?.current) {
+      gsap.to(buntingRef.current, {
+        rotation: 1.2,
+        x: 8,
+        transformOrigin: 'top center',
+        duration: 4.6,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -92,11 +104,33 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       });
     }
 
+    if (balloonYellowRef?.current) {
+      gsap.to(balloonYellowRef.current, {
+        y: -12,
+        rotation: -2,
+        duration: 3.1,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+    }
+
     if (balloonBlueRef?.current) {
       gsap.to(balloonBlueRef.current, {
         y: -14,
         rotation: -2,
         duration: 3.4,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+    }
+
+    if (balloonGreenRef?.current) {
+      gsap.to(balloonGreenRef.current, {
+        y: -11,
+        rotation: 2,
+        duration: 3.0,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -162,14 +196,16 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       );
     }
 
-    // 4. Staggered individual balloon vertical floats
+    // 4. Staggered individual balloon vertical floats (fast, flies all the way up off-screen)
     if (balloonRedRef?.current) {
       tl.to(
         balloonRedRef.current,
         {
           y: balloons.red.y,
           x: balloons.red.x,
-          ease: 'none',
+          rotation: balloons.red.rot,
+          duration: 0.65,
+          ease: 'power1.in',
         },
         0
       );
@@ -181,7 +217,9 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         {
           y: balloons.yellow.y,
           x: balloons.yellow.x,
-          ease: 'none',
+          rotation: balloons.yellow.rot,
+          duration: 0.65,
+          ease: 'power1.in',
         },
         0
       );
@@ -193,7 +231,9 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         {
           y: balloons.blue.y,
           x: balloons.blue.x,
-          ease: 'none',
+          rotation: balloons.blue.rot,
+          duration: 0.65,
+          ease: 'power1.in',
         },
         0
       );
@@ -205,23 +245,21 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         {
           y: balloons.green.y,
           x: balloons.green.x,
-          ease: 'none',
+          rotation: balloons.green.rot,
+          duration: 0.65,
+          ease: 'power1.in',
         },
         0
       );
     }
 
-    // 5. Bunting & clouds subtle depth parallax
+    // 5. Bunting & foreground clouds subtle depth parallax
     if (buntingRef?.current) {
       tl.to(buntingRef.current, { y: -25, opacity: 0.85, ease: 'none' }, 0);
     }
 
     if (cloudsFgRef?.current) {
       tl.to(cloudsFgRef.current, { y: clouds.fg, ease: 'none' }, 0);
-    }
-
-    if (cloudsBgRef?.current) {
-      tl.to(cloudsBgRef.current, { y: clouds.bg, ease: 'none' }, 0);
     }
 
     // 6. Scroll CTA fades away early
@@ -287,14 +325,16 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       );
     }
 
-    // 4. Staggered individual balloon vertical floats
+    // 4. Staggered individual balloon vertical floats (fast, flies all the way up off-screen)
     if (balloonRedRef?.current) {
       tl.to(
         balloonRedRef.current,
         {
-          y: balloons.red.y * 1.15,
-          x: balloons.red.x * 1.2,
-          ease: 'none',
+          y: balloons.red.y * 1.25,
+          x: balloons.red.x * 1.3,
+          rotation: balloons.red.rot * 1.3,
+          duration: 0.65,
+          ease: 'power1.in',
         },
         0
       );
@@ -304,9 +344,11 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       tl.to(
         balloonYellowRef.current,
         {
-          y: balloons.yellow.y * 1.1,
-          x: balloons.yellow.x * 1.2,
-          ease: 'none',
+          y: balloons.yellow.y * 1.25,
+          x: balloons.yellow.x * 1.3,
+          rotation: balloons.yellow.rot * 1.3,
+          duration: 0.65,
+          ease: 'power1.in',
         },
         0
       );
@@ -316,9 +358,11 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       tl.to(
         balloonBlueRef.current,
         {
-          y: balloons.blue.y * 1.2,
-          x: balloons.blue.x * 1.2,
-          ease: 'none',
+          y: balloons.blue.y * 1.25,
+          x: balloons.blue.x * 1.3,
+          rotation: balloons.blue.rot * 1.3,
+          duration: 0.65,
+          ease: 'power1.in',
         },
         0
       );
@@ -328,25 +372,23 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       tl.to(
         balloonGreenRef.current,
         {
-          y: balloons.green.y * 1.15,
-          x: balloons.green.x * 1.2,
-          ease: 'none',
+          y: balloons.green.y * 1.25,
+          x: balloons.green.x * 1.3,
+          rotation: balloons.green.rot * 1.3,
+          duration: 0.65,
+          ease: 'power1.in',
         },
         0
       );
     }
 
-    // 5. Bunting & clouds subtle depth parallax
+    // 5. Bunting & foreground clouds subtle depth parallax
     if (buntingRef?.current) {
       tl.to(buntingRef.current, { y: -35, opacity: 0.85, ease: 'none' }, 0);
     }
 
     if (cloudsFgRef?.current) {
       tl.to(cloudsFgRef.current, { y: clouds.fg * 1.2, ease: 'none' }, 0);
-    }
-
-    if (cloudsBgRef?.current) {
-      tl.to(cloudsBgRef.current, { y: clouds.bg * 1.2, ease: 'none' }, 0);
     }
 
     // 6. Scroll CTA fades away early

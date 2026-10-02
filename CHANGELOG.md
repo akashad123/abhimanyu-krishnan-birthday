@@ -25,3 +25,8 @@ Developer-facing record of meaningful changes.
 - Implemented natural idle pendulum swinging motion (`rotation`, `transformOrigin: 'top center'`) on hanging card and both hanging clouds/stars.
 - Adopted dual-wrapper architecture separating continuous idle swaying from scroll-triggered translations.
 - Scaled mobile card width (`max-w-[275px]`) so side parting decorations remain clearly visible on narrow mobile viewports.
+- Enlarged central baby card across all breakpoints (`max-w` up to 580px) and elevated on PC viewports so baby Abhimanyu is clearly visible and centered.
+- Added natural left-to-right idle swinging to the U-shaped festive bunting garland.
+- Accelerated hero balloon floats to travel rapidly and fly all the way up off the screen.
+- Removed redundant static top background clouds from landing hero.
+- Added up-and-left float to Section 2 orange balloon, up-and-right to green balloon, and outward left/right drift to Section 2 paper clouds.

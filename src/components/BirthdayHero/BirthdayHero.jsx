@@ -40,7 +40,6 @@ export const BirthdayHero = () => {
   // Other layer refs
   const buntingRef = useRef(null);
   const cloudsFgRef = useRef(null);
-  const cloudsBgRef = useRef(null);
   const scrollCtaRef = useRef(null);
 
   const prefersReducedMotion = useReducedMotion();
@@ -61,7 +60,6 @@ export const BirthdayHero = () => {
         balloonGreenRef,
         buntingRef,
         cloudsFgRef,
-        cloudsBgRef,
         scrollCtaRef,
       },
       prefersReducedMotion
@@ -76,26 +74,7 @@ export const BirthdayHero = () => {
       ref={sectionRef}
       className="birthday-hero-container bg-striped-wallpaper"
     >
-      {/* Layer 1: Background Decorative Paper Clouds */}
-      <div
-        ref={cloudsBgRef}
-        className="hero-layer hero-layer-clouds inset-0 w-full h-full pointer-events-none"
-      >
-        <img
-          src="/decorations/layers/cloud-left.png"
-          alt=""
-          className="absolute top-16 -left-10 w-44 sm:w-64 md:w-80 opacity-90 drop-shadow-sm"
-          aria-hidden="true"
-        />
-        <img
-          src="/decorations/layers/cloud-right.png"
-          alt=""
-          className="absolute top-24 -right-12 w-52 sm:w-72 md:w-96 opacity-90 drop-shadow-sm"
-          aria-hidden="true"
-        />
-      </div>
-
-      {/* Layer 2: Top Bunting Garland */}
+      {/* Layer 1: Top Bunting Garland */}
       <div
         ref={buntingRef}
         className="hero-layer hero-layer-bunting flex justify-center"
@@ -232,10 +211,10 @@ export const BirthdayHero = () => {
           style={{ transformOrigin: 'top center' }}
         >
           {/* Braided Rope extending from the top ceiling down to the card's knot */}
-          <div className="braided-rope w-3.5 sm:w-4 md:w-4.5 h-10 sm:h-14 md:h-16" />
+          <div className="braided-rope w-3.5 sm:w-4 md:w-4.5 h-6 sm:h-8 md:h-5 lg:h-6" />
 
           {/* Central Card with Baby Abhimanyu Krishnan */}
-          <div className="relative w-full max-w-[275px] sm:max-w-[340px] md:max-w-[400px] lg:max-w-[450px] -mt-1 px-2">
+          <div className="relative w-full max-w-[290px] sm:max-w-[360px] md:max-w-[460px] lg:max-w-[530px] xl:max-w-[580px] -mt-1 px-2">
             <img
               src="/decorations/layers/birthday-card.png"
               alt="One Whole Year of Abhimanyu Krishnan — First Birthday Plaque"
@@ -246,7 +225,7 @@ export const BirthdayHero = () => {
             {/* Suspended Scroll Down CTA */}
             <div
               ref={scrollCtaRef}
-              className="-mt-5 sm:-mt-7 md:-mt-9 z-20 flex justify-center"
+              className="-mt-5 sm:-mt-7 md:-mt-8 lg:-mt-10 z-20 flex justify-center"
             >
               <ScrollDownIndicator targetId={APP_CONFIG.sections.pinata} />
             </div>

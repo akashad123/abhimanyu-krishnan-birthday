@@ -40,34 +40,34 @@ export function getResponsiveSideMovement(isMobile = false) {
 export function getBalloonMovement() {
   if (typeof window === 'undefined') {
     return {
-      red: { y: -200, x: -15, rot: -5 },
-      yellow: { y: -160, x: 12, rot: 4 },
-      blue: { y: -260, x: -10, rot: -3 },
-      green: { y: -220, x: 18, rot: 6 },
+      red: { y: -900, x: -35, rot: -8 },
+      yellow: { y: -1100, x: -25, rot: 8 },
+      blue: { y: -950, x: 35, rot: 6 },
+      green: { y: -1150, x: 25, rot: -8 },
     };
   }
 
   const vh = window.innerHeight;
   return {
     red: {
-      y: -(vh * 0.28),
-      x: -18,
-      rot: -4,
+      y: -(vh * 1.25),
+      x: -35,
+      rot: -8,
     },
     yellow: {
-      y: -(vh * 0.20),
-      x: 14,
-      rot: 5,
+      y: -(vh * 1.45),
+      x: -25,
+      rot: 8,
     },
     blue: {
-      y: -(vh * 0.34),
-      x: -12,
-      rot: -3,
+      y: -(vh * 1.30),
+      x: 35,
+      rot: 6,
     },
     green: {
-      y: -(vh * 0.26),
-      x: 20,
-      rot: 6,
+      y: -(vh * 1.50),
+      x: 25,
+      rot: -8,
     },
   };
 }
