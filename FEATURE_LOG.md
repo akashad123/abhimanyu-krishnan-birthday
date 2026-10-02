@@ -305,3 +305,38 @@ Eliminate the dead scroll distance, white spaces, and vertical gaps between Fram
 **Verification**
 - Production build `npm run build` executed successfully without errors or warnings (`✓ built in 19.34s`).
 - Verified seamless scroll: card exits and Section 2 immediately enters with continuous striped wallpaper and tight cohesive layout.
+
+---
+
+### [2026-10-02] Complete Elimination of Empty Space via Unpinned Continuous Scroll
+
+**Purpose**
+Completely eliminate the empty holding stage on PC and mobile viewports by removing ScrollTrigger section pinning, allowing natural scrubbed scroll where Section 2 immediately and continuously rolls up as the birthday card accelerates into the ceiling.
+
+**User Flow**
+1. Visitor loads the page:
+   - Full viewport displays the central birthday card, festive bunting, balloons, and hanging decorations.
+2. Visitor scrolls:
+   - Natural browser scroll moves the page downward while GSAP scrubs the physical effects in sync:
+     - The central card accelerates upward (`y: -0.65vh`) faster than the background, simulating a swift rope pull into the ceiling.
+     - The side hanging decorations part outward toward the left and right edges.
+     - The balloons float upward.
+   - Concurrently, Section 2 (the rainbow number "1" piñata) immediately emerges from the bottom of the screen.
+   - As the card leaves the top, the piñata arrives in the center of the viewport with zero empty dead space, zero holding frames, and seamless vertical flow across PC, tablet, and mobile.
+
+**Technical Flow**
+- In `src/components/BirthdayHero/birthdayHeroAnimation.js`:
+  - Removed `pin: true` and set `end: 'bottom top'` on both mobile and desktop matchMedia ScrollTrigger timelines.
+- In `src/utils/responsiveAnimation.js`:
+  - Adjusted card travel offset to `-(vh * 0.65)` (desktop) and `-(vh * 0.55)` (mobile) to cleanly complement natural scroll.
+  - Adjusted balloon travel offsets to `-(vh * 0.7)` to `-(vh * 0.9)`.
+- In `src/components/BirthdayReveal/BirthdayReveal.jsx`:
+  - Added `-mt-8 sm:-mt-12 md:-mt-16` overlap margin so Section 2 begins entering right behind Section 1's bottom elements.
+
+**Files**
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`
+- `src/utils/responsiveAnimation.js`
+- `src/components/BirthdayReveal/BirthdayReveal.jsx`
+
+**Verification**
+- Production build `npm run build` executed successfully without errors or warnings (`✓ built in 11.80s`).

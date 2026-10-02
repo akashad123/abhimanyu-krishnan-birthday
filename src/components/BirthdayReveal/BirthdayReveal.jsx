@@ -45,7 +45,7 @@ export const BirthdayReveal = () => {
     <section
       id={APP_CONFIG.sections.pinata}
       ref={sectionRef}
-      className="birthday-reveal-container bg-striped-wallpaper pt-0 pb-12 px-4"
+      className="birthday-reveal-container bg-striped-wallpaper -mt-8 sm:-mt-12 md:-mt-16 pt-0 pb-12 px-4 relative z-10"
     >
       {/* Background Decorative Cloud Highlights */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">

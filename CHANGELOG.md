@@ -33,3 +33,5 @@ Developer-facing record of meaningful changes.
 - Reduced pinning scroll duration by >50% (`end: '+=55%'` mobile, `+=60%'` desktop) to eliminate dead scroll distance and empty gaps between Section 1 and Section 2.
 - Set continuous `bg-striped-wallpaper` on `<main>` wrapper to eliminate white spaces during scroll transitions.
 - Adjusted Section 2 layout from `justify-content: space-between` to `flex-start` with tight, balanced card spacing.
+- Completely removed section pinning (`pin: false`, `end: 'bottom top'`) to allow natural, uninterrupted scroll flow where Section 2 rolls up immediately as the birthday card accelerates into the ceiling, eliminating the empty gap on PC and mobile.
+- Added negative top overlap margin to Section 2 for seamless vertical continuity.

@@ -13,10 +13,10 @@
  * @returns {number} Distance in pixels to move upward (negative value)
  */
 export function getResponsiveCardMovement(isMobile = false) {
-  if (typeof window === 'undefined') return -800;
+  if (typeof window === 'undefined') return -600;
   const vh = window.innerHeight;
-  // Move card completely past the top of the viewport
-  return -(vh * (isMobile ? 1.05 : 1.12));
+  // Accelerate card upward faster than natural scroll to look physically pulled by rope
+  return -(vh * (isMobile ? 0.55 : 0.65));
 }
 
 /**
@@ -40,32 +40,32 @@ export function getResponsiveSideMovement(isMobile = false) {
 export function getBalloonMovement() {
   if (typeof window === 'undefined') {
     return {
-      red: { y: -900, x: -35, rot: -8 },
-      yellow: { y: -1100, x: -25, rot: 8 },
-      blue: { y: -950, x: 35, rot: 6 },
-      green: { y: -1150, x: 25, rot: -8 },
+      red: { y: -500, x: -35, rot: -8 },
+      yellow: { y: -650, x: -25, rot: 8 },
+      blue: { y: -550, x: 35, rot: 6 },
+      green: { y: -700, x: 25, rot: -8 },
     };
   }
 
   const vh = window.innerHeight;
   return {
     red: {
-      y: -(vh * 1.25),
+      y: -(vh * 0.70),
       x: -35,
       rot: -8,
     },
     yellow: {
-      y: -(vh * 1.45),
+      y: -(vh * 0.85),
       x: -25,
       rot: 8,
     },
     blue: {
-      y: -(vh * 1.30),
+      y: -(vh * 0.75),
       x: 35,
       rot: 6,
     },
     green: {
-      y: -(vh * 1.50),
+      y: -(vh * 0.90),
       x: 25,
       rot: -8,
     },
