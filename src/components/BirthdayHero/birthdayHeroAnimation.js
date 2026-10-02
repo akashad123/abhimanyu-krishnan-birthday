@@ -1,7 +1,6 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
-  getResponsiveCardMovement,
   getResponsiveSideMovement,
   getBalloonMovement,
   getCloudParallax,
@@ -156,19 +155,7 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       },
     });
 
-    // 1. Main Birthday Plaque pulled straight UPWARD
-    if (cardScrollRef?.current) {
-      tl.to(
-        cardScrollRef.current,
-        {
-          y: () => getResponsiveCardMovement(true),
-          ease: 'none',
-        },
-        0
-      );
-    }
-
-    // 2. Left hanging decoration parts outward to the LEFT
+    // Side decorations part outward to the edges on scroll
     if (leftDecoScrollRef?.current) {
       tl.to(
         leftDecoScrollRef.current,
@@ -260,11 +247,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       tl.to(cloudsFgRef.current, { y: clouds.fg, ease: 'none' }, 0);
     }
 
-    // 6. Scroll CTA fades away early
-    if (scrollCtaRef?.current) {
-      tl.to(scrollCtaRef.current, { opacity: 0, y: 25, ease: 'none' }, 0);
-    }
-
     return () => tl.kill();
   });
 
@@ -283,19 +265,7 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       },
     });
 
-    // 1. Main Birthday Plaque pulled straight UPWARD
-    if (cardScrollRef?.current) {
-      tl.to(
-        cardScrollRef.current,
-        {
-          y: () => getResponsiveCardMovement(false),
-          ease: 'none',
-        },
-        0
-      );
-    }
-
-    // 2. Left hanging decoration parts outward to the LEFT
+    // 1. Left hanging decoration parts outward to the LEFT
     if (leftDecoScrollRef?.current) {
       tl.to(
         leftDecoScrollRef.current,
@@ -385,11 +355,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
 
     if (cloudsFgRef?.current) {
       tl.to(cloudsFgRef.current, { y: clouds.fg * 1.2, ease: 'none' }, 0);
-    }
-
-    // 6. Scroll CTA fades away early
-    if (scrollCtaRef?.current) {
-      tl.to(scrollCtaRef.current, { opacity: 0, y: 35, ease: 'none' }, 0);
     }
 
     return () => tl.kill();

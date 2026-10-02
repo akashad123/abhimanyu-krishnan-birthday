@@ -3,13 +3,13 @@
 .birthday-hero-container {
   position: relative;
   width: 100%;
-  height: 100vh;
   min-height: 100vh;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  padding-bottom: 2rem;
+  overflow-x: hidden;
 }
 
 /* Layer positioning helpers */
@@ -32,12 +32,9 @@
   will-change: transform;
 }
 
-/* Central Card Assembly hanging from top ceiling */
+/* Central Connected Hanging Assembly (Ceiling Rope -> Plaque -> Scroll Down -> Piñata -> Milestone) */
 .hero-card-assembly {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   z-index: 20;
   display: flex;
   flex-direction: column;
@@ -45,12 +42,7 @@
   width: 100%;
   pointer-events: auto;
   will-change: transform;
-}
-
-@media (min-width: 1024px) {
-  .hero-card-assembly {
-    top: -8px;
-  }
+  margin-top: 0;
 }
 
 /* Left & Right Hanging Assemblies hanging from top ceiling */

@@ -16,6 +16,7 @@
   /* Baby-blue and warm-cream vertical celebration stripes matching the reference */
   .bg-striped-wallpaper {
     background-color: #5299D3;
+    background-attachment: fixed;
     background-image: repeating-linear-gradient(
       90deg,
       #5299D3 0px,

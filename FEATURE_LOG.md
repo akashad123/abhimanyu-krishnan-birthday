@@ -360,3 +360,45 @@ Significantly increase the height and overall visual presence of the Abhimanyu K
 **Verification**
 - Production build `npm run build` executed successfully without errors or warnings (`✓ built in 5.84s`).
 - Visual check on mobile emulations (375px, 414px, 440px): card is taller and prominent, side decorations remain visible, and scroll indicator remains properly aligned.
+
+---
+
+### [2026-10-02] Unified Single Continuous Hanging Assembly & Fixed Static Background
+
+**Purpose**
+Connect the top Abhimanyu Krishnan baby photo plaque and "Scroll Down" pill directly to the suspended Rainbow Number "1" Piñata and milestone card via a braided rope into one single continuous hanging mobile assembly, exactly matching `reference/landing-reference-mobile.jpg`. Merge the experience into a single unified celebration section with a fixed, static vertical striped wallpaper.
+
+**User Flow**
+1. Visitor arrives at the website:
+   - The blue and warm-cream vertical striped wallpaper is completely static and fixed in place.
+   - The celebration decorations hang from the top ceiling as a single connected physical mobile:
+     - Top ceiling rope -> "ONE WHOLE YEAR - Abhimanyu Krishnan" plaque -> two mini rope links -> "Scroll Down" pill -> central braided rope -> Rainbow Number "1" Piñata -> Milestone celebration card.
+   - The entire hanging column gently sways left-to-right as a unified physical pendulum.
+   - Clicking "Scroll Down" smoothly scrolls down the connected mobile to the Rainbow Number "1" Piñata.
+   - As the user scrolls, the background stripes remain completely still while the connected hanging piece smoothly rolls up, with side decorations and balloons parting naturally, with zero empty gaps or disjointed frames.
+
+**Technical Flow**
+- In `src/styles/index.css`:
+  - Added `background-attachment: fixed;` to `.bg-striped-wallpaper` to keep the blue-and-cream vertical stripes completely static across the viewport.
+- In `src/App.jsx`:
+  - Removed separate `BirthdayReveal` section component; unified the entire celebration into `BirthdayHero` followed by `MemoryGallery`.
+- In `src/components/BirthdayHero/BirthdayHero.jsx`:
+  - Added central connecting braided rope (`.braided-rope`) linking the bottom of the "Scroll Down" indicator to the top knot of the Rainbow Number "1" Piñata.
+  - Placed the Rainbow Number "1" Piñata (`id={APP_CONFIG.sections.pinata}`) and Milestone card directly within `hero-card-assembly` -> `cardSwingRef`.
+- In `src/components/BirthdayHero/BirthdayHero.css`:
+  - Removed `height: 100vh; overflow: hidden;` from `.birthday-hero-container` to allow natural vertical scrolling of the unified hanging chain.
+  - Set `.hero-card-assembly` to `position: relative; margin-top: 0;` so it flows as a continuous vertical column from the ceiling.
+- In `src/components/BirthdayHero/birthdayHeroAnimation.js`:
+  - Removed artificial card upward translation (`cardScrollRef`) and scroll CTA fade-out in both mobile and desktop matchMedia timelines so the connected assembly stays intact and scrolls naturally.
+
+**Files**
+- `src/styles/index.css`
+- `src/App.jsx`
+- `src/components/BirthdayHero/BirthdayHero.jsx`
+- `src/components/BirthdayHero/BirthdayHero.css`
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`
+
+**Verification**
+- Production build `npm run build` completed cleanly in 3.97s with 0 errors.
+- Verified in `reference/landing-reference-mobile.jpg` that the artwork is indeed a single connected hanging mobile where the rope runs from the plaque through the Scroll Down pill into the top knot of the Number 1 Piñata.
+- Verified local dev server is running and responding with HTTP 200.

@@ -36,3 +36,7 @@ Developer-facing record of meaningful changes.
 - Completely removed section pinning (`pin: false`, `end: 'bottom top'`) to allow natural, uninterrupted scroll flow where Section 2 rolls up immediately as the birthday card accelerates into the ceiling, eliminating the empty gap on PC and mobile.
 - Added negative top overlap margin to Section 2 for seamless vertical continuity.
 - Increased height and width of the central Abhimanyu Krishnan baby photo plaque on mobile (`max-w-[330px]` to `max-w-[360px]`) and desktop (`max-w-[620px]`).
+- Connected the top Abhimanyu Krishnan baby photo plaque and "Scroll Down" pill directly to the Rainbow Number "1" Piñata and milestone card via a braided rope into one single continuous hanging mobile assembly, exactly matching the reference design.
+- Unified the celebration experience into a single section (`BirthdayHero`), eliminating the separate `BirthdayReveal` section and all disjointed scroll gaps.
+- Set `background-attachment: fixed` on the vertical striped celebration wallpaper to keep the background completely static while the hanging mobile and decorations move smoothly over it.
+- Preserved physical integrity of the hanging chain during scroll by removing artificial upward translation on the plaque and keeping the scroll CTA intact.
