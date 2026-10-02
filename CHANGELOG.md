@@ -46,3 +46,6 @@ Developer-facing record of meaningful changes.
 - Fixed balloon animation glitch by decoupling scroll translation from idle wobble using dual wrappers, smoothly gliding balloons aside off the screen.
 - Pinned festive bunting garland to top ceiling (`position: sticky; top: 0; z-35`) framing the celebration.
 - Adjusted side hanging clouds and stars to slowly and gracefully part to the left and right with downward resistance so they remain clearly visible throughout the scroll.
+- Removed intermediate rope piece below "Scroll Down" button and joined the Rainbow Number "1" Piñata directly to the downside of the Scroll Down pill.
+- Eliminated vertical displacement offsets (`y`) on the Piñata and milestone card in GSAP so the entire hanging column moves as one unified continuous structure above the background without breaking or separating.
+- Implemented multi-layered viewport-level static fixed background on `body`, in `index.html` via `#static-celebration-background`, and in `App.jsx`, ensuring the striped wallpaper remains 100% stationary across all browsers and devices.

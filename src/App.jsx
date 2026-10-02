@@ -10,7 +10,7 @@ export function App() {
   const { memories, uploadMemory, isConfigured } = useMemories();
 
   return (
-    <div className="relative min-h-screen flex flex-col font-body text-theme-navy overflow-x-hidden">
+    <div className="relative min-h-screen flex flex-col font-body text-theme-navy bg-transparent overflow-x-hidden">
       {/* Truly Fixed Static Striped Background — Guaranteed 100% stationary on all devices */}
       <div
         className="fixed inset-0 z-0 bg-striped-wallpaper pointer-events-none"
@@ -18,7 +18,7 @@ export function App() {
       />
 
       {/* Main Content Sections scrolling over the fixed background */}
-      <main className="relative z-10 flex-1">
+      <main className="relative z-10 flex-1 bg-transparent">
         {/* Unified Celebration Scene (Plaque -> Rope -> Number 1 Piñata -> Milestone) */}
         <BirthdayHero />
 

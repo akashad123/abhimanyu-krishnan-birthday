@@ -256,18 +256,15 @@ export const BirthdayHero = () => {
             </div>
           </div>
 
-          {/* Central Connecting Braided Rope linking Scroll Down to the Piñata */}
-          <div className="braided-rope w-3.5 sm:w-4 md:w-4.5 h-16 sm:h-24 md:h-28 -mt-2 -mb-1 z-10" />
-
-          {/* Connected Suspended Rainbow Number 1 Piñata */}
+          {/* Connected Suspended Rainbow Number 1 Piñata — joined directly to scroll down downside */}
           <div
             id={APP_CONFIG.sections.pinata}
             ref={pinataRef}
-            className="relative z-10 w-full max-w-[280px] sm:max-w-[340px] md:max-w-[390px] mx-auto"
+            className="relative z-10 w-full max-w-[280px] sm:max-w-[340px] md:max-w-[390px] mx-auto -mt-1 sm:-mt-2"
           >
             <div
               ref={pinataSwingRef}
-              className="w-full h-auto"
+              className="w-full h-auto flex justify-center"
               style={{ transformOrigin: 'top center' }}
             >
               <img

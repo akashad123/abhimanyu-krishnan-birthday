@@ -458,3 +458,48 @@ Connect the top Abhimanyu Krishnan baby photo plaque and "Scroll Down" pill dire
 **Verification**
 - Production build `npm run build` executed successfully with 0 errors (`✓ built in 7.25s`).
 - Verified local dev server is responding with HTTP 200.
+
+---
+
+### [2026-10-02] Directly Joined Number 1 to Scroll Down Downside & Viewport-Level Static Fixed Background
+
+**Purpose**
+- Remove intermediate rope segment below "Scroll Down" and join the Rainbow Number "1" Piñata directly to the downside of the Scroll Down pill.
+- Eliminate vertical GSAP displacement offsets on the Piñata and milestone card so the entire hanging mobile (Abhimanyu Krishnan plaque, Scroll Down button, Number 1 Piñata, and "Turning The Big One" milestone card) moves together as one continuous, unbroken piece.
+- Establish a bulletproof viewport-level static fixed background on `body`, in `index.html`, and in `App.jsx`, ensuring the celebration stripes remain completely still while the hanging column moves smoothly above them.
+
+**User Flow**
+1. Visitor views the page:
+   - The blue and warm-cream vertical striped wallpaper is completely static and fixed in place across all viewports and browsers.
+   - The "ONE WHOLE YEAR - Abhimanyu Krishnan" plaque hangs from the ceiling.
+   - The "Scroll Down" pill hangs directly beneath the plaque.
+   - The Rainbow Number "1" Piñata is joined directly to the downside of the "Scroll Down" button with zero gap and no intermediate floating rope.
+   - The "Turning The Big One!" milestone card sits directly below the Number 1.
+2. Visitor scrolls:
+   - The background stripes remain completely still.
+   - The entire hanging assembly (Plaque, Scroll Down, Number 1, and Milestone) moves smoothly together as a unified physical column over the static background.
+   - The Number 1 never disconnects or separates from the Scroll Down button during scroll.
+
+**Technical Flow**
+- In `src/components/BirthdayHero/BirthdayHero.jsx`:
+  - Removed `<div className="braided-rope ...">` intermediate piece below the Scroll Down indicator.
+  - Attached the Rainbow Number "1" Piñata directly to the downside of the Scroll Down button (`-mt-1 sm:-mt-2`).
+- In `src/components/BirthdayHero/birthdayHeroAnimation.js`:
+  - Removed `y: 40` on `pinataRef` and `y: 70` on `milestoneRef` to ensure the entire assembly stays united in lockstep as `cardScrollRef` translates on scroll.
+- In `index.html`:
+  - Added `#static-celebration-background` fixed fullscreen element directly under `<body>`.
+- In `src/styles/index.css`:
+  - Configured `body` with `background-attachment: fixed` and responsive vertical celebration stripes.
+- In `src/App.jsx`:
+  - Set `bg-transparent` on `App` root and `<main>` so the stationary background shines through without local stacking context interference.
+
+**Files**
+- `index.html`
+- `src/styles/index.css`
+- `src/App.jsx`
+- `src/components/BirthdayHero/BirthdayHero.jsx`
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`
+
+**Verification**
+- Production build `npm run build` executed successfully with 0 errors (`✓ built in 4.88s`).
+- Verified local dev server is responding with HTTP 200.

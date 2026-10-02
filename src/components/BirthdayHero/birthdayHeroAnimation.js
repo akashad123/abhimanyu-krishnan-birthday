@@ -274,19 +274,17 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       );
     }
 
-    // 4. Celebratory GSAP entrance for the Rainbow Number "1" Piñata
+    // 4. Celebratory GSAP reaction for Rainbow Number "1" Piñata (no y offset so it never breaks from scroll down)
     if (pinataRef?.current) {
       tl.fromTo(
         pinataRef.current,
         {
-          scale: 0.9,
-          rotation: -6,
-          y: 40,
+          scale: 0.96,
+          rotation: -3,
         },
         {
-          scale: 1.05,
-          rotation: 3,
-          y: 0,
+          scale: 1.04,
+          rotation: 2,
           ease: 'power1.out',
           duration: 0.45,
         },
@@ -310,12 +308,10 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       tl.fromTo(
         milestoneRef.current,
         {
-          y: 70,
-          opacity: 0.25,
-          scale: 0.95,
+          opacity: 0.35,
+          scale: 0.96,
         },
         {
-          y: 0,
           opacity: 1,
           scale: 1,
           ease: 'power1.out',
