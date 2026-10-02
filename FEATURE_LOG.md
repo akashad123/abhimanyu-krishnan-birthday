@@ -576,3 +576,62 @@ Completely eliminate the empty vertical gap between the "Turning The Big One!" m
 **Verification**
 - Production build `npm run build` executed successfully with 0 errors (`✓ built in 13.22s`).
 - Verified local dev server is responding with HTTP 200.
+
+---
+
+### FEATURE: Photo Deletion & Undo Functionality, Bathakkah Invites Footer Branding, and Section Spacing Refinement
+
+**User Request**
+1. Add an option to delete the photos, like an undo button or a delete icon in the top right corner of the pic.
+2. Add "Bathakkah invites - your story, beautifully invited" to the footer, incorporating the logo provided in `reference/` as `logo.png`.
+3. Add a little spacing/gap in front of the "12 Months of Our Little One" memories section and the hanging "Turning the Big One! Milestone Celebrations" section.
+
+**User Flow**
+1. **Photo Deletion & Undo**:
+   - Each photo card in the "12 Months of Our Little One" grid and "Moments Shared with Love" community section displays a discreet circular delete button with a `Trash2` icon in the top-right corner (`top-1.5 right-1.5` / `top-2 right-2`).
+   - Clicking the delete button removes the photo from view without triggering the lightbox preview modal (`e.stopPropagation()`).
+   - A floating toast appears at the bottom center: "Photo deleted" with an **Undo** button and dismiss icon (`X`).
+   - Clicking **Undo** immediately restores the photo to its exact position in the grid.
+   - The toast automatically dismisses after 6 seconds if not undone.
+   - When previewing in the Lightbox modal, a delete button is also available in the top-right corner next to the close button.
+   - In the upload modal (`UploadSection`), selected photos show a delete/clear button in the top-right corner of the image preview so guests can easily change or undo their selection before submitting.
+2. **Bathakkah Invites Footer Branding**:
+   - The footer displays the official crimson circular "B" monogram logo (`/logo.png`) paired with the brand title **Bathakkah Invites**.
+   - Below the brand title, the tagline *"your story, beautifully invited"* is rendered in an elegant, subtle italic typeface.
+3. **Controlled Spacing**:
+   - A subtle, balanced gap (`mt-6 sm:mt-8`, ~24px–32px) separates the base of the hanging celebration card and floor clouds from the top border of the "12 Months of Our Little One" memories section, replacing the overly compressed negative overlap while preventing empty void spaces.
+
+**Technical Architecture & Flow**
+- In `src/hooks/useMemories.js`:
+  - Implemented `deleteMemory(id)` for optimistic local removal and Supabase storage/metadata record deletion.
+  - Implemented `restoreMemory(memory)` for restoring previously deleted memories.
+- In `src/App.jsx`:
+  - Passed `deleteMemory` and `restoreMemory` handlers to `MemoryGallery`.
+- In `src/sections/MemoryGallery.jsx`:
+  - State management for `milestones` initialized from `MONTHLY_MILESTONES`.
+  - Added `handleDeleteMilestone`, `handleDeleteGuestMemory`, and `handleUndo`.
+  - Added top-right delete buttons to photo frames on milestone cards and guest memory cards.
+  - Added floating Undo toast with 6s timeout and cleanup.
+  - Added delete button to lightbox modal header.
+  - Replaced `-mt-14 sm:-mt-20` with `mt-6 sm:mt-8` on the `<section>` element.
+- In `src/sections/UploadSection.jsx`:
+  - Added a remove/clear button in the top-right corner of the file preview container.
+- In `src/sections/Footer.jsx`:
+  - Integrated `/logo.png`, `Bathakkah Invites` title, and *"your story, beautifully invited"* tagline.
+- In `public/logo.png`:
+  - Copied client-provided `reference/logo.png` to `public/logo.png`.
+
+**Files Modified**
+- `src/hooks/useMemories.js`
+- `src/App.jsx`
+- `src/sections/MemoryGallery.jsx`
+- `src/sections/UploadSection.jsx`
+- `src/sections/Footer.jsx`
+- `public/logo.png`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` executed successfully with 0 errors.
+- Verified all components compile and bundle cleanly with Vite.
+

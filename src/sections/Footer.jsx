@@ -31,9 +31,27 @@ export const Footer = () => {
           <Heart size={13} className="text-theme-red fill-theme-red" />
         </div>
 
-        <p className="text-[11px] text-theme-navy/40">
+        <p className="text-[11px] text-theme-navy/40 mb-6">
           Digital Memory Album &bull; {new Date().getFullYear()}
         </p>
+
+        {/* Bathakkah Invites Branding */}
+        <div className="pt-6 border-t border-theme-rope/20 flex flex-col items-center w-full max-w-sm">
+          <div className="flex items-center gap-2.5 mb-1">
+            <img
+              src="/logo.png"
+              alt="Bathakkah Invites Logo"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-contain shadow-sm"
+              loading="lazy"
+            />
+            <span className="font-display font-bold text-base sm:text-lg text-theme-navy tracking-tight">
+              Bathakkah Invites
+            </span>
+          </div>
+          <p className="text-xs text-theme-navy/70 font-body italic">
+            your story, beautifully invited
+          </p>
+        </div>
       </div>
     </footer>
   );

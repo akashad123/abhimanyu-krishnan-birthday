@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { UploadCloud, CheckCircle2, AlertCircle, X, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { UploadCloud, CheckCircle2, AlertCircle, X, Image as ImageIcon, Loader2, Trash2 } from 'lucide-react';
 import { APP_CONFIG } from '../config/appConfig';
 
 /**
@@ -163,6 +163,19 @@ export const UploadSection = ({ isOpen, onClose, onUpload, isConfigured }) => {
                     alt="Memory preview"
                     className="max-h-48 w-auto object-contain rounded-xl"
                   />
+                  {/* Delete / Undo selected photo button in top right corner */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleReset();
+                    }}
+                    className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 hover:bg-theme-red text-theme-navy/80 hover:text-white shadow-md transition-all transform hover:scale-110 z-10"
+                    title="Remove selected photo"
+                    aria-label="Remove selected photo"
+                  >
+                    <Trash2 size={15} />
+                  </button>
                   <p className="mt-2 text-xs text-theme-navy/60 font-medium">
                     Click to change photo
                   </p>

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Camera, Heart, X, ZoomIn, Calendar, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Camera, Heart, X, ZoomIn, Sparkles, ChevronLeft, ChevronRight, Trash2, RotateCcw } from 'lucide-react';
 import { APP_CONFIG } from '../config/appConfig';
 import { MONTHLY_MILESTONES } from '../data/initialMemories';
 
@@ -10,29 +10,44 @@ import { MONTHLY_MILESTONES } from '../data/initialMemories';
  * - Playful colorful header with floating celebration stars
  * - 12 Monthly polaroid photo milestone cards (01 month to 12 months)
  * - Individual month taglines ("A brand new you", "So curious", "All smiles", etc.)
+ * - Delete icon / Undo functionality in top right corner of photos
  * - Interactive photo lightbox modal for high-resolution viewing
  * - Seamless support for guest-contributed celebration memories
  * - Anonymous client-side validated upload modal invitation
  */
-export const MemoryGallery = ({ memories = [], onOpenUpload }) => {
+export const MemoryGallery = ({
+  memories = [],
+  onDeleteMemory,
+  onRestoreMemory,
+  onOpenUpload,
+}) => {
+  const [milestones, setMilestones] = useState(MONTHLY_MILESTONES);
   const [selectedItem, setSelectedItem] = useState(null);
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [undoState, setUndoState] = useState(null);
+  const undoTimerRef = useRef(null);
 
-  // Combine monthly milestones for lightbox navigation
+  // Combine monthly milestones and guest memories for lightbox navigation
   const allLightboxItems = [
-    ...MONTHLY_MILESTONES.map((m) => ({
+    ...milestones.map((m) => ({
+      id: m.monthNumber,
+      type: 'milestone',
       title: `${m.monthLabel} — ${m.tagline}`,
       subtitle: m.tagline,
       badge: m.monthLabel,
       image: m.image,
       alt: m.alt,
+      raw: m,
     })),
     ...memories.map((m) => ({
+      id: m.id,
+      type: 'guest',
       title: m.caption || `${APP_CONFIG.childName} — 1st Birthday`,
       subtitle: m.created_at ? new Date(m.created_at).toLocaleDateString() : 'Celebration Memory',
       badge: 'Guest Memory',
       image: m.public_url,
       alt: m.caption || `${APP_CONFIG.childName} memory`,
+      raw: m,
     })),
   ];
 
@@ -59,10 +74,70 @@ export const MemoryGallery = ({ memories = [], onOpenUpload }) => {
     }
   };
 
+  // Delete milestone photo handler
+  const handleDeleteMilestone = (item) => {
+    const itemIndex = milestones.findIndex((m) => m.monthNumber === item.monthNumber);
+    if (itemIndex === -1) return;
+
+    const removedItem = milestones[itemIndex];
+    setMilestones((prev) => prev.filter((m) => m.monthNumber !== item.monthNumber));
+
+    if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
+
+    setUndoState({
+      type: 'milestone',
+      item: removedItem,
+      index: itemIndex,
+      label: `${removedItem.monthLabel} milestone`,
+    });
+
+    undoTimerRef.current = setTimeout(() => {
+      setUndoState(null);
+    }, 6000);
+  };
+
+  // Delete guest/uploaded memory handler
+  const handleDeleteGuestMemory = async (item) => {
+    if (!onDeleteMemory) return;
+
+    const deleted = await onDeleteMemory(item.id);
+    if (!deleted) return;
+
+    if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
+
+    setUndoState({
+      type: 'guest',
+      item: deleted,
+      label: item.caption || 'Memory photo',
+    });
+
+    undoTimerRef.current = setTimeout(() => {
+      setUndoState(null);
+    }, 6000);
+  };
+
+  // Undo delete handler
+  const handleUndo = () => {
+    if (!undoState) return;
+
+    if (undoState.type === 'milestone') {
+      setMilestones((prev) => {
+        const next = [...prev];
+        next.splice(undoState.index, 0, undoState.item);
+        return next;
+      });
+    } else if (undoState.type === 'guest' && onRestoreMemory) {
+      onRestoreMemory(undoState.item);
+    }
+
+    if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
+    setUndoState(null);
+  };
+
   return (
     <section
       id={APP_CONFIG.sections.memories}
-      className="relative pt-6 sm:pt-10 pb-16 sm:pb-24 px-3 sm:px-6 bg-theme-creamLight border-t-4 border-theme-rope/25 shadow-inner -mt-14 sm:-mt-20 z-30"
+      className="relative pt-8 sm:pt-12 pb-16 sm:pb-24 px-3 sm:px-6 bg-theme-creamLight border-t-4 border-theme-rope/25 shadow-inner mt-6 sm:mt-8 z-30"
     >
       <div className="max-w-5xl mx-auto">
         {/* Section Header: Styled after reference/memories-section.jpeg */}
@@ -113,7 +188,7 @@ export const MemoryGallery = ({ memories = [], onOpenUpload }) => {
 
         {/* 12 Months Grid: 3 columns on mobile matching reference, 3 on tablet, 4 on desktop */}
         <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 min-[400px]:gap-3 sm:gap-5 md:gap-6">
-          {MONTHLY_MILESTONES.map((item, idx) => (
+          {milestones.map((item, idx) => (
             <div
               key={item.monthNumber}
               onClick={() => handleOpenLightbox(idx)}
@@ -128,8 +203,22 @@ export const MemoryGallery = ({ memories = [], onOpenUpload }) => {
                   loading="lazy"
                 />
 
+                {/* Delete / Undo Icon in top right corner of the pic */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteMilestone(item);
+                  }}
+                  className="absolute top-1.5 right-1.5 min-[400px]:top-2 min-[400px]:right-2 p-1.5 rounded-full bg-white/90 hover:bg-theme-red text-theme-navy/70 hover:text-white shadow-md transition-all transform hover:scale-110 z-20 focus:outline-none"
+                  title="Delete photo"
+                  aria-label={`Delete ${item.monthLabel} photo`}
+                >
+                  <Trash2 size={13} className="min-[400px]:w-3.5 min-[400px]:h-3.5" />
+                </button>
+
                 {/* Subtle Hover Zoom Overlay */}
-                <div className="absolute inset-0 bg-theme-navy/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div className="absolute inset-0 bg-theme-navy/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                   <span className="p-1.5 sm:p-2 bg-white/95 rounded-full text-theme-navy shadow-md transform scale-90 group-hover:scale-100 transition-transform">
                     <ZoomIn size={14} className="sm:w-4 sm:h-4" />
                   </span>
@@ -170,7 +259,7 @@ export const MemoryGallery = ({ memories = [], onOpenUpload }) => {
               {memories.map((item, idx) => (
                 <div
                   key={item.id || idx}
-                  onClick={() => handleOpenLightbox(MONTHLY_MILESTONES.length + idx)}
+                  onClick={() => handleOpenLightbox(milestones.length + idx)}
                   className="group cursor-pointer bg-white rounded-2xl p-2.5 sm:p-3 shadow-paper hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-theme-cream"
                 >
                   <div className="relative aspect-square overflow-hidden rounded-xl bg-theme-cream">
@@ -180,6 +269,20 @@ export const MemoryGallery = ({ memories = [], onOpenUpload }) => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                     />
+
+                    {/* Delete / Undo Icon in top right corner of the pic */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteGuestMemory(item);
+                      }}
+                      className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 hover:bg-theme-red text-theme-navy/70 hover:text-white shadow-md transition-all transform hover:scale-110 z-20 focus:outline-none"
+                      title="Delete photo"
+                      aria-label="Delete memory photo"
+                    >
+                      <Trash2 size={14} />
+                    </button>
                   </div>
                   <div className="pt-2 px-1 text-center">
                     <p className="font-display font-medium text-xs sm:text-sm text-theme-navy truncate">
@@ -214,6 +317,29 @@ export const MemoryGallery = ({ memories = [], onOpenUpload }) => {
         </div>
       </div>
 
+      {/* Floating Undo Notification Toast */}
+      {undoState && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-2.5 bg-theme-navy/95 backdrop-blur-md text-white text-xs sm:text-sm rounded-full shadow-2xl border border-white/20">
+          <span>Photo deleted</span>
+          <button
+            type="button"
+            onClick={handleUndo}
+            className="inline-flex items-center gap-1.5 px-3 py-1 bg-theme-yellow hover:bg-amber-400 text-theme-navy font-display font-bold rounded-full text-xs transition-colors shadow-sm"
+          >
+            <RotateCcw size={13} />
+            <span>Undo</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setUndoState(null)}
+            className="p-1 text-white/60 hover:text-white transition-colors"
+            aria-label="Dismiss notification"
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
+
       {/* High-Resolution Lightbox Modal */}
       {selectedItem && (
         <div
@@ -226,15 +352,34 @@ export const MemoryGallery = ({ memories = [], onOpenUpload }) => {
             className="relative max-w-2xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl p-4 sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Button */}
-            <button
-              type="button"
-              onClick={() => setSelectedItem(null)}
-              className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full bg-theme-cream text-theme-navy hover:bg-theme-red hover:text-white transition-colors z-20 shadow-sm"
-              aria-label="Close photo preview"
-            >
-              <X size={18} />
-            </button>
+            {/* Header controls: Delete & Close buttons */}
+            <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex items-center gap-2 z-20">
+              <button
+                type="button"
+                onClick={() => {
+                  const itemToDelete = selectedItem;
+                  setSelectedItem(null);
+                  if (itemToDelete?.type === 'milestone') {
+                    handleDeleteMilestone(itemToDelete.raw);
+                  } else if (itemToDelete?.type === 'guest') {
+                    handleDeleteGuestMemory(itemToDelete.raw);
+                  }
+                }}
+                className="p-2 rounded-full bg-theme-cream text-theme-navy/70 hover:bg-theme-red hover:text-white transition-colors shadow-sm"
+                title="Delete photo"
+                aria-label="Delete photo"
+              >
+                <Trash2 size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedItem(null)}
+                className="p-2 rounded-full bg-theme-cream text-theme-navy hover:bg-theme-red hover:text-white transition-colors shadow-sm"
+                aria-label="Close photo preview"
+              >
+                <X size={18} />
+              </button>
+            </div>
 
             {/* Navigation Arrows */}
             <button

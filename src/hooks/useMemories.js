@@ -112,11 +112,74 @@ export function useMemories() {
     return insertData;
   };
 
+  /**
+   * Delete a memory photograph by id.
+   * Removes optimistically from local state and deletes from Supabase if configured.
+   */
+  const deleteMemory = async (id) => {
+    const target = memories.find((m) => m.id === id);
+    if (!target) return null;
+
+    // Optimistic local state removal
+    setMemories((prev) => prev.filter((m) => m.id !== id));
+
+    // Delete from Supabase if configured
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase
+          .from(APP_CONFIG.storage.tableName)
+          .delete()
+          .eq('id', id);
+
+        if (target.storage_path) {
+          await supabase.storage
+            .from(APP_CONFIG.storage.bucketName)
+            .remove([target.storage_path]);
+        }
+      } catch (err) {
+        console.error('Error deleting memory from Supabase:', err);
+      }
+    }
+
+    return target;
+  };
+
+  /**
+   * Restore a previously deleted memory (undo functionality).
+   */
+  const restoreMemory = async (memory) => {
+    if (!memory) return;
+
+    // Restore to local state
+    setMemories((prev) => [memory, ...prev]);
+
+    // Restore to Supabase if configured
+    if (isSupabaseConfigured && supabase && memory.storage_path) {
+      try {
+        await supabase
+          .from(APP_CONFIG.storage.tableName)
+          .insert([
+            {
+              id: memory.id,
+              storage_path: memory.storage_path,
+              public_url: memory.public_url,
+              caption: memory.caption,
+              created_at: memory.created_at,
+            },
+          ]);
+      } catch (err) {
+        console.error('Error restoring memory to Supabase:', err);
+      }
+    }
+  };
+
   return {
     memories,
     loading,
     error,
     uploadMemory,
+    deleteMemory,
+    restoreMemory,
     refreshMemories: fetchUploadedMemories,
     isConfigured: isSupabaseConfigured,
   };

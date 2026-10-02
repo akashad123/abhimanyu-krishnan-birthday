@@ -7,7 +7,7 @@ import { useMemories } from './hooks/useMemories';
 
 export function App() {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
-  const { memories, uploadMemory, isConfigured } = useMemories();
+  const { memories, uploadMemory, deleteMemory, restoreMemory, isConfigured } = useMemories();
 
   return (
     <div className="relative min-h-screen flex flex-col font-body text-theme-navy bg-transparent overflow-x-hidden">
@@ -25,6 +25,8 @@ export function App() {
         {/* Section 2: Photography-First Memory Album */}
         <MemoryGallery
           memories={memories}
+          onDeleteMemory={deleteMemory}
+          onRestoreMemory={restoreMemory}
           onOpenUpload={() => setIsUploadOpen(true)}
         />
       </main>

@@ -52,3 +52,7 @@ Developer-facing record of meaningful changes.
 - Removed all GSAP animations (scroll tween and idle sway) from the hanging Number "1" Piñata per user request.
 - Implemented the "12 Months of Our Little One" memory section styled according to reference `reference/memories-section.jpeg` with colorful playful header, 12 monthly polaroid milestone cards, interactive high-resolution lightbox modal with next/prev navigation, and community memory upload support.
 - Eliminated empty vertical gap between the "Turning The Big One!" milestone card and the "12 Months of Our Little One" section by removing artificial upward card translation in GSAP, tightening container padding, and seamlessly connecting the sections via overlapping floor cloud transitions.
+- Added photo deletion and undo option (`deleteMemory` and `restoreMemory` in `useMemories.js`, top-right corner delete button on milestone and guest cards in `MemoryGallery.jsx`, lightbox delete action, and upload preview clear/undo button in `UploadSection.jsx`).
+- Implemented floating Undo toast notification with 6-second timer to restore deleted photos instantly.
+- Added "Bathakkah Invites" branding to `Footer.jsx` featuring official monogram logo (`/logo.png`) and tagline *"your story, beautifully invited"*.
+- Adjusted vertical spacing between "Turning the Big One!" milestone card and "12 Months of Our Little One" memories section (`mt-6 sm:mt-8`), introducing the requested subtle, elegant gap.
