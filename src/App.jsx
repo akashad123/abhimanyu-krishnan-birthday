@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Header from './components/Header';
 import LandingHero from './sections/LandingHero';
 import PinataSection from './sections/PinataSection';
 import MemoryGallery from './sections/MemoryGallery';
@@ -54,9 +53,6 @@ export function App() {
 
   return (
     <div ref={mainRef} className="min-h-screen flex flex-col font-body text-theme-navy bg-theme-cream">
-      {/* Sticky Top Header */}
-      <Header onOpenUpload={() => setIsUploadOpen(true)} />
-
       {/* Main Content Sections */}
       <main className="flex-1">
         {/* Viewport 1: First-birthday hero up to "Scroll Down" */}
