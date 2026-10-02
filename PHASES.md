@@ -41,10 +41,12 @@ Status: Completed
 
 ## Phase 4 — Photo Workflow
 
+Status: Completed (Live & Verified)
+
 - Local memory asset structure
 - Memory metadata structure
-- Supabase `memories` bucket
-- Anonymous upload flow
+- Supabase `memories` bucket (Created & public)
+- Anonymous upload flow (End-to-end verified)
 - Gallery refresh after upload
 
 ## Phase 5 — Polish
