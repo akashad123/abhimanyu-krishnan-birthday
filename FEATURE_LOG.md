@@ -1,0 +1,88 @@
+# Feature Log
+
+This file records implemented project features.
+
+## Format
+
+For every meaningful feature:
+
+### [DATE] Feature Name
+
+**Purpose**
+What it does.
+
+**User Flow**
+How a visitor interacts with it.
+
+**Technical Flow**
+How the implementation works.
+
+**Files**
+Relevant files.
+
+**Verification**
+What was actually tested.
+
+**Documentation**
+Which docs were updated.
+
+---
+
+## Initial Project Setup
+
+Initial requirements update — supplied mobile visual reference incorporated; project identity corrected to **Abhimanyu Krishnan**; Supabase anonymous photo-upload architecture approved; responsive mobile-first requirement added.
+
+---
+
+### [2026-10-02] Phase 1 — Foundation Setup
+
+**Purpose**
+Initialize the complete React frontend foundation, styling system, design tokens, asset structure, and Supabase integration scaffolding.
+
+**User Flow**
+Visitor accesses the site and sees the celebratory striped theme, bunting garland, floating balloons, paper clouds, and central hanging birthday plaque up to the "Scroll Down" button. Clicking "Scroll Down" smoothly scrolls to the hanging "1" pinata section, followed by the memory gallery and upload modal.
+
+**Technical Flow**
+- Vite + React 18 configured with Tailwind CSS and Google Fonts (`Fredoka`, `Quicksand`, `Caveat`).
+- Centralized configuration in `src/config/appConfig.js`.
+- Modular SVG and CSS decorative elements (bunting, ropes, balloons, clouds, stars).
+- Extracted and prepared high-fidelity reference visual assets in `public/decorations/` and initial verified baby photo in `public/memories/`.
+- Safe Supabase client (`src/lib/supabaseClient.js`) and data hook (`src/hooks/useMemories.js`) with client-side image MIME and size validation.
+- Rollup code-splitting for vendor, animation, and Supabase chunks.
+
+**Files**
+- `package.json`
+- `vite.config.js`
+- `tailwind.config.js`
+- `postcss.config.js`
+- `index.html`
+- `.gitignore`
+- `.env`
+- `src/config/appConfig.js`
+- `src/lib/supabaseClient.js`
+- `src/hooks/useReducedMotion.js`
+- `src/hooks/useMemories.js`
+- `src/data/initialMemories.js`
+- `src/components/Header.jsx`
+- `src/components/BuntingGarland.jsx`
+- `src/components/RopeSegment.jsx`
+- `src/components/FloatingBalloons.jsx`
+- `src/components/PaperClouds.jsx`
+- `src/components/ScatteredStars.jsx`
+- `src/components/ScrollDownIndicator.jsx`
+- `src/sections/LandingHero.jsx`
+- `src/sections/PinataSection.jsx`
+- `src/sections/MemoryGallery.jsx`
+- `src/sections/UploadSection.jsx`
+- `src/sections/Footer.jsx`
+- `src/App.jsx`
+- `src/main.jsx`
+
+**Verification**
+Production build `npm run build` executed successfully without errors or warnings (`✓ built in 6.01s`).
+
+**Documentation**
+Updated `PHASES.md`, `MEMORY.md`, `CHANGELOG.md`, `ARCHITECTURE.md`, `DESIGN.md`, and `FEATURE_LOG.md`.
+
+
+

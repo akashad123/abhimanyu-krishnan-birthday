@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    overflow-x: hidden;
+  }
+}
+
+@layer utilities {
+  /* Baby-blue and warm-cream vertical celebration stripes matching the reference */
+  .bg-striped-wallpaper {
+    background-color: #5299D3;
+    background-image: repeating-linear-gradient(
+      90deg,
+      #5299D3 0px,
+      #5299D3 36px,
+      #F6F2EA 36px,
+      #F6F2EA 72px
+    );
+  }
+
+  @media (min-width: 768px) {
+    .bg-striped-wallpaper {
+      background-image: repeating-linear-gradient(
+        90deg,
+        #5299D3 0px,
+        #5299D3 52px,
+        #F6F2EA 52px,
+        #F6F2EA 104px
+      );
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .bg-striped-wallpaper {
+      background-image: repeating-linear-gradient(
+        90deg,
+        #5299D3 0px,
+        #5299D3 60px,
+        #F6F2EA 60px,
+        #F6F2EA 120px
+      );
+    }
+  }
+
+  /* Scalloped edge decorative helper */
+  .border-scalloped {
+    border-style: solid;
+  }
+}
