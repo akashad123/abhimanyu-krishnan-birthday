@@ -53,4 +53,35 @@
   .border-scalloped {
     border-style: solid;
   }
+
+  /* Official Responsive Background Artworks */
+  .bg-hero-artwork {
+    background-image: url('/decorations/abhi-mob.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+  }
+
+  @media (min-width: 768px) {
+    .bg-hero-artwork {
+      background-image: url('/decorations/abhi-pc.png');
+      background-size: cover;
+      background-position: center top;
+    }
+  }
+
+  .bg-pinata-artwork {
+    background-image: url('/decorations/pinata-mob.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+  }
+
+  @media (min-width: 768px) {
+    .bg-pinata-artwork {
+      background-image: url('/decorations/pinata-pc.png');
+      background-size: cover;
+      background-position: center top;
+    }
+  }
 }

@@ -14,3 +14,4 @@ Developer-facing record of meaningful changes.
 - Removed top navbar completely as requested.
 - Integrated official responsive artwork pairs: `abhi-mob.png` & `abhi-pc.png` for landing hero, and `pinata-mob.png` & `pinata-pc.png` for the hanging 1 milestone.
 - Populated Memory Gallery with real verified photo of baby Abhimanyu in red kurta.
+- Converted Landing Hero and Pinata sections to full-bleed responsive background images (`bg-hero-artwork` and `bg-pinata-artwork`), removing foreground image tags and synthetic stripes.

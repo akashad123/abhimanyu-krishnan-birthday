@@ -118,6 +118,34 @@ Visitor lands directly into the visual experience without any website navbar chr
 **Verification**
 `npm run build` completed successfully (`✓ built in 12.23s`).
 
+---
+
+### [2026-10-02] Full-Bleed Responsive Background Image Layout
+
+**Purpose**
+Set `abhi-pc.png` (desktop) and `abhi-mob.png` (mobile) as the direct full-bleed background images of the Landing Hero section, and `pinata-pc.png` (desktop) and `pinata-mob.png` (mobile) as the direct background images of the Pinata Section, removing foreground image wrappers and separate stripe overlays.
+
+**User Flow**
+The visitor experiences complete full-screen, edge-to-edge celebratory visual backdrops:
+- Landing viewport: Full-screen `abhi-pc`/`abhi-mob` artwork with baby Abhimanyu and celebratory board, with the interactive "Scroll Down" CTA hovering at the bottom.
+- Pinata milestone viewport: Full-screen `pinata-pc`/`pinata-mob` artwork with the milestone celebration card and "Explore The Memory Album" CTA at the bottom.
+
+**Technical Flow**
+- Added `.bg-hero-artwork` and `.bg-pinata-artwork` responsive CSS utility classes in `src/styles/index.css`.
+- Configured media queries for `(min-width: 768px)` to switch between PC landscape and Mobile portrait backgrounds automatically.
+- Removed foreground `<picture>`/`<img>` elements and synthetic background stripes from both sections.
+- Updated GSAP ScrollTrigger selector in `src/App.jsx` to smoothly animate the milestone card entry.
+
+**Files**
+- `src/styles/index.css`
+- `src/sections/LandingHero.jsx`
+- `src/sections/PinataSection.jsx`
+- `src/App.jsx`
+
+**Verification**
+Production build `npm run build` executed successfully without errors or warnings (`✓ built in 5.33s`).
+
+
 
 
 

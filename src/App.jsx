@@ -34,16 +34,16 @@ export function App() {
         ease: 'sine.inOut',
       });
 
-      // Subtle scroll reveal for the Pinata section
-      gsap.from('#pinata img', {
+      // Subtle scroll reveal for the Pinata section card
+      gsap.from('#pinata > div', {
         scrollTrigger: {
           trigger: '#pinata',
-          start: 'top 80%',
+          start: 'top 75%',
           toggleActions: 'play none none none',
         },
-        y: 40,
-        opacity: 0.85,
-        duration: 1.2,
+        y: 30,
+        opacity: 0,
+        duration: 1,
         ease: 'power2.out',
       });
     }, mainRef);
