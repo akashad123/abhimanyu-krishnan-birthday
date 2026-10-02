@@ -61,17 +61,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       });
     }
 
-    // Number 1 Piñata gently sways like a real suspended festive piñata
-    if (pinataSwingRef?.current) {
-      gsap.to(pinataSwingRef.current, {
-        rotation: -2.8,
-        transformOrigin: 'top center',
-        duration: 3.4,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      });
-    }
 
     // Top bunting garland sways gently left to right across top ceiling
     if (buntingRef?.current) {
@@ -274,34 +263,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       );
     }
 
-    // 4. Celebratory GSAP reaction for Rainbow Number "1" Piñata (no y offset so it never breaks from scroll down)
-    if (pinataRef?.current) {
-      tl.fromTo(
-        pinataRef.current,
-        {
-          scale: 0.96,
-          rotation: -3,
-        },
-        {
-          scale: 1.04,
-          rotation: 2,
-          ease: 'power1.out',
-          duration: 0.45,
-        },
-        0.25
-      );
-
-      tl.to(
-        pinataRef.current,
-        {
-          scale: 1.0,
-          rotation: 0,
-          ease: 'power1.inOut',
-          duration: 0.3,
-        },
-        0.7
-      );
-    }
 
     // 5. Celebratory GSAP entrance for the Milestone Card ("Turning The Big One!")
     if (milestoneRef?.current) {

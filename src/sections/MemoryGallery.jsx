@@ -1,102 +1,199 @@
 import React, { useState } from 'react';
-import { Camera, Heart, X, ZoomIn, Calendar } from 'lucide-react';
+import { Camera, Heart, X, ZoomIn, Calendar, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import { APP_CONFIG } from '../config/appConfig';
+import { MONTHLY_MILESTONES } from '../data/initialMemories';
 
 /**
- * MemoryGallery Section
- * Photography-first memory album gallery presenting curated family photographs
- * and community-uploaded memories in a warm, storybook layout.
+ * MemoryGallery Section — "12 Months of Our Little One"
+ * 
+ * Styled according to client reference `reference/memories-section.jpeg`:
+ * - Playful colorful header with floating celebration stars
+ * - 12 Monthly polaroid photo milestone cards (01 month to 12 months)
+ * - Individual month taglines ("A brand new you", "So curious", "All smiles", etc.)
+ * - Interactive photo lightbox modal for high-resolution viewing
+ * - Seamless support for guest-contributed celebration memories
+ * - Anonymous client-side validated upload modal invitation
  */
 export const MemoryGallery = ({ memories = [], onOpenUpload }) => {
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [lightboxIndex, setLightboxIndex] = useState(null);
+
+  // Combine monthly milestones for lightbox navigation
+  const allLightboxItems = [
+    ...MONTHLY_MILESTONES.map((m) => ({
+      title: `${m.monthLabel} — ${m.tagline}`,
+      subtitle: m.tagline,
+      badge: m.monthLabel,
+      image: m.image,
+      alt: m.alt,
+    })),
+    ...memories.map((m) => ({
+      title: m.caption || `${APP_CONFIG.childName} — 1st Birthday`,
+      subtitle: m.created_at ? new Date(m.created_at).toLocaleDateString() : 'Celebration Memory',
+      badge: 'Guest Memory',
+      image: m.public_url,
+      alt: m.caption || `${APP_CONFIG.childName} memory`,
+    })),
+  ];
+
+  const handleOpenLightbox = (index) => {
+    setLightboxIndex(index);
+    setSelectedItem(allLightboxItems[index]);
+  };
+
+  const handlePrev = (e) => {
+    e.stopPropagation();
+    if (lightboxIndex > 0) {
+      handleOpenLightbox(lightboxIndex - 1);
+    } else {
+      handleOpenLightbox(allLightboxItems.length - 1);
+    }
+  };
+
+  const handleNext = (e) => {
+    e.stopPropagation();
+    if (lightboxIndex < allLightboxItems.length - 1) {
+      handleOpenLightbox(lightboxIndex + 1);
+    } else {
+      handleOpenLightbox(0);
+    }
+  };
 
   return (
     <section
       id={APP_CONFIG.sections.memories}
-      className="relative py-16 sm:py-24 px-4 bg-theme-creamLight border-t-4 border-theme-rope/20"
+      className="relative py-16 sm:py-24 px-3 sm:px-6 bg-theme-creamLight border-t-4 border-theme-rope/25 shadow-inner"
     >
-      <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
-        <div className="text-center max-w-xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-sky/15 text-theme-navy font-display font-semibold text-xs mb-3">
-            <Heart size={13} className="text-theme-red fill-theme-red" />
-            <span>Little Moments, Big Memories</span>
+      <div className="max-w-5xl mx-auto">
+        {/* Section Header: Styled after reference/memories-section.jpeg */}
+        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-16">
+          {/* Decorative Stars & Tag */}
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <img
+              src="/decorations/layers/star-yellow.png"
+              alt=""
+              className="w-5 sm:w-7 h-auto animate-pulse"
+              aria-hidden="true"
+            />
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs">
+              <Sparkles size={13} className="text-theme-yellow fill-theme-yellow" />
+              <span>Milestone Photo Album</span>
+            </div>
+            <img
+              src="/decorations/layers/star-blue.png"
+              alt=""
+              className="w-5 sm:w-7 h-auto animate-pulse"
+              aria-hidden="true"
+            />
           </div>
 
-          <h2 className="font-display font-bold text-3xl sm:text-4xl text-theme-navy tracking-tight mb-3">
-            The Memory Album
+          {/* Main Title: "12 MONTHS" in celebratory colors matching the reference */}
+          <h2 className="font-display font-extrabold text-3xl min-[400px]:text-4xl sm:text-5xl tracking-tight mb-1">
+            <span className="text-[#DE5347]">12 </span>
+            <span className="tracking-wider">
+              <span className="text-[#E5A93C]">M</span>
+              <span className="text-[#4E93CB]">O</span>
+              <span className="text-[#55A46D]">N</span>
+              <span className="text-[#DE5347]">T</span>
+              <span className="text-[#4E93CB]">H</span>
+              <span className="text-[#E5A93C]">S</span>
+            </span>
           </h2>
 
-          <p className="font-body text-sm sm:text-base text-theme-navy/75 leading-relaxed">
-            Every smile, milestone, and sweet memory of {APP_CONFIG.childName}&apos;s first magical year,
-            lovingly shared by family and friends.
+          {/* Subtitle: "OF OUR LITTLE ONE" */}
+          <p className="font-display font-bold text-xs sm:text-sm md:text-base text-theme-navy/80 uppercase tracking-widest mb-3">
+            OF OUR LITTLE ONE
+          </p>
+
+          <p className="font-body text-xs sm:text-sm md:text-base text-theme-navy/70 leading-relaxed max-w-lg mx-auto">
+            A whole year of sweet baby giggles, tiny footsteps, curious eyes, and endless love with{' '}
+            <strong className="text-theme-blue font-semibold">{APP_CONFIG.childName}</strong>.
           </p>
         </div>
 
-        {/* Gallery Grid */}
-        {memories.length === 0 ? (
-          <div className="text-center py-16 px-6 bg-white/70 rounded-3xl border-2 border-dashed border-theme-rope/30 max-w-md mx-auto">
-            <Camera size={36} className="mx-auto text-theme-rope mb-3 opacity-60" />
-            <h3 className="font-display font-semibold text-lg text-theme-navy mb-1">
-              No Memories Added Yet
-            </h3>
-            <p className="text-xs sm:text-sm text-theme-navy/70 mb-5">
-              Be the first to add a cherished photo of baby Abhimanyu!
-            </p>
-            <button
-              type="button"
-              onClick={onOpenUpload}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-theme-red text-white font-display font-semibold text-sm shadow hover:bg-theme-redDark transition-colors"
+        {/* 12 Months Grid: 3 columns on mobile matching reference, 3 on tablet, 4 on desktop */}
+        <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 min-[400px]:gap-3 sm:gap-5 md:gap-6">
+          {MONTHLY_MILESTONES.map((item, idx) => (
+            <div
+              key={item.monthNumber}
+              onClick={() => handleOpenLightbox(idx)}
+              className="group cursor-pointer bg-white rounded-2xl sm:rounded-3xl p-2 min-[400px]:p-2.5 sm:p-3.5 shadow-paper hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:border-theme-sky/40 border border-theme-cream flex flex-col justify-between"
             >
-              <Camera size={16} />
-              <span>Add The First Memory</span>
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {memories.map((item, idx) => (
-              <div
-                key={item.id || idx}
-                className="group relative bg-white rounded-3xl p-3 sm:p-4 shadow-paper hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1.5 border border-theme-cream"
-              >
-                {/* Photo Container with rounded frame */}
-                <div
-                  className="relative aspect-square sm:aspect-[4/5] overflow-hidden rounded-2xl bg-theme-cream cursor-pointer"
-                  onClick={() => setSelectedPhoto(item)}
-                >
-                  <img
-                    src={item.public_url}
-                    alt={item.caption || item.alt || `${APP_CONFIG.childName} memory`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  {/* Subtle hover overlay */}
-                  <div className="absolute inset-0 bg-theme-navy/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="p-2.5 bg-white/90 rounded-full text-theme-navy shadow-md transform scale-90 group-hover:scale-100 transition-transform">
-                      <ZoomIn size={18} />
-                    </span>
-                  </div>
-                </div>
+              {/* Photo Frame */}
+              <div className="relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl bg-amber-50/40 border border-theme-cream/80">
+                <img
+                  src={item.image}
+                  alt={item.alt}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
 
-                {/* Photo Caption & Info */}
-                <div className="pt-3 px-1">
-                  <p className="font-display font-medium text-sm sm:text-base text-theme-navy truncate">
-                    {item.caption || `${APP_CONFIG.childName} — 1st Birthday`}
-                  </p>
-                  {item.created_at && (
-                    <p className="flex items-center gap-1 text-[11px] text-theme-navy/50 font-medium mt-0.5">
-                      <Calendar size={11} />
-                      <span>{new Date(item.created_at).toLocaleDateString()}</span>
-                    </p>
-                  )}
+                {/* Subtle Hover Zoom Overlay */}
+                <div className="absolute inset-0 bg-theme-navy/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span className="p-1.5 sm:p-2 bg-white/95 rounded-full text-theme-navy shadow-md transform scale-90 group-hover:scale-100 transition-transform">
+                    <ZoomIn size={14} className="sm:w-4 sm:h-4" />
+                  </span>
                 </div>
               </div>
-            ))}
+
+              {/* Month Label & Tagline matching reference */}
+              <div className="pt-2 sm:pt-2.5 text-center px-0.5">
+                <p className="font-display leading-tight text-xs sm:text-sm">
+                  <span className="font-bold text-[#DE5347]">{item.monthNumber} </span>
+                  <span className="font-semibold text-theme-navy">
+                    {item.monthNumber === '01' ? 'month' : 'months'}
+                  </span>
+                </p>
+
+                <p className="font-body text-[10px] min-[400px]:text-[11px] sm:text-xs text-theme-navy/65 italic leading-tight mt-0.5 truncate">
+                  {item.tagline}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Optional Community / Guest Memories Section */}
+        {memories.length > 0 && (
+          <div className="mt-16 sm:mt-20 pt-10 border-t-2 border-theme-rope/20">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-sky/15 text-theme-navy font-display font-semibold text-xs mb-2">
+                <Heart size={13} className="text-theme-red fill-theme-red" />
+                <span>Guest & Family Memories</span>
+              </div>
+              <h3 className="font-display font-bold text-2xl sm:text-3xl text-theme-navy">
+                Moments Shared with Love
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+              {memories.map((item, idx) => (
+                <div
+                  key={item.id || idx}
+                  onClick={() => handleOpenLightbox(MONTHLY_MILESTONES.length + idx)}
+                  className="group cursor-pointer bg-white rounded-2xl p-2.5 sm:p-3 shadow-paper hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-theme-cream"
+                >
+                  <div className="relative aspect-square overflow-hidden rounded-xl bg-theme-cream">
+                    <img
+                      src={item.public_url}
+                      alt={item.caption || `${APP_CONFIG.childName} memory`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="pt-2 px-1 text-center">
+                    <p className="font-display font-medium text-xs sm:text-sm text-theme-navy truncate">
+                      {item.caption || `${APP_CONFIG.childName} — 1st Birthday`}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
         {/* Bottom Upload Invitation Card */}
-        <div className="mt-14 sm:mt-20 max-w-xl mx-auto text-center bg-white/90 border-2 border-theme-sky/30 rounded-3xl p-8 shadow-paper">
+        <div className="mt-14 sm:mt-20 max-w-xl mx-auto text-center bg-white/95 border-2 border-theme-sky/30 rounded-3xl p-6 sm:p-8 shadow-paper">
           <span className="inline-block p-3 rounded-full bg-theme-sky/15 text-theme-sky mb-3">
             <Camera size={26} />
           </span>
@@ -117,38 +214,63 @@ export const MemoryGallery = ({ memories = [], onOpenUpload }) => {
         </div>
       </div>
 
-      {/* Lightbox Modal */}
-      {selectedPhoto && (
+      {/* High-Resolution Lightbox Modal */}
+      {selectedItem && (
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
-          onClick={() => setSelectedPhoto(null)}
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6"
+          onClick={() => setSelectedItem(null)}
         >
           <div
             className="relative max-w-2xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl p-4 sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Close Button */}
             <button
               type="button"
-              onClick={() => setSelectedPhoto(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-theme-cream text-theme-navy hover:bg-theme-red hover:text-white transition-colors z-10"
+              onClick={() => setSelectedItem(null)}
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full bg-theme-cream text-theme-navy hover:bg-theme-red hover:text-white transition-colors z-20 shadow-sm"
               aria-label="Close photo preview"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
 
-            <div className="max-h-[70vh] flex items-center justify-center overflow-hidden rounded-2xl bg-theme-cream/50">
+            {/* Navigation Arrows */}
+            <button
+              type="button"
+              onClick={handlePrev}
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 text-theme-navy hover:bg-theme-blue hover:text-white transition-colors z-20 shadow-md"
+              aria-label="Previous photo"
+            >
+              <ChevronLeft size={20} />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleNext}
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 text-theme-navy hover:bg-theme-blue hover:text-white transition-colors z-20 shadow-md"
+              aria-label="Next photo"
+            >
+              <ChevronRight size={20} />
+            </button>
+
+            {/* Photo Display */}
+            <div className="max-h-[65vh] flex items-center justify-center overflow-hidden rounded-2xl bg-theme-cream/40">
               <img
-                src={selectedPhoto.public_url}
-                alt={selectedPhoto.caption || `${APP_CONFIG.childName} full memory`}
-                className="max-h-[70vh] w-auto object-contain rounded-2xl"
+                src={selectedItem.image}
+                alt={selectedItem.alt}
+                className="max-h-[65vh] w-auto object-contain rounded-2xl"
               />
             </div>
 
+            {/* Photo Info */}
             <div className="mt-4 text-center">
-              <h4 className="font-display font-semibold text-lg text-theme-navy">
-                {selectedPhoto.caption || `${APP_CONFIG.childName} — 1st Birthday`}
+              <span className="inline-block px-3 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs mb-1.5">
+                {selectedItem.badge}
+              </span>
+              <h4 className="font-display font-bold text-lg sm:text-xl text-theme-navy">
+                {selectedItem.title}
               </h4>
             </div>
           </div>

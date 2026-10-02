@@ -503,3 +503,41 @@ Connect the top Abhimanyu Krishnan baby photo plaque and "Scroll Down" pill dire
 **Verification**
 - Production build `npm run build` executed successfully with 0 errors (`✓ built in 4.88s`).
 - Verified local dev server is responding with HTTP 200.
+
+---
+
+### [2026-10-02] Removed GSAP on Hanging One & Implemented "12 Months of Our Little One" Section
+
+**Purpose**
+- Remove all GSAP animations (scroll tween and idle sway) from the hanging Number "1" Piñata, allowing it to hang completely naturally connected to the downside of the Scroll Down button without artificial transforms.
+- Implement the "12 Months of Our Little One" memory section styled strictly after client reference `reference/memories-section.jpeg`.
+
+**User Flow**
+1. Hanging Number 1:
+   - The Rainbow Number 1 Piñata hangs directly from the bottom of the Scroll Down pill with natural physical stillness, free from artificial GSAP scale or tilt distortions.
+2. Next Section — "12 Months of Our Little One":
+   - Visitors scroll past the celebratory milestone to discover the monthly photo layout:
+     - Header styled with festive stars and colorful playful lettering ("12 MONTHS" in coral, gold, blue, and green; "OF OUR LITTLE ONE" in uppercase).
+     - 12 polaroid milestone cards (01 month through 12 months) arranged in a clean 3-column grid matching the mobile mockup.
+     - Each card features baby Abhimanyu's portrait for that month, bold month label ("01 month", "02 months"...), and sweet milestone tagline ("A brand new you", "So curious", "All smiles", "Discovering the world", "Little explorer", "Growing, glowing", "Playful always", "More mischief", "Such a charmer", "Brighter every day", "Little adventurer", "One whole year").
+     - Clicking any photo opens an interactive high-resolution lightbox modal with month badge, title, and previous/next photo navigation.
+     - Community upload invitation card at the bottom allows guests to contribute additional memories.
+
+**Technical Flow**
+- In `src/components/BirthdayHero/birthdayHeroAnimation.js`:
+  - Removed `pinataRef` ScrollTrigger animation and `pinataSwingRef` idle pendulum sway.
+- In `src/data/initialMemories.js`:
+  - Added `MONTHLY_MILESTONES` data array with 12 verified monthly entries matching the reference image.
+- In `src/sections/MemoryGallery.jsx`:
+  - Rebuilt memory section to present the 12-month polaroid grid, festive colorful header, lightbox modal, and guest memory section.
+- Extracted `public/memories/month-01.jpg` through `month-12.jpg` directly from `reference/memories-section.jpeg`.
+
+**Files**
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`
+- `src/data/initialMemories.js`
+- `src/sections/MemoryGallery.jsx`
+- `public/memories/month-01.jpg` .. `month-12.jpg`
+
+**Verification**
+- Production build `npm run build` executed successfully with 0 errors (`✓ built in 6.92s`).
+- Verified local dev server is responding with HTTP 200.
