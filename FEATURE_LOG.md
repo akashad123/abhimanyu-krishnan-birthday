@@ -268,3 +268,40 @@ Enlarge the baby card and elevate it on PC viewports so baby Abhimanyu is promin
 
 **Verification**
 - Production build `npm run build` executed successfully without errors or warnings (`✓ built in 3.80s`).
+
+---
+
+### [2026-10-02] Elimination of Section 1–2 Gap & White Space / Seamless Flow
+
+**Purpose**
+Eliminate the dead scroll distance, white spaces, and vertical gaps between Frame 1 (BirthdayHero) and Frame 2 (BirthdayReveal), creating a seamless, tight physical reveal transition where Section 2 immediately enters as the central card pulls upward.
+
+**User Flow**
+1. Visitor scrolls down from the opening hero scene:
+   - The central card pulls up swiftly and smoothly without requiring a long, dragging scroll.
+   - The moment the card clears the top of the viewport, the rainbow number "1" piñata and the milestone card roll immediately into view.
+   - The blue-and-cream vertical striped wallpaper is continuous with zero white flashes, blank cream gaps, or dead empty space.
+   - Inside Section 2, the piñata, balloons, and milestone card form a tight, balanced, cohesive celebratory vignette.
+
+**Technical Flow**
+- In `src/App.jsx`:
+  - Added `bg-striped-wallpaper` to `<main>` wrapper so the background wallpaper continues unbroken across the entire transition between sections.
+- In `src/components/BirthdayHero/birthdayHeroAnimation.js`:
+  - Reduced ScrollTrigger pinning distance from `+=120%` (mobile) / `+=140%` (desktop) down to `+=55%` (mobile) / `+=60%` (desktop) with `scrub: 0.6`.
+  - This eliminates over 50% of empty pinned dead scroll time.
+- In `src/utils/responsiveAnimation.js`:
+  - Adjusted foreground cloud parallax to stay grounded at the bottom of Section 1 rather than lifting upward to reveal empty space below.
+- In `src/components/BirthdayReveal/BirthdayReveal.css` & `BirthdayReveal.jsx`:
+  - Changed container layout from `justify-content: space-between` to `justify-content: flex-start`, removing the huge vertical gap between the piñata and the milestone card.
+  - Adjusted milestone card top margin to `mt-2 sm:mt-4 md:mt-5 mb-8`.
+
+**Files**
+- `src/App.jsx`
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`
+- `src/utils/responsiveAnimation.js`
+- `src/components/BirthdayReveal/BirthdayReveal.css`
+- `src/components/BirthdayReveal/BirthdayReveal.jsx`
+
+**Verification**
+- Production build `npm run build` executed successfully without errors or warnings (`✓ built in 19.34s`).
+- Verified seamless scroll: card exits and Section 2 immediately enters with continuous striped wallpaper and tight cohesive layout.

@@ -114,7 +114,7 @@ export const BirthdayReveal = () => {
       {/* Milestone Celebratory Card */}
       <div
         ref={cardRef}
-        className="relative z-20 w-full max-w-sm sm:max-w-md bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-6 sm:p-7 text-center shadow-paper mt-6 mb-2"
+        className="relative z-20 w-full max-w-sm sm:max-w-md bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-6 sm:p-7 text-center shadow-paper mt-2 sm:mt-4 md:mt-5 mb-8"
       >
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs mb-3">
           <Sparkles size={14} className="text-theme-yellow" />

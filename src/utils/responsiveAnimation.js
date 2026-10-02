@@ -73,13 +73,13 @@ export function getBalloonMovement() {
 }
 
 /**
- * Returns parallax offsets for layered background clouds
+ * Returns parallax offsets for layered foreground clouds
  */
 export function getCloudParallax() {
-  if (typeof window === 'undefined') return { fg: -80, bg: -30 };
+  if (typeof window === 'undefined') return { fg: 20, bg: -20 };
   const vh = window.innerHeight;
   return {
-    fg: -(vh * 0.14),
-    bg: -(vh * 0.06),
+    fg: vh * 0.04, // Grounded drift rather than lifting upward to create empty bottom gap
+    bg: -(vh * 0.04),
   };
 }

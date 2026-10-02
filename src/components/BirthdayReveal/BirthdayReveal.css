@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 /* Suspended Pinata styling */
@@ -20,27 +20,30 @@
   justify-content: center;
   transform-origin: top center;
   will-change: transform;
+  margin-top: 0;
 }
 
 /* Clouds and Balloons around Pinata */
 .pinata-balloon-left {
   position: absolute;
-  top: 38%;
+  top: 25%;
   left: 6%;
 }
 
 .pinata-balloon-right {
   position: absolute;
-  top: 42%;
+  top: 28%;
   right: 6%;
 }
 
 @media (min-width: 768px) {
   .pinata-balloon-left {
-    left: 16%;
+    top: 22%;
+    left: 14%;
   }
 
   .pinata-balloon-right {
-    right: 16%;
+    top: 25%;
+    right: 14%;
   }
 }

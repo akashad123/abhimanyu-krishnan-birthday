@@ -30,3 +30,6 @@ Developer-facing record of meaningful changes.
 - Accelerated hero balloon floats to travel rapidly and fly all the way up off the screen.
 - Removed redundant static top background clouds from landing hero.
 - Added up-and-left float to Section 2 orange balloon, up-and-right to green balloon, and outward left/right drift to Section 2 paper clouds.
+- Reduced pinning scroll duration by >50% (`end: '+=55%'` mobile, `+=60%'` desktop) to eliminate dead scroll distance and empty gaps between Section 1 and Section 2.
+- Set continuous `bg-striped-wallpaper` on `<main>` wrapper to eliminate white spaces during scroll transitions.
+- Adjusted Section 2 layout from `justify-content: space-between` to `flex-start` with tight, balanced card spacing.

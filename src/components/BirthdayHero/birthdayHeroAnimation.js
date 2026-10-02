@@ -150,8 +150,8 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       scrollTrigger: {
         trigger: sectionRef.current,
         start: 'top top',
-        end: '+=120%',
-        scrub: 1,
+        end: '+=55%',
+        scrub: 0.6,
         pin: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
@@ -279,8 +279,8 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       scrollTrigger: {
         trigger: sectionRef.current,
         start: 'top top',
-        end: '+=140%',
-        scrub: 1,
+        end: '+=60%',
+        scrub: 0.6,
         pin: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,

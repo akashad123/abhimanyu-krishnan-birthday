@@ -12,8 +12,8 @@ export function App() {
 
   return (
     <div className="min-h-screen flex flex-col font-body text-theme-navy bg-theme-cream overflow-x-hidden">
-      {/* Main Content Sections */}
-      <main className="flex-1">
+      {/* Main Content Sections with continuous striped background */}
+      <main className="flex-1 bg-striped-wallpaper">
         {/* Section 1: Cinematic Scroll-Driven Opening Scene */}
         <BirthdayHero />
 
