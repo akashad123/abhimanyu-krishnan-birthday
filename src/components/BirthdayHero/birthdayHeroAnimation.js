@@ -1,7 +1,6 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
-  getResponsiveCardMovement,
   getResponsiveSideMovement,
   getBalloonAsideDistance,
   getCloudParallax,
@@ -168,17 +167,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       },
     });
 
-    // 1. Birthday Card Plaque & Scroll Down pulled smoothly upward into the ceiling
-    if (cardScrollRef?.current) {
-      tl.to(
-        cardScrollRef.current,
-        {
-          y: () => getResponsiveCardMovement(isMobile),
-          ease: 'none',
-        },
-        0
-      );
-    }
 
     // 2. Side hanging clouds slowly and gracefully part towards the edges
     // Subtle downward resistance keeps them visible longer in upper view

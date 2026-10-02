@@ -279,7 +279,7 @@ export const BirthdayHero = () => {
           {/* Milestone Celebratory Card */}
           <div
             ref={milestoneRef}
-            className="relative z-20 w-full max-w-sm sm:max-w-md bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-6 sm:p-7 text-center shadow-paper mt-6 mb-12"
+            className="relative z-20 w-full max-w-sm sm:max-w-md bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-6 sm:p-7 text-center shadow-paper mt-5 sm:mt-6 mb-0"
           >
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs mb-3">
               <Sparkles size={14} className="text-theme-yellow" />
@@ -306,10 +306,10 @@ export const BirthdayHero = () => {
         </div>
       </div>
 
-      {/* Layer 7: Foreground Floor Paper Clouds */}
+      {/* Layer 7: Foreground Floor Paper Clouds tightly framing the bottom transition */}
       <div
         ref={cloudsFgRef}
-        className="relative -mt-10 sm:-mt-14 pointer-events-none flex justify-between z-25 opacity-95 w-full"
+        className="relative -mt-20 sm:-mt-28 pointer-events-none flex justify-between z-25 opacity-95 w-full"
       >
         <img
           src="/decorations/layers/cloud-left.png"

@@ -541,3 +541,38 @@ Connect the top Abhimanyu Krishnan baby photo plaque and "Scroll Down" pill dire
 **Verification**
 - Production build `npm run build` executed successfully with 0 errors (`✓ built in 6.92s`).
 - Verified local dev server is responding with HTTP 200.
+
+---
+
+### [2026-10-02] Eliminated Empty Space Between Milestone Card & 12 Months Section
+
+**Purpose**
+Completely eliminate the empty vertical gap between the "Turning The Big One!" milestone celebration card and the "12 Months of Our Little One" section, ensuring an immediate, seamless visual transition.
+
+**User Flow**
+1. Visitor scrolls down through the celebration scene:
+   - "ONE WHOLE YEAR - Abhimanyu Krishnan" plaque -> "Scroll Down" button -> Rainbow Number "1" Piñata -> "Turning The Big One!" milestone card.
+2. Directly at the base of the "Turning The Big One!" card:
+   - Floor paper clouds softly frame the bottom of the card.
+   - The "12 Months of Our Little One" section begins immediately with zero empty space or gap between them.
+
+**Technical Flow**
+- In `src/components/BirthdayHero/birthdayHeroAnimation.js`:
+  - Removed `cardScrollRef` upward translation (`y: -vh * 0.55`), preventing the entire card assembly from being lifted 600px into the ceiling away from the section base.
+- In `src/components/BirthdayHero/BirthdayHero.jsx`:
+  - Reduced milestone card bottom margin from `mb-12` to `mb-0`.
+  - Adjusted floor clouds container to `-mt-20 sm:-mt-28` to hug the milestone card tightly.
+- In `src/components/BirthdayHero/BirthdayHero.css`:
+  - Removed `padding-bottom: 2rem` from `.birthday-hero-container`.
+- In `src/sections/MemoryGallery.jsx`:
+  - Added `-mt-14 sm:-mt-20 z-30` negative top margin and adjusted top padding to `pt-6 sm:pt-10`, pulling the section seamlessly beneath the floor clouds.
+
+**Files**
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`
+- `src/components/BirthdayHero/BirthdayHero.jsx`
+- `src/components/BirthdayHero/BirthdayHero.css`
+- `src/sections/MemoryGallery.jsx`
+
+**Verification**
+- Production build `npm run build` executed successfully with 0 errors (`✓ built in 13.22s`).
+- Verified local dev server is responding with HTTP 200.

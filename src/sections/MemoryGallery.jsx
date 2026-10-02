@@ -62,7 +62,7 @@ export const MemoryGallery = ({ memories = [], onOpenUpload }) => {
   return (
     <section
       id={APP_CONFIG.sections.memories}
-      className="relative py-16 sm:py-24 px-3 sm:px-6 bg-theme-creamLight border-t-4 border-theme-rope/25 shadow-inner"
+      className="relative pt-6 sm:pt-10 pb-16 sm:pb-24 px-3 sm:px-6 bg-theme-creamLight border-t-4 border-theme-rope/25 shadow-inner -mt-14 sm:-mt-20 z-30"
     >
       <div className="max-w-5xl mx-auto">
         {/* Section Header: Styled after reference/memories-section.jpeg */}
