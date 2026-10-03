@@ -30,10 +30,10 @@ const ACCENT_COLORS = ['#4E93CB', '#DE5347', '#E5A93C', '#55A46D'];
 /** Page cream-light colour (matches bg-theme-creamLight in tailwind.config) */
 const CREAM = '#FCFAF6';
 
-/** Carousel layout constants — scaled to fit 100% within any PC/laptop viewport without clipping */
-const CARD_H    = 150;           // px — height of each photo card
-const CARD_GAP  = 12;            // px — gap between cards
-const CARD_UNIT = CARD_H + CARD_GAP; // 162 px per slot
+/** Carousel layout constants — one photo at a time, filling the visible container */
+const CARD_H    = 330;           // px — height of each photo card (fills most of VISIBLE_H)
+const CARD_GAP  = 20;            // px — spacing between cards (invisible since non-active are opacity:0)
+const CARD_UNIT = CARD_H + CARD_GAP; // 350 px per slot
 const VISIBLE_H = 360;           // px — clip-container height for the strip
 
 /** Left text drum constants */
@@ -355,11 +355,8 @@ export const FamilyGallery = () => {
                 }}
               >
                 {FAMILY_PHOTOS.map((photo, idx) => {
-                  const dist       = Math.abs(idx - activeIdx);
-                  const isActive   = dist === 0;
-                  const scale      = isActive ? 1 : dist === 1 ? 0.88 : dist === 2 ? 0.76 : 0.62;
-                  const opacity    = isActive ? 1 : dist === 1 ? 0.62 : dist === 2 ? 0.35 : dist === 3 ? 0.14 : 0.03;
-                  const cardColor  = ACCENT_COLORS[idx % ACCENT_COLORS.length];
+                  const isActive  = idx === activeIdx;
+                  const cardColor = ACCENT_COLORS[idx % ACCENT_COLORS.length];
 
                   return (
                     <div
@@ -374,18 +371,15 @@ export const FamilyGallery = () => {
                         borderRadius: 14,
                         overflow: 'hidden',
                         cursor: isActive ? 'pointer' : 'default',
+                        pointerEvents: isActive ? 'auto' : 'none',
 
-                        transform: `scale(${scale})`,
-                        transformOrigin: 'center center',
-                        opacity,
-                        transition: 'transform 0.55s ease, opacity 0.55s ease, box-shadow 0.4s ease',
+                        /* Only the active photo is visible; neighbours are fully hidden
+                           but still in DOM so the translateY strip slides smoothly */
+                        opacity: isActive ? 1 : 0,
+                        transition: 'opacity 0.4s ease, box-shadow 0.4s ease',
 
-                        border: isActive
-                          ? `2.5px solid ${cardColor}`
-                          : '2.5px solid transparent',
-                        boxShadow: isActive
-                          ? '0 10px 36px rgba(0,0,0,0.20)'
-                          : '0 2px 10px rgba(0,0,0,0.06)',
+                        border: isActive ? `2.5px solid ${cardColor}` : '2.5px solid transparent',
+                        boxShadow: isActive ? '0 10px 36px rgba(0,0,0,0.20)' : 'none',
                       }}
                     >
                       <img
@@ -398,7 +392,7 @@ export const FamilyGallery = () => {
                           objectPosition: 'center',
                           display: 'block',
                         }}
-                        loading={dist <= 2 ? 'eager' : 'lazy'}
+                        loading={Math.abs(idx - activeIdx) <= 2 ? 'eager' : 'lazy'}
                       />
 
                       {/* Active label overlay */}
@@ -409,7 +403,7 @@ export const FamilyGallery = () => {
                             bottom: 0,
                             left: 0,
                             right: 0,
-                            padding: '24px 14px 10px',
+                            padding: '32px 14px 12px',
                             background: 'linear-gradient(to top, rgba(0,0,0,0.52) 0%, transparent 100%)',
                             pointerEvents: 'none',
                           }}
