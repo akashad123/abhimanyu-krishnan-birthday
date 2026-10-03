@@ -170,7 +170,7 @@ export const BirthdayHero = () => {
       {/* Red Balloon - Left Mid */}
       <div
         ref={balloonRedRef}
-        className="hero-layer hero-layer-balloon top-[40%] lg:top-[25%] left-3 sm:left-10 md:left-16 lg:left-[8%] xl:left-[10%] w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 drop-shadow-xl"
+        className="hero-layer hero-layer-balloon top-[40%] lg:top-[8%] left-3 sm:left-10 md:left-16 lg:left-[8%] xl:left-[10%] w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 drop-shadow-xl"
       >
         <div ref={balloonRedInnerRef} className="w-full h-full">
           <img
@@ -185,7 +185,7 @@ export const BirthdayHero = () => {
       {/* Yellow Balloon - Left Lower */}
       <div
         ref={balloonYellowRef}
-        className="hero-layer hero-layer-balloon top-[62%] lg:top-[48%] left-2 sm:left-8 md:left-12 lg:left-[5%] xl:left-[7%] w-14 sm:w-16 md:w-20 lg:w-24 xl:w-28 drop-shadow-xl"
+        className="hero-layer hero-layer-balloon top-[62%] lg:top-[30%] left-2 sm:left-8 md:left-12 lg:left-[5%] xl:left-[7%] w-14 sm:w-16 md:w-20 lg:w-24 xl:w-28 drop-shadow-xl"
       >
         <div ref={balloonYellowInnerRef} className="w-full h-full">
           <img
@@ -200,7 +200,7 @@ export const BirthdayHero = () => {
       {/* Blue Balloon - Right Mid */}
       <div
         ref={balloonBlueRef}
-        className="hero-layer hero-layer-balloon top-[38%] lg:top-[23%] right-3 sm:right-10 md:right-16 lg:right-[8%] xl:right-[10%] w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 drop-shadow-xl"
+        className="hero-layer hero-layer-balloon top-[38%] lg:top-[6%] right-3 sm:right-10 md:right-16 lg:right-[8%] xl:right-[10%] w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 drop-shadow-xl"
       >
         <div ref={balloonBlueInnerRef} className="w-full h-full">
           <img
@@ -215,7 +215,7 @@ export const BirthdayHero = () => {
       {/* Green Balloon - Right Lower */}
       <div
         ref={balloonGreenRef}
-        className="hero-layer hero-layer-balloon top-[60%] lg:top-[46%] right-2 sm:right-8 md:right-12 lg:right-[5%] xl:right-[7%] w-14 sm:w-16 md:w-20 lg:w-24 xl:w-28 drop-shadow-xl"
+        className="hero-layer hero-layer-balloon top-[60%] lg:top-[28%] right-2 sm:right-8 md:right-12 lg:right-[5%] xl:right-[7%] w-14 sm:w-16 md:w-20 lg:w-24 xl:w-28 drop-shadow-xl"
       >
         <div ref={balloonGreenInnerRef} className="w-full h-full">
           <img
@@ -231,7 +231,7 @@ export const BirthdayHero = () => {
       {/* Left Cloud */}
       <div
         ref={cloudAsideLeftRef}
-        className="hero-layer top-[44%] sm:top-[42%] lg:top-[33%] -left-8 sm:-left-12 md:-left-16 w-36 min-[400px]:w-44 sm:w-60 md:w-72 lg:w-80 pointer-events-none drop-shadow-xl z-15"
+        className="hero-layer top-[44%] sm:top-[42%] lg:top-[18%] -left-8 sm:-left-12 md:-left-16 w-36 min-[400px]:w-44 sm:w-60 md:w-72 lg:w-80 pointer-events-none drop-shadow-xl z-15"
       >
         <img
           src="/decorations/layers/cloud-left.png"
@@ -244,7 +244,7 @@ export const BirthdayHero = () => {
       {/* Right Cloud */}
       <div
         ref={cloudAsideRightRef}
-        className="hero-layer top-[52%] sm:top-[50%] lg:top-[41%] -right-8 sm:-right-12 md:-right-16 w-40 min-[400px]:w-48 sm:w-64 md:w-76 lg:w-88 pointer-events-none drop-shadow-xl z-15"
+        className="hero-layer top-[52%] sm:top-[50%] lg:top-[26%] -right-8 sm:-right-12 md:-right-16 w-40 min-[400px]:w-48 sm:w-64 md:w-76 lg:w-88 pointer-events-none drop-shadow-xl z-15"
       >
         <img
           src="/decorations/layers/cloud-right.png"
