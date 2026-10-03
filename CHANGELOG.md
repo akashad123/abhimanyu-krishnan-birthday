@@ -104,3 +104,10 @@ Developer-facing record of meaningful changes.
 - **FamilyGallery**: Disabled anticipatePin on mobile to eliminate premature scroll jumps when transitioning from Milestone Photo Album into Family Moments
 - **FamilyGallery**: Disabled touch-conflicting snap on mobile viewports while keeping desktop snap and vertical drum scroll intact
 - Build: verified clean build with 0 errors
+
+## [2026-10-03] - feat: implement 12-month desk calendar carousel from reference image
+
+- **MemoryGallery**: Recreated the desk stand flip calendar carousel faithfully matching client reference \eference/abi-12month-ref.jpeg\`n- **Visuals**: Added 10 metallic golden spiral binding rings, wooden easel desk stand, framed baby photo with crown/heart stickers, cute teddy bear illustration, large bold month counter, and miniature monthly calendar days grid
+- **Interactivity**: Smooth 3D page flip animation, circular arrow navigation buttons (< and >), keyboard arrow navigation, touch swipe support for mobile/tablet, quick month jump bar (1m to 12m), and full-size photo lightbox modal
+- Scope: Only \src/sections/MemoryGallery.jsx\ modified per explicit user instruction to prevent regressions
+- Build: verified clean build with 0 errors

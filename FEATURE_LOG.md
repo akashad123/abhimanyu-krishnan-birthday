@@ -1302,3 +1302,21 @@ Fix the visual disconnection in the mobile hero section where the hanging birthd
 - `src/sections/FamilyGallery.jsx`
 - `CHANGELOG.md`
 - `FEATURE_LOG.md`
+
+
+### Feature: 12-Month Milestone Desk Calendar Carousel
+
+**Status**: Completed
+
+**Description**
+- Implemented the Desk Stand Calendar Carousel in `src/sections/MemoryGallery.jsx` faithfully recreating the client reference `reference/abi-12month-ref.jpeg`:
+  - **Header**: Added golden crown icon, spaced uppercase "O N E   W H O L E   Y E A R   O F", playful colorful lettering for "Abhimanyu Krishnan", and rounded pill ribbon ("12 MONTHS • 12 MOMENTS • A LIFETIME OF LOVE"), flanked by whimsical rainbow and hot air balloon illustrations.
+  - **Desk Calendar Stand**: Dual wooden easel easel stand with base plaque, topped by 10 metallic brass/golden double-wire spiral binding loops.
+  - **Calendar Page**: Displays Baby Abhimanyu's 12 milestone photos in a framed photo card with decorative crown & heart stickers. Below the photo features an illustrated teddy bear sticker with blue bow tie, bold month counter (`01` to `12` with `MONTH`/`MONTHS`), and an authentic miniature monthly calendar grid.
+  - **Interactivity & Motion**: Realistic 3D calendar page flip animation, circular next/prev arrow buttons, keyboard ArrowLeft/ArrowRight support, mobile touch-swipe support, quick month selector buttons (1m to 12m), and full-resolution photo lightbox modal.
+  - **Strict Scope**: Zero modifications to any other components or sections to guarantee complete stability.
+
+**Files Modified**
+- `src/sections/MemoryGallery.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
