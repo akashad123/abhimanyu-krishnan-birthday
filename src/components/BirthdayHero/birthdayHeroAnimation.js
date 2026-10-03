@@ -98,12 +98,12 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       });
     }
 
-    // Idle gentle float on balloon inner containers (prevents transform clash with scroll)
+    // Idle gentle float on balloon inner containers (slower, gentle floating rhythm)
     if (balloonRedInnerRef?.current) {
       gsap.to(balloonRedInnerRef.current, {
         y: -10,
         rotation: 2.5,
-        duration: 2.8,
+        duration: 4.8,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -114,7 +114,7 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       gsap.to(balloonYellowInnerRef.current, {
         y: -12,
         rotation: -2.5,
-        duration: 3.2,
+        duration: 5.2,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -125,7 +125,7 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       gsap.to(balloonBlueInnerRef.current, {
         y: -10,
         rotation: -2,
-        duration: 3.0,
+        duration: 5.0,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -136,7 +136,7 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       gsap.to(balloonGreenInnerRef.current, {
         y: -12,
         rotation: 2.5,
-        duration: 3.4,
+        duration: 5.4,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -160,8 +160,8 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       scrollTrigger: {
         trigger: sectionRef.current,
         start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.6,
+        end: 'bottom 20%',
+        scrub: 1.2,
         invalidateOnRefresh: true,
       },
     });
@@ -174,7 +174,7 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         leftDecoScrollRef.current,
         {
           x: () => -getResponsiveSideMovement(isMobile),
-          y: isMobile ? 120 : 160,
+          y: isMobile ? 100 : 130,
           opacity: 0.95,
           ease: 'none',
         },
@@ -187,7 +187,7 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         rightDecoScrollRef.current,
         {
           x: () => getResponsiveSideMovement(isMobile),
-          y: isMobile ? 120 : 160,
+          y: isMobile ? 100 : 130,
           opacity: 0.95,
           ease: 'none',
         },
@@ -195,14 +195,14 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       );
     }
 
-    // 3. Balloons smoothly move aside off the screen without glitching
+    // 3. Balloons smoothly move aside and gently drift top at a slower, relaxed pace
     // Left balloons move aside to the LEFT
     if (balloonRedRef?.current) {
       tl.to(
         balloonRedRef.current,
         {
           x: -asideDist,
-          y: -140,
+          y: -45,
           opacity: 0.4,
           ease: 'power1.out',
         },
@@ -215,7 +215,7 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         balloonYellowRef.current,
         {
           x: -(asideDist * 1.08),
-          y: -100,
+          y: -35,
           opacity: 0.4,
           ease: 'power1.out',
         },
@@ -229,7 +229,7 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         balloonBlueRef.current,
         {
           x: asideDist,
-          y: -140,
+          y: -45,
           opacity: 0.4,
           ease: 'power1.out',
         },
@@ -242,7 +242,7 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         balloonGreenRef.current,
         {
           x: asideDist * 1.08,
-          y: -100,
+          y: -35,
           opacity: 0.4,
           ease: 'power1.out',
         },

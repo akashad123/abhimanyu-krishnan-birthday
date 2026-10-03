@@ -31,6 +31,7 @@ export const APP_CONFIG = {
     hero: "hero",
     pinata: "pinata",
     memories: "memories",
+    family: "family",
     upload: "add-memory",
   },
 };

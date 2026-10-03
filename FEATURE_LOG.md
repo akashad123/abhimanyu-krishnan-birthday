@@ -988,3 +988,50 @@ Lower the starting position of the multi-layered organic wave transition and rem
 **Verification**
 - Production build `npm run build` completed with 0 errors in 3.65s.
 - Clean layout confirmed with no wave cutting into the milestone card and no scroll buttons on landing or second section.
+
+---
+
+### [2026-10-03] Dedicated Family Photo Section & Slower Upward Hero Animations
+
+**Purpose**
+1. Implement a slower, calmer pace for all upward hero animations (balloon float and scroll rise) to make the celebration reveal feel gentle, natural, and cinematic.
+2. Create a new dedicated "Family Moments" section (`FamilyGallery.jsx`) integrating all 15 authentic family photos (`Family 1.jpeg` through `Family 15.jpeg`) provided in `reference/`.
+
+**User Flow**
+1. Scrolling down from the landing scene, the balloons and clouds rise upward gently and smoothly at a noticeably slower, relaxed pace with enhanced scroll inertia.
+2. Below the "12 Months of Our Little One" monthly milestone album, a soft celebratory ribbon divider introduces the new **"FAMILY MOMENTS — Surrounded by Love & Warmth"** section.
+3. Visitors can explore 15 beautiful family photographs arranged in a balanced grid (5 columns on desktop, 3 columns on tablet, 2 columns on mobile).
+4. Hovering over any family photograph reveals a 3-pixel celebratory color outline, smooth inner photo zoom, glossy light sweep, and festive pop-up decorations.
+5. Clicking any photo opens the interactive high-resolution Lightbox modal with photo counter ("Photo X of 15"), previous/next arrows, and keyboard support (ArrowLeft, ArrowRight, Escape).
+
+**Technical Changes**
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`:
+  - Increased scroll scrub smoothing (`scrub: 1.2`).
+  - Extended ScrollTrigger timeline range (`end: 'bottom 20%'`).
+  - Reduced upward scroll balloon displacement from `y: -140` / `y: -100` to `y: -45` / `y: -35`.
+  - Increased idle balloon float durations from 2.8s–3.4s to 4.8s–5.4s for a peaceful floating rhythm.
+- `public/family/`:
+  - Copied and organized `Family 1.jpeg` to `Family 15.jpeg` into clean web-friendly assets: `family-01.jpeg` through `family-15.jpeg`.
+- `src/data/initialMemories.js`:
+  - Added and exported `FAMILY_PHOTOS` array containing metadata and paths for all 15 family images.
+- `src/config/appConfig.js`:
+  - Added `family: "family"` anchor to `APP_CONFIG.sections`.
+- `src/sections/FamilyGallery.jsx`:
+  - Created new functional component featuring celebratory "FAMILY MOMENTS" header, 15-photo responsive grid, hover effects, and built-in accessible Lightbox modal.
+- `src/App.jsx`:
+  - Imported and rendered `<FamilyGallery />` following `<MemoryGallery />`.
+
+**Files Modified / Created**
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`
+- `public/family/family-01.jpeg` ... `family-15.jpeg`
+- `src/data/initialMemories.js`
+- `src/config/appConfig.js`
+- `src/sections/FamilyGallery.jsx`
+- `src/App.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` executed cleanly in 3.91s with 0 errors.
+- Verified all 15 images resolve correctly and lightbox functions with seamless navigation.
+

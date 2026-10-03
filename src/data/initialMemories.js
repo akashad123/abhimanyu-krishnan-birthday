@@ -79,6 +79,29 @@ export const MONTHLY_MILESTONES = [
   },
 ];
 
+/**
+ * Curated 15 Family Photos
+ * Features baby Abhimanyu Krishnan with parents Praveen & Leeba,
+ * grandparents, and loved ones.
+ */
+export const FAMILY_PHOTOS = [
+  { id: 'family-01', image: '/family/family-01.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 01' },
+  { id: 'family-02', image: '/family/family-02.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 02' },
+  { id: 'family-03', image: '/family/family-03.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 03' },
+  { id: 'family-04', image: '/family/family-04.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 04' },
+  { id: 'family-05', image: '/family/family-05.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 05' },
+  { id: 'family-06', image: '/family/family-06.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 06' },
+  { id: 'family-07', image: '/family/family-07.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 07' },
+  { id: 'family-08', image: '/family/family-08.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 08' },
+  { id: 'family-09', image: '/family/family-09.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 09' },
+  { id: 'family-10', image: '/family/family-10.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 10' },
+  { id: 'family-11', image: '/family/family-11.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 11' },
+  { id: 'family-12', image: '/family/family-12.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 12' },
+  { id: 'family-13', image: '/family/family-13.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 13' },
+  { id: 'family-14', image: '/family/family-14.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 14' },
+  { id: 'family-15', image: '/family/family-15.jpeg', alt: 'Baby Abhimanyu with family', caption: 'Family Moment 15' },
+];
+
 export const INITIAL_MEMORIES = [
   {
     id: 'memory-abhimanyu-portrait',

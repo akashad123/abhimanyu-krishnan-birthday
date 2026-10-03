@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import BirthdayHero from './components/BirthdayHero/BirthdayHero';
 import MemoryGallery from './sections/MemoryGallery';
+import FamilyGallery from './sections/FamilyGallery';
 import UploadSection from './sections/UploadSection';
 import Footer from './sections/Footer';
 import { useMemories } from './hooks/useMemories';
@@ -29,6 +30,9 @@ export function App() {
           onRestoreMemory={restoreMemory}
           onOpenUpload={() => setIsUploadOpen(true)}
         />
+
+        {/* Section 3: Dedicated Family Moments Photo Album */}
+        <FamilyGallery />
       </main>
 
       {/* Celebratory Closing Footer */}
