@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Sparkles, X, ChevronLeft, ChevronRight, ChevronUp, FastForward, Heart } from 'lucide-react';
+import { Sparkles, X, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, FastForward, Heart } from 'lucide-react';
 import { APP_CONFIG } from '../config/appConfig';
 import { FAMILY_PHOTOS } from '../data/initialMemories';
 
@@ -278,28 +278,27 @@ export const FamilyGallery = () => {
             </div>
             <img src="/decorations/layers/star-blue.png" alt="" className="w-4 sm:w-5 h-auto animate-pulse" aria-hidden="true" />
 
-            {/* Quick Skip / Back pill in header for instant desktop accessibility */}
-            {activeIdx < total - 1 ? (
-              <button
-                type="button"
-                onClick={handleSkipToLast}
-                className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/90 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/20 font-display font-semibold text-[11px] transition-all shadow-xs focus:outline-none cursor-pointer"
-                title="Skip to 15th photo"
-              >
-                <span>Skip to 15th</span>
-                <FastForward size={11} className="text-theme-red" />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => goTo(0)}
-                className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/90 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/20 font-display font-semibold text-[11px] transition-all shadow-xs focus:outline-none cursor-pointer"
-                title="Back to 1st photo"
-              >
-                <ChevronUp size={11} className="text-theme-blue" />
-                <span>Back to 1st</span>
-              </button>
-            )}
+            {/* Quick navigation pills in header — both visible, dimmed when at endpoint */}
+            <button
+              type="button"
+              onClick={() => goTo(0)}
+              disabled={activeIdx === 0}
+              className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/90 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/20 font-display font-semibold text-[11px] transition-all shadow-xs focus:outline-none cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/90 disabled:hover:text-theme-navy"
+              title="Back to 1st photo"
+            >
+              <ChevronUp size={11} className="text-theme-blue" />
+              <span>1st</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleSkipToLast}
+              disabled={activeIdx === total - 1}
+              className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/90 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/20 font-display font-semibold text-[11px] transition-all shadow-xs focus:outline-none cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/90 disabled:hover:text-theme-navy"
+              title="Skip to 15th photo"
+            >
+              <span>15th</span>
+              <FastForward size={11} className="text-theme-red" />
+            </button>
           </div>
 
           <h2 className="font-display font-extrabold text-2xl min-[400px]:text-3xl sm:text-4xl tracking-tight mb-0.5 drop-shadow-sm">
@@ -558,37 +557,47 @@ export const FamilyGallery = () => {
           })}
         </div>
 
-        {/* ── Button to Skip Through to the 15th (Last) Photo ── */}
-        {activeIdx < total - 1 && (
-          <div className="flex justify-center mt-2.5 sm:mt-3">
-            <button
-              type="button"
-              onClick={handleSkipToLast}
-              className="group inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-white/95 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/20 hover:border-theme-navy font-display font-semibold text-xs sm:text-sm transition-all duration-300 shadow-sm hover:shadow-md focus:outline-none transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
-              title="Skip to 15th photo"
-              aria-label="Skip through to 15th photo"
-            >
-              <span>Skip to 15th Photo</span>
-              <FastForward size={13} className="text-theme-red group-hover:text-theme-yellow transition-colors" />
-            </button>
-          </div>
-        )}
+        {/* ── Two Action Buttons: Skip to 15th & Back to 1st — always both visible ── */}
+        <div className="flex items-center justify-center gap-2 sm:gap-3 mt-2.5 sm:mt-3 flex-wrap">
+          {/* Back to 1st Photo button */}
+          <button
+            type="button"
+            onClick={() => goTo(0)}
+            disabled={activeIdx === 0}
+            className="group inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-white/95 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/20 hover:border-theme-navy font-display font-semibold text-xs sm:text-sm transition-all duration-300 shadow-sm hover:shadow-md focus:outline-none transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/95 disabled:hover:text-theme-navy disabled:hover:border-theme-navy/20 disabled:transform-none"
+            title="Back to 1st photo"
+            aria-label="Go back to the 1st photo"
+          >
+            <ChevronUp size={13} className="text-theme-blue group-hover:text-theme-yellow transition-colors" />
+            <span>Back to 1st Photo</span>
+          </button>
 
-        {/* ── Button to Return to 1st Photo (shown when on the last photo) ── */}
-        {activeIdx === total - 1 && (
-          <div className="flex justify-center mt-2.5 sm:mt-3">
-            <button
-              type="button"
-              onClick={() => goTo(0)}
-              className="group inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-white/95 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/20 hover:border-theme-navy font-display font-semibold text-xs sm:text-sm transition-all duration-300 shadow-sm hover:shadow-md focus:outline-none transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
-              title="Back to 1st photo"
-              aria-label="Go back to the 1st photo"
-            >
-              <ChevronUp size={13} className="text-theme-blue group-hover:text-theme-yellow transition-colors" />
-              <span>Back to 1st Photo</span>
-            </button>
-          </div>
-        )}
+          {/* Skip to 15th Photo button */}
+          <button
+            type="button"
+            onClick={handleSkipToLast}
+            disabled={activeIdx === total - 1}
+            className="group inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-white/95 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/20 hover:border-theme-navy font-display font-semibold text-xs sm:text-sm transition-all duration-300 shadow-sm hover:shadow-md focus:outline-none transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/95 disabled:hover:text-theme-navy disabled:hover:border-theme-navy/20 disabled:transform-none"
+            title="Skip to 15th photo"
+            aria-label="Skip through to 15th photo"
+          >
+            <span>Skip to 15th Photo</span>
+            <FastForward size={13} className="text-theme-red group-hover:text-theme-yellow transition-colors" />
+          </button>
+        </div>
+
+        {/* ── Scroll Guide: Help users understand how to advance through photos ── */}
+        <div className="flex flex-col items-center mt-3 sm:mt-4 gap-1 select-none">
+          <span className="font-body text-[10px] sm:text-xs text-theme-navy/40 tracking-wide text-center">
+            Scroll down to browse family moments
+          </span>
+          {/* Animated bouncing chevron arrow */}
+          <ChevronDown
+            size={16}
+            className="text-theme-navy/30 animate-bounce"
+            aria-hidden="true"
+          />
+        </div>
       </div>
 
       {/* ────────────────── Lightbox Modal ────────────────── */}
