@@ -1369,3 +1369,23 @@ Fix the visual disconnection in the mobile hero section where the hanging birthd
 - `src/sections/FamilyGallery.jsx`
 - `CHANGELOG.md`
 - `FEATURE_LOG.md`
+
+
+### Feature: Standard Uniform Photo Dimensions for 12-Month Calendar
+
+**Status**: Completed
+
+**Description**
+1. **Root Cause Analysis & Resolution**:
+   - **Problem**: When flipping through the 12 calendar months, the photo card height changed drastically. Month 12 and Month 1 (portrait) rendered much taller, while Month 4 and Month 5 (landscape) shrank significantly ("stringed"), causing the calendar easel stand to shift and change height.
+   - **Root Cause**: The photo frame div used `aspect-4/3 sm:aspect-16/11` without square brackets. In Tailwind CSS v3, arbitrary aspect ratios must use brackets (`aspect-[4/3]`). Because these classes were unrecognized, the browser defaulted to sizing each photo according to its intrinsic dimensions.
+2. **Implementation**:
+   - Updated the photo frame in `src/sections/MemoryGallery.jsx` to use `aspect-[4/3] w-full` and explicit inline `style={{ aspectRatio: '4 / 3' }}`.
+   - Added calibrated `objectPosition` focal coordinates in `src/data/initialMemories.js` for all 12 photos so baby's face, crown, and smile remain centered in the uniform frame.
+   - Preserved full uncropped photo viewing inside the lightbox modal.
+
+**Files Modified**
+- `src/sections/MemoryGallery.jsx`
+- `src/data/initialMemories.js`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`

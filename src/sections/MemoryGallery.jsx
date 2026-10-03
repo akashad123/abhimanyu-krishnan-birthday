@@ -446,13 +446,17 @@ export const MemoryGallery = () => {
                 {/* ── 1. The Framed Baby Photo ── */}
                 <div
                   onClick={() => setSelectedItem(activeMilestone)}
-                  className="relative group cursor-pointer aspect-4/3 sm:aspect-16/11 w-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#F2EDE4] border-2 border-[#E8DDCD] shadow-sm hover:shadow-md transition-shadow"
+                  className="relative group cursor-pointer aspect-[4/3] w-full rounded-xl sm:rounded-2xl overflow-hidden bg-[#F2EDE4] border-2 border-[#E8DDCD] shadow-sm hover:shadow-md transition-shadow"
+                  style={{ aspectRatio: '4 / 3' }}
                   title="Click to view full photo"
                 >
                   <img
                     src={activeMilestone.image}
                     alt={activeMilestone.alt}
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                    style={{
+                      objectPosition: activeMilestone.objectPosition || 'center center',
+                    }}
                     loading="eager"
                   />
 

@@ -127,3 +127,9 @@ Developer-facing record of meaningful changes.
 - **FamilyGallery (Mobile Resize & Stability)**: Enabled ScrollTrigger.config({ ignoreMobileResize: true }) to eliminate address bar hide/show jitter on mobile devices; set anticipatePin: 0, snap: false, and removed preventOverlaps and fastScrollEnd
 - **FamilyGallery (Preloading & Lightbox)**: Preloaded all 15 authentic family photos into browser memory with loading='eager' and decoding='async'; imported missing Heart icon to prevent lightbox runtime crash
 - Build: verified clean build with 0 errors (1,651 modules in 14.17s)
+
+## [2026-10-03] - fix: enforce uniform 4:3 photo frame size across all 12 monthly milestones
+
+- **MemoryGallery (Uniform Photo Frame)**: Fixed photo frame sizing fluctuation where portrait photos (Month 1, 2, 12) rendered taller and landscape photos (Month 4, 5) shrank / stringed; corrected arbitrary Tailwind bracket syntax to `aspect-[4/3]` and added inline `style={{ aspectRatio: '4 / 3' }}` to guarantee standard, identical dimensions across all 12 calendar pages
+- **Initial Memories (Focal Coordinates)**: Added calibrated `objectPosition` coordinates to each milestone in `MONTHLY_MILESTONES` so Baby Abhimanyu's face and features are beautifully centered in the uniform 4:3 frame without clipping
+- Build: verified clean build with 0 errors (1,651 modules in 12.80s)
