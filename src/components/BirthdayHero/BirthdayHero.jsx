@@ -181,7 +181,7 @@ export const BirthdayHero = () => {
       {/* Red Balloon - Left Mid */}
       <div
         ref={balloonRedRef}
-        className="hero-layer hero-layer-balloon top-[44%] left-3 sm:left-10 md:left-20 w-16 sm:w-20 md:w-24 drop-shadow-xl"
+        className="hero-layer hero-layer-balloon top-[40%] left-3 sm:left-10 md:left-16 lg:left-[8%] xl:left-[10%] w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 drop-shadow-xl"
       >
         <div ref={balloonRedInnerRef} className="w-full h-full">
           <img
@@ -196,7 +196,7 @@ export const BirthdayHero = () => {
       {/* Yellow Balloon - Left Lower */}
       <div
         ref={balloonYellowRef}
-        className="hero-layer hero-layer-balloon top-[68%] left-2 sm:left-8 md:left-16 w-14 sm:w-18 md:w-22 drop-shadow-xl"
+        className="hero-layer hero-layer-balloon top-[62%] left-2 sm:left-8 md:left-12 lg:left-[5%] xl:left-[7%] w-14 sm:w-16 md:w-20 lg:w-24 xl:w-28 drop-shadow-xl"
       >
         <div ref={balloonYellowInnerRef} className="w-full h-full">
           <img
@@ -211,7 +211,7 @@ export const BirthdayHero = () => {
       {/* Blue Balloon - Right Mid */}
       <div
         ref={balloonBlueRef}
-        className="hero-layer hero-layer-balloon top-[42%] right-3 sm:right-10 md:right-20 w-16 sm:w-20 md:w-24 drop-shadow-xl"
+        className="hero-layer hero-layer-balloon top-[38%] right-3 sm:right-10 md:right-16 lg:right-[8%] xl:right-[10%] w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 drop-shadow-xl"
       >
         <div ref={balloonBlueInnerRef} className="w-full h-full">
           <img
@@ -226,7 +226,7 @@ export const BirthdayHero = () => {
       {/* Green Balloon - Right Lower */}
       <div
         ref={balloonGreenRef}
-        className="hero-layer hero-layer-balloon top-[66%] right-2 sm:right-8 md:right-16 w-14 sm:w-18 md:w-22 drop-shadow-xl"
+        className="hero-layer hero-layer-balloon top-[60%] right-2 sm:right-8 md:right-12 lg:right-[5%] xl:right-[7%] w-14 sm:w-16 md:w-20 lg:w-24 xl:w-28 drop-shadow-xl"
       >
         <div ref={balloonGreenInnerRef} className="w-full h-full">
           <img
@@ -281,8 +281,9 @@ export const BirthdayHero = () => {
           className="flex flex-col items-center w-full"
           style={{ transformOrigin: 'top center' }}
         >
-          {/* Braided Rope extending directly from the top ceiling down to the card's knot */}
-          <div className="braided-rope w-3 sm:w-3.5 md:w-4 h-8 sm:h-10 md:h-12 -mb-2 z-10" />
+          {/* Braided Rope extending from the top ceiling to the card's knot — mobile & iPad only.
+              On PC (lg+) the birthday-card.png image already has the rope and bow drawn in. */}
+          <div className="braided-rope w-3 sm:w-3.5 md:w-4 h-8 sm:h-10 md:h-12 -mb-2 z-10 lg:hidden" />
 
           {/* Central Card with Baby Abhimanyu Krishnan */}
           <div className="relative w-full max-w-[300px] min-[400px]:max-w-[330px] sm:max-w-[390px] md:max-w-[450px] lg:max-w-[370px] xl:max-w-[410px] px-1 z-10">

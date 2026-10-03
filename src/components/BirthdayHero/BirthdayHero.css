@@ -10,8 +10,8 @@
   justify-content: flex-start;
   padding-bottom: 2.5rem;
   overflow-x: hidden;
-  /* Prevent vertical scrollbar appearing inside the hero section */
-  overflow-y: clip;
+  /* overflow-y stays visible so balloons at 60-68% aren't clipped */
+  overflow-y: visible;
 }
 
 @media (min-width: 640px) {

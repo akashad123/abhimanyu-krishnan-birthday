@@ -52,11 +52,6 @@ export const Footer = () => {
       {/* Main Footer Body Canvas */}
       <div className="bg-theme-cream pt-2 pb-12 sm:pb-16 px-4">
         <div className="max-w-2xl mx-auto flex flex-col items-center">
-          {/* Monogram emblem */}
-          <div className="w-12 h-12 rounded-full bg-theme-sky/20 border-2 border-theme-sky flex items-center justify-center text-theme-navy font-display font-bold text-lg mb-3 shadow-sm">
-            AK
-          </div>
-
           <h3 className="font-display font-bold text-xl sm:text-2xl text-theme-navy mb-1">
             {APP_CONFIG.childName}
           </h3>

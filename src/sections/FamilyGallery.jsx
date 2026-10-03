@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Sparkles, X, ChevronLeft, ChevronRight, FastForward } from 'lucide-react';
+import { Sparkles, X, ChevronLeft, ChevronRight, ChevronUp, FastForward } from 'lucide-react';
 import { APP_CONFIG } from '../config/appConfig';
 import { FAMILY_PHOTOS } from '../data/initialMemories';
 
@@ -461,6 +461,22 @@ export const FamilyGallery = () => {
             >
               <span>Skip to 15th Photo</span>
               <FastForward size={13} className="text-theme-red group-hover:text-theme-yellow transition-colors" />
+            </button>
+          </div>
+        )}
+
+        {/* ── Button to Return to 1st Photo (shown when on the last photo) ── */}
+        {activeIdx === total - 1 && (
+          <div className="flex justify-center mt-2.5 sm:mt-3">
+            <button
+              type="button"
+              onClick={() => goTo(0)}
+              className="group inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-white/95 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/20 hover:border-theme-navy font-display font-semibold text-xs sm:text-sm transition-all duration-300 shadow-sm hover:shadow-md focus:outline-none transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+              title="Back to 1st photo"
+              aria-label="Go back to the 1st photo"
+            >
+              <ChevronUp size={13} className="text-theme-blue group-hover:text-theme-yellow transition-colors" />
+              <span>Back to 1st Photo</span>
             </button>
           </div>
         )}
