@@ -58,18 +58,23 @@ const MiniCalendar = ({ monthIndex }) => {
   const { days, startDay } = data;
   const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-  // Fill calendar cells
+  /**
+   * Always produce exactly 42 cells (6 rows × 7 cols) regardless of the month.
+   * This prevents a layout-height jump on months that naturally span 6 rows
+   * (e.g. Month 3 / March, Month 8 / August, Month 11 / November).
+   */
+  const TOTAL_CELLS = 42; // 6 rows × 7 cols — fixed for every month
   const cells = [];
-  for (let i = 0; i < startDay; i++) {
-    cells.push(null);
-  }
-  for (let d = 1; d <= days; d++) {
-    cells.push(d);
-  }
+  // Leading empty cells before the 1st of the month
+  for (let i = 0; i < startDay; i++) cells.push(null);
+  // Actual day numbers
+  for (let d = 1; d <= days; d++) cells.push(d);
+  // Trailing empty cells to pad up to exactly 42
+  while (cells.length < TOTAL_CELLS) cells.push(null);
 
   return (
     <div className="select-none font-mono text-[9px] sm:text-[10px] leading-tight text-[#6D5D4D] text-right">
-      {/* Header */}
+      {/* Day-of-week header row */}
       <div className="grid grid-cols-7 gap-1 text-center font-bold text-[#DE5347] mb-0.5 border-b border-[#E8DCCB] pb-0.5">
         {daysOfWeek.map((d, i) => (
           <span key={i} className="w-3.5 text-center">
@@ -77,7 +82,7 @@ const MiniCalendar = ({ monthIndex }) => {
           </span>
         ))}
       </div>
-      {/* Grid */}
+      {/* Fixed 6-row date grid — always 42 cells to lock the height */}
       <div className="grid grid-cols-7 gap-x-1 gap-y-0.5 text-center">
         {cells.map((cell, idx) => (
           <span
@@ -86,7 +91,7 @@ const MiniCalendar = ({ monthIndex }) => {
               cell === 1 ? 'font-bold text-[#DE5347]' : cell ? 'text-[#5A4A3B]' : 'text-transparent'
             }`}
           >
-            {cell || '·'}
+            {cell ?? '·'}
           </span>
         ))}
       </div>
