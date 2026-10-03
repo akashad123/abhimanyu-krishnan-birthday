@@ -33,6 +33,9 @@ export default {
         'paper': '0 8px 20px -4px rgba(0, 0, 0, 0.12)',
         'balloon': 'inset -6px -6px 12px rgba(0, 0, 0, 0.15), inset 6px 6px 12px rgba(255, 255, 255, 0.4)',
       },
+      borderWidth: {
+        '3': '3px',
+      },
     },
   },
   plugins: [],

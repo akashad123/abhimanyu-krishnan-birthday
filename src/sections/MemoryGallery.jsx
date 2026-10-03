@@ -15,6 +15,14 @@ import { MONTHLY_MILESTONES } from '../data/initialMemories';
  * - Seamless support for guest-contributed celebration memories
  * - Anonymous client-side validated upload modal invitation
  */
+// Celebratory 4-color matching palettes for hover pop-ups and 3px border outlines
+const MILESTONE_DECOR_PALETTES = [
+  { borderClass: 'group-hover:border-[#4E93CB]', balloon: '/decorations/layers/balloon-blue.png', star: '/decorations/layers/star-yellow.png' },
+  { borderClass: 'group-hover:border-[#DE5347]', balloon: '/decorations/layers/balloon-red.png', star: '/decorations/layers/star-blue.png' },
+  { borderClass: 'group-hover:border-[#E5A93C]', balloon: '/decorations/layers/balloon-yellow.png', star: '/decorations/layers/star-red.png' },
+  { borderClass: 'group-hover:border-[#55A46D]', balloon: '/decorations/layers/balloon-green.png', star: '/decorations/layers/star-yellow.png' },
+];
+
 export const MemoryGallery = ({
   memories = [],
   onDeleteMemory,
@@ -154,36 +162,76 @@ export const MemoryGallery = ({
 
         {/* 12 Months Grid: 3 columns on mobile matching reference, 3 on tablet, 4 on desktop */}
         <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 min-[400px]:gap-3 sm:gap-5 md:gap-6">
-          {MONTHLY_MILESTONES.map((item, idx) => (
-            <div
-              key={item.monthNumber}
-              onClick={() => handleOpenLightbox(idx)}
-              className="group cursor-pointer bg-white rounded-2xl sm:rounded-3xl p-2 min-[400px]:p-2.5 sm:p-3.5 shadow-paper border border-theme-cream flex flex-col justify-between"
-            >
-              {/* Photo Frame (Static Curated Photo) */}
-              <div className="relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl bg-amber-50/40 border border-theme-cream/80 group-hover:border-theme-sky/50 transition-colors duration-300">
-                <img
-                  src={item.image}
-                  alt={item.alt}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
-                  loading="lazy"
-                />
+          {MONTHLY_MILESTONES.map((item, idx) => {
+            const palette = MILESTONE_DECOR_PALETTES[idx % MILESTONE_DECOR_PALETTES.length];
 
-                {/* Subtle Glossy Photo Light Sweep */}
-                <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-              </div>
+            return (
+              <div
+                key={item.monthNumber}
+                onClick={() => handleOpenLightbox(idx)}
+                className="group cursor-pointer bg-white rounded-2xl sm:rounded-3xl p-2 min-[400px]:p-2.5 sm:p-3.5 shadow-paper border border-theme-cream flex flex-col justify-between"
+              >
+                {/* Photo Frame & Pop-up Celebrations Wrapper */}
+                <div className="relative">
+                  {/* Photo Frame with 3-Pixel Outline and Smooth Inner Photo Zoom */}
+                  <div
+                    className={`relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl bg-amber-50/40 border-3 border-transparent ${palette.borderClass} transition-colors duration-300 shadow-sm`}
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.alt}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
+                      loading="lazy"
+                    />
 
-              {/* Month Label */}
-              <div className="pt-2 sm:pt-2.5 text-center px-0.5 pb-0.5">
-                <p className="font-display leading-tight text-xs sm:text-sm">
-                  <span className="font-bold text-[#DE5347]">{item.monthNumber} </span>
-                  <span className="font-semibold text-theme-navy">
-                    {item.monthNumber === '01' ? 'month' : 'months'}
-                  </span>
-                </p>
+                    {/* Subtle Glossy Photo Light Sweep */}
+                    <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                  </div>
+
+                  {/* Pop-up Celebration Elements on Hover */}
+                  {/* 1. Festive Balloon popping up at Top-Left */}
+                  <div className="absolute -top-3.5 -left-2.5 sm:-top-4 sm:-left-3 pointer-events-none opacity-0 scale-0 -translate-y-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-300 ease-out delay-75 z-20 drop-shadow-md">
+                    <img
+                      src={palette.balloon}
+                      alt=""
+                      className="w-6 min-[400px]:w-7 sm:w-8 h-auto transform -rotate-12"
+                      aria-hidden="true"
+                    />
+                  </div>
+
+                  {/* 2. Celebration Party Drum popping up at Bottom-Right */}
+                  <div className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-2.5 pointer-events-none opacity-0 scale-0 translate-y-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-300 ease-out delay-150 z-20 drop-shadow-md">
+                    <img
+                      src="/decorations/layers/drum.png"
+                      alt=""
+                      className="w-6 min-[400px]:w-7 sm:w-8 h-auto transform rotate-12"
+                      aria-hidden="true"
+                    />
+                  </div>
+
+                  {/* 3. Celebration Star popping up at Top-Right */}
+                  <div className="absolute -top-2.5 -right-2 sm:-top-3 sm:-right-2 pointer-events-none opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 rotate-0 group-hover:rotate-12 transition-all duration-300 ease-out delay-100 z-20 drop-shadow-sm">
+                    <img
+                      src={palette.star}
+                      alt=""
+                      className="w-4 sm:w-5 h-auto animate-pulse"
+                      aria-hidden="true"
+                    />
+                  </div>
+                </div>
+
+                {/* Month Label */}
+                <div className="pt-2 sm:pt-2.5 text-center px-0.5 pb-0.5">
+                  <p className="font-display leading-tight text-xs sm:text-sm">
+                    <span className="font-bold text-[#DE5347]">{item.monthNumber} </span>
+                    <span className="font-semibold text-theme-navy">
+                      {item.monthNumber === '01' ? 'month' : 'months'}
+                    </span>
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Optional Community / Guest Memories Section */}

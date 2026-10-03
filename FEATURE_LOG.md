@@ -855,6 +855,41 @@ Refine the hover interaction on the "12 Months of Our Little One" milestone card
 - Production build `npm run build` succeeded with 0 errors (`✓ built in 4.75s`).
 - Verified CSS bundle contains `group-hover:scale-110` and `group-hover:translate-x-full`.
 
+---
+
+### [2026-10-03] Milestone Photo Hover: 3-Pixel Outline & Celebratory Pop-up Elements (Option B)
+
+**Purpose**
+Implement playful, celebratory hover decorations directly on the 12-month milestone photos with a crisp 3-pixel outline and popping celebration elements (balloons, drums, and stars) as requested in Option B, while ensuring the outer card remains 100% grounded and stationary.
+
+**User Flow**
+1. Visitor moves their cursor over any of the 12 milestone photo cards.
+2. The outer card stays firmly positioned with zero lifting, translation, or layout shift.
+3. The photo frame instantly lights up with a bold **3-pixel celebratory border outline**, cycling through the birthday theme colors (`#4E93CB` sky blue, `#DE5347` red, `#E5A93C` yellow, `#55A46D` green) matching the "12 MONTHS" letters.
+4. **Three cute celebration elements playfully spring up on the corners of the frame**:
+   - A **festive balloon** pops up at the top-left corner (`-top-3.5 -left-2.5`, tilted -12°).
+   - A **celebration toy drum** springs up at the bottom-right corner (`-bottom-2 -right-2`, tilted +12°).
+   - A **twinkling star** pops up at the top-right corner (`-top-2.5 -right-2`).
+5. Inside the frame, baby Abhimanyu's photo gently zooms (`scale-110`) with a glossy photo sheen sweep, creating a delightful interactive keepsake experience.
+
+**Technical Architecture**
+- Added `borderWidth: { '3': '3px' }` to `tailwind.config.js` to natively support `border-3`.
+- In `src/sections/MemoryGallery.jsx`:
+  - Defined `MILESTONE_DECOR_PALETTES` mapping each month to its corresponding color theme, balloon asset (`balloon-blue.png`, `balloon-red.png`, `balloon-yellow.png`, `balloon-green.png`), and star asset.
+  - Positioned pop-up elements using `absolute` inside a relative wrapper around the photo frame, styled with `pointer-events-none opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100` and staggered transition delays (`delay-75`, `delay-100`, `delay-150`).
+  - Preserved `cursor-pointer` and lightbox click handling seamlessly.
+
+**Files Modified**
+- `tailwind.config.js`
+- `src/sections/MemoryGallery.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` executed successfully with 0 errors (`✓ built in 3.89s`).
+- Verified `border-3` generates `.border-3{border-width:3px}` and all hover decoration assets resolve properly.
+
+
 
 
 

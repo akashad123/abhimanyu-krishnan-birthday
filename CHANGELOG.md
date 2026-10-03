@@ -65,6 +65,8 @@ Developer-facing record of meaningful changes.
 - Removed description/taglines from the 12 milestone cards in the "12 Months of Our Little One" section per user request, displaying solely the baby's photo and the month label (e.g., `01 month`, `02 months`), while also removing the generic intro paragraph description for a cleaner, photo-first presentation.
 - Fixed milestone photo hover scaling by switching to valid Tailwind `group-hover:scale-110` (from invalid uncompiled `scale-108`), restoring active smooth image zoom on hover while maintaining stationary card boundaries.
 - Added "Glossy Photo Sheen" subtle diagonal light shimmer sweep (`bg-gradient-to-r from-transparent via-white/20 to-transparent`) and soft border tint on the photo frame for an attractive photographic effect.
+- Implemented celebratory Option B hover pop-ups on the 12-month milestone cards: added a crisp 3px celebratory border outline (`border-3`) cycling through the celebration theme colors (`#4E93CB` blue, `#DE5347` red, `#E5A93C` yellow, `#55A46D` green) and animated party decoration stickers that spring up on hover (festive balloon at top-left, celebration toy drum at bottom-right, and golden star at top-right) with smooth scaling and 0 card displacement.
+
 
 
 
