@@ -116,52 +116,82 @@ export const MemoryGallery = ({
   return (
     <section
       id={APP_CONFIG.sections.memories}
-      className="relative pt-8 sm:pt-12 pb-16 sm:pb-24 px-3 sm:px-6 bg-theme-creamLight border-t-4 border-theme-rope/25 shadow-inner mt-6 sm:mt-8 z-30"
+      className="relative z-30 -mt-6 sm:-mt-10 md:-mt-14"
     >
-      <div className="max-w-5xl mx-auto">
-        {/* Section Header: Styled after reference/memories-section.jpeg */}
-        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-10">
-          {/* Decorative Stars & Tag */}
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <img
-              src="/decorations/layers/star-yellow.png"
-              alt=""
-              className="w-5 sm:w-7 h-auto animate-pulse"
-              aria-hidden="true"
-            />
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs">
-              <Sparkles size={13} className="text-theme-yellow fill-theme-yellow" />
-              <span>Milestone Photo Album</span>
+      {/* Organic Celebratory Wave Transition from Blue Striped Sky to Cream Photo Album */}
+      <div className="relative w-full overflow-hidden leading-none pointer-events-none -mb-1">
+        <svg
+          viewBox="0 0 1440 280"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="relative block w-full h-24 min-[400px]:h-32 sm:h-44 md:h-56 lg:h-64"
+          preserveAspectRatio="none"
+        >
+          {/* Layer 1: Translucent Blue Wave (#5299D3, 40% opacity) */}
+          <path
+            d="M0,80 C180,80 280,10 440,10 C620,10 720,130 900,130 C1060,130 1170,40 1300,40 C1380,40 1415,60 1440,70 L1440,280 L0,280 Z"
+            fill="#5299D3"
+            fillOpacity="0.4"
+          />
+          {/* Layer 2: Main Exact Blue Wave (#5299D3 solid, matching wallpaper blue) */}
+          <path
+            d="M0,110 C200,110 310,35 470,35 C660,35 760,160 940,160 C1100,160 1200,65 1335,65 C1395,65 1425,85 1440,95 L1440,280 L0,280 Z"
+            fill="#5299D3"
+          />
+          {/* Layer 3: Foreground Cream-White Wave (#FCFAF6 matching album background) */}
+          <path
+            d="M0,145 C240,145 340,70 500,70 C700,70 800,190 980,190 C1130,190 1230,105 1360,105 C1410,105 1430,120 1440,125 L1440,280 L0,280 Z"
+            fill="#FCFAF6"
+          />
+        </svg>
+      </div>
+
+      {/* Main Memory Album Content Canvas */}
+      <div className="bg-theme-creamLight pt-0 pb-16 sm:pb-24 px-3 sm:px-6">
+        <div className="max-w-5xl mx-auto">
+          {/* Section Header: Resting right on top of the wave */}
+          <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-10 -mt-14 min-[400px]:-mt-18 sm:-mt-24 md:-mt-32 relative z-20">
+            {/* Decorative Stars & Tag */}
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <img
+                src="/decorations/layers/star-yellow.png"
+                alt=""
+                className="w-5 sm:w-7 h-auto animate-pulse drop-shadow-sm"
+                aria-hidden="true"
+              />
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs border border-theme-yellow/30 shadow-sm backdrop-blur-sm bg-white/80">
+                <Sparkles size={13} className="text-theme-yellow fill-theme-yellow" />
+                <span>Milestone Photo Album</span>
+              </div>
+              <img
+                src="/decorations/layers/star-blue.png"
+                alt=""
+                className="w-5 sm:w-7 h-auto animate-pulse drop-shadow-sm"
+                aria-hidden="true"
+              />
             </div>
-            <img
-              src="/decorations/layers/star-blue.png"
-              alt=""
-              className="w-5 sm:w-7 h-auto animate-pulse"
-              aria-hidden="true"
-            />
+
+            {/* Main Title: "12 MONTHS" in celebratory colors matching the reference */}
+            <h2 className="font-display font-extrabold text-3xl min-[400px]:text-4xl sm:text-5xl tracking-tight mb-1 drop-shadow-sm">
+              <span className="text-[#DE5347]">12 </span>
+              <span className="tracking-wider">
+                <span className="text-[#E5A93C]">M</span>
+                <span className="text-[#4E93CB]">O</span>
+                <span className="text-[#55A46D]">N</span>
+                <span className="text-[#DE5347]">T</span>
+                <span className="text-[#4E93CB]">H</span>
+                <span className="text-[#E5A93C]">S</span>
+              </span>
+            </h2>
+
+            {/* Subtitle: "OF OUR LITTLE ONE" */}
+            <p className="font-display font-bold text-xs sm:text-sm md:text-base text-theme-navy/80 uppercase tracking-widest">
+              OF OUR LITTLE ONE
+            </p>
           </div>
 
-          {/* Main Title: "12 MONTHS" in celebratory colors matching the reference */}
-          <h2 className="font-display font-extrabold text-3xl min-[400px]:text-4xl sm:text-5xl tracking-tight mb-1">
-            <span className="text-[#DE5347]">12 </span>
-            <span className="tracking-wider">
-              <span className="text-[#E5A93C]">M</span>
-              <span className="text-[#4E93CB]">O</span>
-              <span className="text-[#55A46D]">N</span>
-              <span className="text-[#DE5347]">T</span>
-              <span className="text-[#4E93CB]">H</span>
-              <span className="text-[#E5A93C]">S</span>
-            </span>
-          </h2>
-
-          {/* Subtitle: "OF OUR LITTLE ONE" */}
-          <p className="font-display font-bold text-xs sm:text-sm md:text-base text-theme-navy/80 uppercase tracking-widest">
-            OF OUR LITTLE ONE
-          </p>
-        </div>
-
-        {/* 12 Months Grid: 3 columns on mobile matching reference, 3 on tablet, 4 on desktop */}
-        <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 min-[400px]:gap-3 sm:gap-5 md:gap-6">
+          {/* 12 Months Grid: 3 columns on mobile matching reference, 3 on tablet, 4 on desktop */}
+          <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 min-[400px]:gap-3 sm:gap-5 md:gap-6">
           {MONTHLY_MILESTONES.map((item, idx) => {
             const palette = MILESTONE_DECOR_PALETTES[idx % MILESTONE_DECOR_PALETTES.length];
 
@@ -307,6 +337,7 @@ export const MemoryGallery = ({
             <span>Add a Memory to the Album</span>
           </button>
         </div>
+      </div>
       </div>
 
       {/* Floating Undo Notification Toast */}

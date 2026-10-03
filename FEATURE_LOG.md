@@ -889,6 +889,39 @@ Implement playful, celebratory hover decorations directly on the 12-month milest
 - Production build `npm run build` executed successfully with 0 errors (`✓ built in 3.89s`).
 - Verified `border-3` generates `.border-3{border-width:3px}` and all hover decoration assets resolve properly.
 
+---
+
+### [2026-10-03] Organic Wave Transition & Header Integration (Haikei Wave Style)
+
+**Purpose**
+Eliminate the abrupt flat horizontal divider between the blue-and-white striped hero wallpaper and the milestone photo album, introducing a soft, organic, multi-layered SVG wave inspired by the user's reference (`app.haikei.app`), and positioning the "Milestone Photo Album: 12 Months of Our Little One" header gracefully on top of this wave.
+
+**User Flow**
+1. Visitor scrolls down from the hero section past the milestone card and fluffy floor clouds.
+2. Instead of encountering an abrupt straight cut, the visitor sees an organic, multi-layered wave in sky-blue (`#5299D3`) and warm cream (`#FCFAF6`) rolling smoothly beneath the clouds.
+3. The celebratory header ("Milestone Photo Album: 12 MONTHS OF OUR LITTLE ONE") is nestled directly on top of this wave crest, with its glowing stars and festive colorful lettering.
+4. The wave smoothly flows down into the clean cream-white canvas where the 12 milestone photo cards reside.
+
+**Technical Architecture**
+- `src/sections/MemoryGallery.jsx`:
+  - Removed flat top border (`border-t-4 border-theme-rope/25 shadow-inner mt-6 sm:mt-8`).
+  - Added a responsive multi-layered SVG wave (`viewBox="0 0 1440 280"`):
+    - **Layer 1 (Back)**: Sky-blue wave (`#5299D3`, 40% opacity) for atmospheric depth.
+    - **Layer 2 (Middle)**: Solid sky-blue wave (`#5299D3`), matching the exact wallpaper stripe color.
+    - **Layer 3 (Foreground)**: Warm cream-white wave (`#FCFAF6`), perfectly continuous with `bg-theme-creamLight`.
+  - Positioned the section header with negative top margin (`-mt-14 min-[400px]:-mt-18 sm:-mt-24 md:-mt-32 relative z-20`) so it sits directly on top of the wave.
+  - Added subtle negative top margin on the section (`-mt-6 sm:-mt-10 md:-mt-14`) to tuck seamlessly underneath the hero clouds.
+
+**Files Modified**
+- `src/sections/MemoryGallery.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` executed cleanly in 3.62s with 0 errors.
+- Verified smooth transition from striped wallpaper into the wave without visual gaps or layout clipping.
+
+
 
 
 
