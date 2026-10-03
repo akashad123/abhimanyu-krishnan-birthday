@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Camera, Heart, X, Sparkles, ChevronLeft, ChevronRight, Trash2, RotateCcw } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import { APP_CONFIG } from '../config/appConfig';
 import { MONTHLY_MILESTONES } from '../data/initialMemories';
 
@@ -7,15 +7,13 @@ import { MONTHLY_MILESTONES } from '../data/initialMemories';
  * MemoryGallery Section — "12 Months of Our Little One"
  * 
  * Styled according to client reference `reference/memories-section.jpeg`:
+ * - Organic multi-layer wave header transition
  * - Playful colorful header with floating celebration stars
  * - 12 Monthly polaroid photo milestone cards (01 month to 12 months)
- * - Individual month taglines ("A brand new you", "So curious", "All smiles", etc.)
- * - Delete icon / Undo functionality on guest & family celebration memories
+ * - 2 photos per row on mobile phones, 3 photos per row on desktop PC
+ * - Celebratory 3-pixel themed border outline and smooth photo scale zoom on hover
  * - Interactive photo lightbox modal for high-resolution viewing
- * - Seamless support for guest-contributed celebration memories
- * - Anonymous client-side validated upload modal invitation
  */
-// Celebratory 4-color matching palettes for hover pop-ups and 3px border outlines
 const MILESTONE_DECOR_PALETTES = [
   { borderClass: 'group-hover:border-[#4E93CB]', balloon: '/decorations/layers/balloon-blue.png', star: '/decorations/layers/star-yellow.png' },
   { borderClass: 'group-hover:border-[#DE5347]', balloon: '/decorations/layers/balloon-red.png', star: '/decorations/layers/star-blue.png' },
@@ -23,95 +21,50 @@ const MILESTONE_DECOR_PALETTES = [
   { borderClass: 'group-hover:border-[#55A46D]', balloon: '/decorations/layers/balloon-green.png', star: '/decorations/layers/star-yellow.png' },
 ];
 
-export const MemoryGallery = ({
-  memories = [],
-  onDeleteMemory,
-  onRestoreMemory,
-  onOpenUpload,
-}) => {
+export const MemoryGallery = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [lightboxIndex, setLightboxIndex] = useState(null);
-  const [undoState, setUndoState] = useState(null);
-  const undoTimerRef = useRef(null);
-
-  // Combine static monthly milestones and guest memories for lightbox navigation
-  const allLightboxItems = [
-    ...MONTHLY_MILESTONES.map((m) => ({
-      id: m.monthNumber,
-      type: 'milestone',
-      title: m.monthLabel,
-      subtitle: null,
-      badge: `${APP_CONFIG.childName} — Milestone`,
-      image: m.image,
-      alt: m.alt,
-      raw: m,
-    })),
-    ...memories.map((m) => ({
-      id: m.id,
-      type: 'guest',
-      title: m.caption || `${APP_CONFIG.childName} — 1st Birthday`,
-      subtitle: m.created_at ? new Date(m.created_at).toLocaleDateString() : 'Celebration Memory',
-      badge: 'Guest Memory',
-      image: m.public_url,
-      alt: m.caption || `${APP_CONFIG.childName} memory`,
-      raw: m,
-    })),
-  ];
 
   const handleOpenLightbox = (index) => {
     setLightboxIndex(index);
-    setSelectedItem(allLightboxItems[index]);
+    setSelectedItem(MONTHLY_MILESTONES[index]);
+  };
+
+  const handleCloseLightbox = () => {
+    setSelectedItem(null);
+    setLightboxIndex(null);
   };
 
   const handlePrev = (e) => {
-    e.stopPropagation();
+    e?.stopPropagation?.();
     if (lightboxIndex > 0) {
       handleOpenLightbox(lightboxIndex - 1);
     } else {
-      handleOpenLightbox(allLightboxItems.length - 1);
+      handleOpenLightbox(MONTHLY_MILESTONES.length - 1);
     }
   };
 
   const handleNext = (e) => {
-    e.stopPropagation();
-    if (lightboxIndex < allLightboxItems.length - 1) {
+    e?.stopPropagation?.();
+    if (lightboxIndex < MONTHLY_MILESTONES.length - 1) {
       handleOpenLightbox(lightboxIndex + 1);
     } else {
       handleOpenLightbox(0);
     }
   };
 
-  // Delete guest/uploaded memory handler (Moments Shared with Love only)
-  const handleDeleteGuestMemory = async (item) => {
-    if (!onDeleteMemory) return;
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!selectedItem) return;
+      if (e.key === 'Escape') handleCloseLightbox();
+      if (e.key === 'ArrowLeft') handlePrev();
+      if (e.key === 'ArrowRight') handleNext();
+    };
 
-    const deleted = await onDeleteMemory(item.id);
-    if (!deleted) return;
-
-    if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
-
-    setUndoState({
-      type: 'guest',
-      item: deleted,
-      label: item.caption || 'Memory photo',
-    });
-
-    undoTimerRef.current = setTimeout(() => {
-      setUndoState(null);
-    }, 6000);
-  };
-
-  // Undo delete handler for guest memories
-  const handleUndo = () => {
-    if (!undoState) return;
-
-    if (undoState.type === 'guest' && onRestoreMemory) {
-      onRestoreMemory(undoState.item);
-    }
-
-    if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
-    setUndoState(null);
-  };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedItem, lightboxIndex]);
 
   return (
     <section
@@ -147,7 +100,7 @@ export const MemoryGallery = ({
       </div>
 
       {/* Main Memory Album Content Canvas */}
-      <div className="bg-theme-creamLight pt-0 pb-16 sm:pb-24 px-3 sm:px-6">
+      <div className="bg-theme-creamLight pt-0 pb-12 sm:pb-16 px-3 sm:px-6">
         <div className="max-w-5xl mx-auto">
           {/* Section Header: Resting right on top of the wave */}
           <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-10 -mt-14 min-[400px]:-mt-18 sm:-mt-24 md:-mt-32 relative z-20">
@@ -190,178 +143,81 @@ export const MemoryGallery = ({
             </p>
           </div>
 
-          {/* 12 Months Grid: 3 columns on mobile matching reference, 3 on tablet, 4 on desktop */}
-          <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 min-[400px]:gap-3 sm:gap-5 md:gap-6">
-          {MONTHLY_MILESTONES.map((item, idx) => {
-            const palette = MILESTONE_DECOR_PALETTES[idx % MILESTONE_DECOR_PALETTES.length];
+          {/* 12 Months Grid: 2 photos in one row on mobile phones, 3 photos in one row on desktop PC */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-5 md:gap-6">
+            {MONTHLY_MILESTONES.map((item, idx) => {
+              const palette = MILESTONE_DECOR_PALETTES[idx % MILESTONE_DECOR_PALETTES.length];
 
-            return (
-              <div
-                key={item.monthNumber}
-                onClick={() => handleOpenLightbox(idx)}
-                className="group cursor-pointer bg-white rounded-2xl sm:rounded-3xl p-2 min-[400px]:p-2.5 sm:p-3.5 shadow-paper border border-theme-cream flex flex-col justify-between"
-              >
-                {/* Photo Frame & Pop-up Celebrations Wrapper */}
-                <div className="relative">
-                  {/* Photo Frame with 3-Pixel Outline and Smooth Inner Photo Zoom */}
-                  <div
-                    className={`relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl bg-amber-50/40 border-3 border-transparent ${palette.borderClass} transition-colors duration-300 shadow-sm`}
-                  >
-                    <img
-                      src={item.image}
-                      alt={item.alt}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
-                      loading="lazy"
-                    />
-
-                    {/* Subtle Glossy Photo Light Sweep */}
-                    <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                  </div>
-
-                  {/* Pop-up Celebration Elements on Hover */}
-                  {/* 1. Festive Balloon popping up at Top-Left */}
-                  <div className="absolute -top-3.5 -left-2.5 sm:-top-4 sm:-left-3 pointer-events-none opacity-0 scale-0 -translate-y-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-300 ease-out delay-75 z-20 drop-shadow-md">
-                    <img
-                      src={palette.balloon}
-                      alt=""
-                      className="w-6 min-[400px]:w-7 sm:w-8 h-auto transform -rotate-12"
-                      aria-hidden="true"
-                    />
-                  </div>
-
-                  {/* 2. Celebration Party Drum popping up at Bottom-Right */}
-                  <div className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-2.5 pointer-events-none opacity-0 scale-0 translate-y-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-300 ease-out delay-150 z-20 drop-shadow-md">
-                    <img
-                      src="/decorations/layers/drum.png"
-                      alt=""
-                      className="w-6 min-[400px]:w-7 sm:w-8 h-auto transform rotate-12"
-                      aria-hidden="true"
-                    />
-                  </div>
-
-                  {/* 3. Celebration Star popping up at Top-Right */}
-                  <div className="absolute -top-2.5 -right-2 sm:-top-3 sm:-right-2 pointer-events-none opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 rotate-0 group-hover:rotate-12 transition-all duration-300 ease-out delay-100 z-20 drop-shadow-sm">
-                    <img
-                      src={palette.star}
-                      alt=""
-                      className="w-4 sm:w-5 h-auto animate-pulse"
-                      aria-hidden="true"
-                    />
-                  </div>
-                </div>
-
-                {/* Month Label */}
-                <div className="pt-2 sm:pt-2.5 text-center px-0.5 pb-0.5">
-                  <p className="font-display leading-tight text-xs sm:text-sm">
-                    <span className="font-bold text-[#DE5347]">{item.monthNumber} </span>
-                    <span className="font-semibold text-theme-navy">
-                      {item.monthNumber === '01' ? 'month' : 'months'}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Optional Community / Guest Memories Section */}
-        {memories.length > 0 && (
-          <div className="mt-16 sm:mt-20 pt-10 border-t-2 border-theme-rope/20">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-sky/15 text-theme-navy font-display font-semibold text-xs mb-2">
-                <Heart size={13} className="text-theme-red fill-theme-red" />
-                <span>Guest & Family Memories</span>
-              </div>
-              <h3 className="font-display font-bold text-2xl sm:text-3xl text-theme-navy">
-                Moments Shared with Love
-              </h3>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-              {memories.map((item, idx) => (
+              return (
                 <div
-                  key={item.id || idx}
-                  onClick={() => handleOpenLightbox(MONTHLY_MILESTONES.length + idx)}
-                  className="group cursor-pointer bg-white rounded-2xl p-2.5 sm:p-3 shadow-paper hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-theme-cream"
+                  key={item.monthNumber}
+                  onClick={() => handleOpenLightbox(idx)}
+                  className="group cursor-pointer bg-white rounded-2xl sm:rounded-3xl p-2.5 sm:p-3.5 shadow-paper border border-theme-cream flex flex-col justify-between"
                 >
-                  <div className="relative aspect-square overflow-hidden rounded-xl bg-theme-cream">
-                    <img
-                      src={item.public_url}
-                      alt={item.caption || `${APP_CONFIG.childName} memory`}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-
-                    {/* Delete / Undo Icon in top right corner of the pic */}
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteGuestMemory(item);
-                      }}
-                      className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 hover:bg-theme-red text-theme-navy/70 hover:text-white shadow-md transition-all transform hover:scale-110 z-20 focus:outline-none"
-                      title="Delete photo"
-                      aria-label="Delete memory photo"
+                  {/* Photo Frame & Pop-up Celebrations Wrapper */}
+                  <div className="relative">
+                    {/* Photo Frame with 3-Pixel Outline and Smooth Inner Photo Zoom */}
+                    <div
+                      className={`relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl bg-amber-50/40 border-3 border-transparent ${palette.borderClass} transition-colors duration-300 shadow-sm`}
                     >
-                      <Trash2 size={14} />
-                    </button>
+                      <img
+                        src={item.image}
+                        alt={item.alt}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
+                        loading="lazy"
+                      />
+
+                      {/* Subtle Glossy Photo Light Sweep */}
+                      <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                    </div>
+
+                    {/* Pop-up Celebration Elements on Hover */}
+                    {/* 1. Festive Balloon popping up at Top-Left */}
+                    <div className="absolute -top-3.5 -left-2.5 sm:-top-4 sm:-left-3 pointer-events-none opacity-0 scale-0 -translate-y-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-300 ease-out delay-75 z-20 drop-shadow-md">
+                      <img
+                        src={palette.balloon}
+                        alt=""
+                        className="w-6 min-[400px]:w-7 sm:w-8 h-auto transform -rotate-12"
+                        aria-hidden="true"
+                      />
+                    </div>
+
+                    {/* 2. Celebration Party Drum popping up at Bottom-Right */}
+                    <div className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-2.5 pointer-events-none opacity-0 scale-0 translate-y-2 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-300 ease-out delay-150 z-20 drop-shadow-md">
+                      <img
+                        src="/decorations/layers/drum.png"
+                        alt=""
+                        className="w-6 min-[400px]:w-7 sm:w-8 h-auto transform rotate-12"
+                        aria-hidden="true"
+                      />
+                    </div>
+
+                    {/* 3. Celebration Star popping up at Top-Right */}
+                    <div className="absolute -top-2.5 -right-2 sm:-top-3 sm:-right-2 pointer-events-none opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 rotate-0 group-hover:rotate-12 transition-all duration-300 ease-out delay-100 z-20 drop-shadow-sm">
+                      <img
+                        src={palette.star}
+                        alt=""
+                        className="w-4 sm:w-5 h-auto animate-pulse"
+                        aria-hidden="true"
+                      />
+                    </div>
                   </div>
-                  <div className="pt-2 px-1 text-center">
-                    <p className="font-display font-medium text-xs sm:text-sm text-theme-navy truncate">
-                      {item.caption || `${APP_CONFIG.childName} — 1st Birthday`}
+
+                  {/* Month Label */}
+                  <div className="pt-2 sm:pt-2.5 text-center px-0.5 pb-0.5">
+                    <p className="font-display leading-tight text-xs sm:text-sm">
+                      <span className="font-bold text-[#DE5347]">{item.monthNumber} </span>
+                      <span className="font-semibold text-theme-navy">
+                        {item.monthNumber === '01' ? 'month' : 'months'}
+                      </span>
                     </p>
                   </div>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
-        )}
-
-        {/* Bottom Upload Invitation Card */}
-        <div className="mt-14 sm:mt-20 max-w-xl mx-auto text-center bg-white/95 border-2 border-theme-sky/30 rounded-3xl p-6 sm:p-8 shadow-paper">
-          <span className="inline-block p-3 rounded-full bg-theme-sky/15 text-theme-sky mb-3">
-            <Camera size={26} />
-          </span>
-          <h3 className="font-display font-bold text-xl sm:text-2xl text-theme-navy mb-2">
-            Have a Photo of Baby Abhimanyu?
-          </h3>
-          <p className="font-body text-xs sm:text-sm text-theme-navy/70 mb-5 max-w-md mx-auto">
-            Upload your favorite picture from the celebration directly into the album. No account or password required!
-          </p>
-          <button
-            type="button"
-            onClick={onOpenUpload}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-theme-red hover:bg-theme-redDark text-white font-display font-semibold text-sm sm:text-base shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
-          >
-            <Camera size={18} />
-            <span>Add a Memory to the Album</span>
-          </button>
         </div>
       </div>
-      </div>
-
-      {/* Floating Undo Notification Toast */}
-      {undoState && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-4 py-2.5 bg-theme-navy/95 backdrop-blur-md text-white text-xs sm:text-sm rounded-full shadow-2xl border border-white/20">
-          <span>Photo deleted</span>
-          <button
-            type="button"
-            onClick={handleUndo}
-            className="inline-flex items-center gap-1.5 px-3 py-1 bg-theme-yellow hover:bg-amber-400 text-theme-navy font-display font-bold rounded-full text-xs transition-colors shadow-sm"
-          >
-            <RotateCcw size={13} />
-            <span>Undo</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setUndoState(null)}
-            className="p-1 text-white/60 hover:text-white transition-colors"
-            aria-label="Dismiss notification"
-          >
-            <X size={14} />
-          </button>
-        </div>
-      )}
 
       {/* High-Resolution Lightbox Modal */}
       {selectedItem && (
@@ -369,33 +225,18 @@ export const MemoryGallery = ({
           role="dialog"
           aria-modal="true"
           className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6"
-          onClick={() => setSelectedItem(null)}
+          onClick={handleCloseLightbox}
         >
           <div
             className="relative max-w-2xl w-full bg-white rounded-3xl overflow-hidden shadow-2xl p-4 sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header controls: Delete (for guest memories only) & Close buttons */}
-            <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex items-center gap-2 z-20">
-              {selectedItem?.type === 'guest' && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    const itemToDelete = selectedItem;
-                    setSelectedItem(null);
-                    handleDeleteGuestMemory(itemToDelete.raw);
-                  }}
-                  className="p-2 rounded-full bg-theme-cream text-theme-navy/70 hover:bg-theme-red hover:text-white transition-colors shadow-sm"
-                  title="Delete photo"
-                  aria-label="Delete photo"
-                >
-                  <Trash2 size={16} />
-                </button>
-              )}
+            {/* Close Button */}
+            <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20">
               <button
                 type="button"
-                onClick={() => setSelectedItem(null)}
-                className="p-2 rounded-full bg-theme-cream text-theme-navy hover:bg-theme-red hover:text-white transition-colors shadow-sm"
+                onClick={handleCloseLightbox}
+                className="p-1.5 sm:p-2 rounded-full bg-theme-cream text-theme-navy hover:bg-theme-red hover:text-white transition-colors shadow-sm focus:outline-none"
                 aria-label="Close photo preview"
               >
                 <X size={18} />
@@ -406,19 +247,19 @@ export const MemoryGallery = ({
             <button
               type="button"
               onClick={handlePrev}
-              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 text-theme-navy hover:bg-theme-blue hover:text-white transition-colors z-20 shadow-md"
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 p-2 sm:p-3 rounded-full bg-white/90 text-theme-navy hover:bg-theme-blue hover:text-white transition-all z-20 shadow-md hover:scale-110 focus:outline-none"
               aria-label="Previous photo"
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft size={22} />
             </button>
 
             <button
               type="button"
               onClick={handleNext}
-              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/90 text-theme-navy hover:bg-theme-blue hover:text-white transition-colors z-20 shadow-md"
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 p-2 sm:p-3 rounded-full bg-white/90 text-theme-navy hover:bg-theme-blue hover:text-white transition-all z-20 shadow-md hover:scale-110 focus:outline-none"
               aria-label="Next photo"
             >
-              <ChevronRight size={20} />
+              <ChevronRight size={22} />
             </button>
 
             {/* Photo Display */}
@@ -433,10 +274,10 @@ export const MemoryGallery = ({
             {/* Photo Info */}
             <div className="mt-4 text-center">
               <span className="inline-block px-3 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs mb-1.5">
-                {selectedItem.badge}
+                {APP_CONFIG.childName} — Milestone
               </span>
               <h4 className="font-display font-bold text-lg sm:text-xl text-theme-navy">
-                {selectedItem.title}
+                {selectedItem.monthLabel}
               </h4>
             </div>
           </div>

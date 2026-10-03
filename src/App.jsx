@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import BirthdayHero from './components/BirthdayHero/BirthdayHero';
 import MemoryGallery from './sections/MemoryGallery';
 import FamilyGallery from './sections/FamilyGallery';
+import CommunityMemories from './sections/CommunityMemories';
 import UploadSection from './sections/UploadSection';
 import Footer from './sections/Footer';
 import { useMemories } from './hooks/useMemories';
@@ -23,16 +24,19 @@ export function App() {
         {/* Unified Celebration Scene (Plaque -> Rope -> Number 1 Piñata -> Milestone) */}
         <BirthdayHero />
 
-        {/* Section 2: Photography-First Memory Album */}
-        <MemoryGallery
+        {/* Section 2: 12 Months of Our Little One (2 on mobile, 3 on desktop) */}
+        <MemoryGallery />
+
+        {/* Section 3: Dedicated Family Moments Photo Album (2 on mobile, 3 on desktop) */}
+        <FamilyGallery />
+
+        {/* Section 4: Community Memories & Upload Invitation Card (Last before Footer) */}
+        <CommunityMemories
           memories={memories}
           onDeleteMemory={deleteMemory}
           onRestoreMemory={restoreMemory}
           onOpenUpload={() => setIsUploadOpen(true)}
         />
-
-        {/* Section 3: Dedicated Family Moments Photo Album */}
-        <FamilyGallery />
       </main>
 
       {/* Celebratory Closing Footer */}

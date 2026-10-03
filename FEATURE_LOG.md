@@ -1035,3 +1035,40 @@ Lower the starting position of the multi-layered organic wave transition and rem
 - Production build `npm run build` executed cleanly in 3.91s with 0 errors.
 - Verified all 15 images resolve correctly and lightbox functions with seamless navigation.
 
+---
+
+### [2026-10-03] Section Relocation & Responsive 3-PC / 2-Mobile Photo Grids
+
+**Purpose**
+1. Relocate the "Have a Photo of Baby Abhimanyu? Add a Memory to the Album" upload invitation card and guest memories section to the very end of the page directly before the Footer.
+2. Align the responsive photo grids for both the "Milestone Photo Album: 12 Months of Our Little One" section and the "Family Moments" section to display exactly 3 photos per row on desktop PC and 2 photos per row on mobile phones.
+
+**User Flow**
+1. After scrolling through the celebratory hero and wave, visitors view the 12 Monthly Milestones in a spacious 3-per-row grid on desktop PC (4 rows) and 2-per-row grid on mobile phones (6 rows).
+2. Visitors then transition directly into the "Family Moments" section, also displayed with 3 photos per row on desktop (5 rows) and 2 photos per row on mobile.
+3. At the very end of the page, directly before the Footer, visitors encounter the Community Memories and the "Have a Photo of Baby Abhimanyu? Add a Memory to the Album" upload card.
+
+**Technical Changes**
+- `src/sections/MemoryGallery.jsx`:
+  - Updated grid to `grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-5 md:gap-6`.
+  - Removed embedded guest memories and upload CTA card.
+- `src/sections/FamilyGallery.jsx`:
+  - Updated grid to `grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-5 md:gap-6`.
+- `src/sections/CommunityMemories.jsx`:
+  - Created standalone section component housing guest memories (2 on mobile, 3 on desktop), client-side deletion/undo, and upload CTA card.
+- `src/App.jsx`:
+  - Updated render sequence: `BirthdayHero` -> `MemoryGallery` -> `FamilyGallery` -> `CommunityMemories` -> `Footer`.
+
+**Files Modified / Created**
+- `src/sections/MemoryGallery.jsx`
+- `src/sections/FamilyGallery.jsx`
+- `src/sections/CommunityMemories.jsx`
+- `src/App.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` completed with 0 errors in 3.37s.
+- Confirmed upload card is situated right before the Footer and both photo sections render 3 photos per row on PC and 2 on mobile.
+
+

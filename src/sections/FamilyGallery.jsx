@@ -123,8 +123,8 @@ export const FamilyGallery = () => {
           </p>
         </div>
 
-        {/* 15 Family Photos Grid: 2 columns on mobile, 3 on tablet, 5 on desktop */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 min-[400px]:gap-3.5 sm:gap-5 md:gap-6">
+        {/* 15 Family Photos Grid: 2 photos in one row on mobile phones, 3 photos in one row on desktop PC */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 sm:gap-5 md:gap-6">
           {FAMILY_PHOTOS.map((item, idx) => {
             const palette = FAMILY_DECOR_PALETTES[idx % FAMILY_DECOR_PALETTES.length];
 
@@ -132,7 +132,7 @@ export const FamilyGallery = () => {
               <div
                 key={item.id}
                 onClick={() => handleOpenLightbox(idx)}
-                className="group cursor-pointer bg-white rounded-2xl sm:rounded-3xl p-2 min-[400px]:p-2.5 sm:p-3 shadow-paper border border-theme-cream flex flex-col justify-between"
+                className="group cursor-pointer bg-white rounded-2xl sm:rounded-3xl p-2.5 sm:p-3.5 shadow-paper border border-theme-cream flex flex-col justify-between"
               >
                 {/* Photo Frame & Celebratory Hover Effects Wrapper */}
                 <div className="relative">
