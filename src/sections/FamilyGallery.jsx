@@ -1,11 +1,16 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Sparkles, X, ChevronLeft, ChevronRight, ChevronUp, FastForward } from 'lucide-react';
+import { Sparkles, X, ChevronLeft, ChevronRight, ChevronUp, FastForward, Heart } from 'lucide-react';
 import { APP_CONFIG } from '../config/appConfig';
 import { FAMILY_PHOTOS } from '../data/initialMemories';
 
 gsap.registerPlugin(ScrollTrigger);
+
+// Prevent mobile address bar height toggling from triggering layout reflow / jump
+ScrollTrigger.config({
+  ignoreMobileResize: true,
+});
 
 /**
  * FamilyGallery — Scroll-Pinned Vertical Drum Carousel
@@ -58,10 +63,22 @@ export const FamilyGallery = () => {
   const [activeIdx, setActiveIdx]    = useState(0);
   const [lightboxIdx, setLightboxIdx] = useState(null);
 
-  const sectionRef   = useRef(null);
-  const activeIdxRef = useRef(0);       // avoids stale-closure in ScrollTrigger
-  const stRef        = useRef(null);
-  const total        = FAMILY_PHOTOS.length;
+  const sectionRef      = useRef(null);
+  const activeIdxRef    = useRef(0);       // avoids stale-closure in ScrollTrigger
+  const stRef           = useRef(null);
+  const isNavigatingRef = useRef(false);   // blocks intermediate onUpdate loops during button jumps
+  const navTimeoutRef   = useRef(null);
+  const total           = FAMILY_PHOTOS.length;
+
+  /* ──────────────────── Preload authentic images ─────────── */
+
+  useEffect(() => {
+    // Preload all 15 authentic family photos into browser memory for instant, flicker-free transitions
+    FAMILY_PHOTOS.forEach((photo) => {
+      const img = new Image();
+      img.src = photo.image;
+    });
+  }, []);
 
   /* ──────────────────── GSAP scroll-pin ──────────────────── */
 
@@ -79,35 +96,30 @@ export const FamilyGallery = () => {
       const st = ScrollTrigger.create({
         trigger: section,
         start: 'top top',
-        // Give each photo responsive scroll travel (0.6 viewport on desktop, 0.45 on mobile)
-        end: () => `+=${(total - 1) * window.innerHeight * (isDesktop ? 0.6 : 0.45)}`,
+        // Give each photo responsive scroll travel (0.55 viewport on desktop, 0.45 on mobile)
+        end: () => `+=${(total - 1) * window.innerHeight * (isDesktop ? 0.55 : 0.45)}`,
         pin: true,
         pinSpacing: true,
-        // Disable anticipatePin on mobile to eliminate premature jump after Milestone section
-        anticipatePin: isDesktop ? 1 : 0,
-        // Recalculate positions on any viewport resize (fixes mobile browser chrome show/hide)
+        // Disable anticipatePin across all devices to prevent initial jump/stutter
+        anticipatePin: 0,
+        // Recalculate positions on viewport resize
         invalidateOnRefresh: true,
-        // Prevent overlapping pins from fighting each other
-        preventOverlaps: true,
-        // Snap back to nearest step quickly when fast-scrolling
-        fastScrollEnd: true,
-
-        // Snap to each photo step on desktop mousewheel, disable touch fight on mobile
-        snap: isDesktop
-          ? {
-              snapTo: 1 / (total - 1),
-              duration: { min: 0.25, max: 0.55 },
-              delay: 0.04,
-              ease: 'power2.inOut',
-            }
-          : false,
 
         onUpdate: (self) => {
-          const next = Math.round(self.progress * (total - 1));
+          if (isNavigatingRef.current) return;
+          // Equal scroll distribution across all 15 photos: each gets 1/total of the scroll
+          const p = Math.max(0, Math.min(0.9999, self.progress));
+          const next = Math.min(total - 1, Math.floor(p * total));
           if (next !== activeIdxRef.current) {
             activeIdxRef.current = next;
             setActiveIdx(next);
           }
+        },
+
+        // When scrolling down into FamilyGallery from previous section
+        onEnter: () => {
+          activeIdxRef.current = 0;
+          setActiveIdx(0);
         },
 
         // When scrolling past the end into next section, lock at final photo
@@ -116,7 +128,13 @@ export const FamilyGallery = () => {
           setActiveIdx(total - 1);
         },
 
-        // When scrolling back past the start, reset to photo 1 cleanly
+        // When scrolling back up into FamilyGallery from next section, lock at final photo
+        onEnterBack: () => {
+          activeIdxRef.current = total - 1;
+          setActiveIdx(total - 1);
+        },
+
+        // When scrolling back past the start into previous section, reset to photo 1 cleanly
         onLeaveBack: () => {
           activeIdxRef.current = 0;
           setActiveIdx(0);
@@ -133,6 +151,9 @@ export const FamilyGallery = () => {
 
     return () => {
       clearTimeout(initTimer);
+      if (navTimeoutRef.current) {
+        clearTimeout(navTimeoutRef.current);
+      }
       if (stRef.current) {
         stRef.current.kill();
         stRef.current = null;
@@ -145,24 +166,28 @@ export const FamilyGallery = () => {
   const goTo = useCallback(
     (idx) => {
       const targetIdx = Math.max(0, Math.min(total - 1, idx));
+      isNavigatingRef.current = true;
       activeIdxRef.current = targetIdx;
       setActiveIdx(targetIdx);
 
       if (stRef.current && typeof stRef.current.start === 'number' && typeof stRef.current.end === 'number') {
         const span = stRef.current.end - stRef.current.start;
-        // Keep slightly inside the pin bounds so the pin does NOT prematurely unpin or interlap with next section
-        const progressFrac = targetIdx === 0
-          ? 0.005
-          : targetIdx === total - 1
-          ? 0.99
-          : targetIdx / (total - 1);
+        // Position scroll safely in the exact center of target photo's step interval:
+        // (targetIdx + 0.5) / total is always safely bounded between (0.5/15) and (14.5/15),
+        // completely eliminating unpin overshoots, boundary jumping, or interlapping with adjacent sections.
+        const targetProgress = (targetIdx + 0.5) / total;
+        const targetScroll = Math.round(stRef.current.start + targetProgress * span);
 
-        const targetScroll = stRef.current.start + progressFrac * span;
         window.scrollTo({
           top: targetScroll,
-          behavior: 'smooth',
+          behavior: 'auto', // Instant jump without momentum overshoot or unpin flicker
         });
       }
+
+      if (navTimeoutRef.current) clearTimeout(navTimeoutRef.current);
+      navTimeoutRef.current = setTimeout(() => {
+        isNavigatingRef.current = false;
+      }, 150);
     },
     [total]
   );
@@ -209,7 +234,7 @@ export const FamilyGallery = () => {
     }
 
     // Mobile (< 640px): expanded height, filling mobile screen below top header
-    const mobH = Math.min(490, Math.max(360, Math.round(h * 0.53)));
+    const mobH = Math.min(520, Math.max(350, Math.round(h * 0.55)));
     return { cardH: mobH, visibleH: mobH + 16, isDesktop: false };
   };
 
@@ -253,8 +278,8 @@ export const FamilyGallery = () => {
             </div>
             <img src="/decorations/layers/star-blue.png" alt="" className="w-4 sm:w-5 h-auto animate-pulse" aria-hidden="true" />
 
-            {/* Quick Skip pill in header for instant desktop accessibility */}
-            {activeIdx < total - 1 && (
+            {/* Quick Skip / Back pill in header for instant desktop accessibility */}
+            {activeIdx < total - 1 ? (
               <button
                 type="button"
                 onClick={handleSkipToLast}
@@ -263,6 +288,16 @@ export const FamilyGallery = () => {
               >
                 <span>Skip to 15th</span>
                 <FastForward size={11} className="text-theme-red" />
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => goTo(0)}
+                className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/90 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/20 font-display font-semibold text-[11px] transition-all shadow-xs focus:outline-none cursor-pointer"
+                title="Back to 1st photo"
+              >
+                <ChevronUp size={11} className="text-theme-blue" />
+                <span>Back to 1st</span>
               </button>
             )}
           </div>
@@ -453,7 +488,8 @@ export const FamilyGallery = () => {
                           objectPosition: 'center',
                           display: 'block',
                         }}
-                        loading={Math.abs(idx - activeIdx) <= 2 ? 'eager' : 'lazy'}
+                        loading="eager"
+                        decoding="async"
                       />
 
                       {/* Active label overlay */}

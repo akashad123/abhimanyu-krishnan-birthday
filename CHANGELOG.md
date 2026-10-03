@@ -118,3 +118,12 @@ Developer-facing record of meaningful changes.
 - **CommunityMemories**: Raised the section directly to the ending of Family Moments on mobile, closing the dead gap after the 15th photo
 - **CommunityMemories**: Added framed photo of Baby Abhimanyu with camera badge on the \Have a Photo of Baby Abhimanyu? Add a Memory to the Album\ card
 - Build: verified clean build with 0 errors
+
+## [2026-10-03] - fix: complete resolution of beginning and end boundary bugs in FamilyGallery
+
+- **FamilyGallery (Scroll Lifecycle)**: Added complete onEnter, onLeave, onEnterBack, and onLeaveBack callbacks to ensure active index is rock-solid when entering or re-entering from either direction
+- **FamilyGallery (Step Distribution)**: Replaced asymmetric Math.round() with uniform Math.floor(p * total) mapping, giving all 15 photos (especially the 1st and 15th) equal, generous scroll durations without premature unpinning
+- **FamilyGallery (Navigation & Skip)**: Added isNavigatingRef scroll-lock and instant behavior: 'auto' positioning safely at exact interval centers (idx + 0.5) / total, eliminating the 6,000px smooth-scroll momentum overshoot, unpin flicker, and intermediate photo flashing
+- **FamilyGallery (Mobile Resize & Stability)**: Enabled ScrollTrigger.config({ ignoreMobileResize: true }) to eliminate address bar hide/show jitter on mobile devices; set anticipatePin: 0, snap: false, and removed preventOverlaps and fastScrollEnd
+- **FamilyGallery (Preloading & Lightbox)**: Preloaded all 15 authentic family photos into browser memory with loading='eager' and decoding='async'; imported missing Heart icon to prevent lightbox runtime crash
+- Build: verified clean build with 0 errors (1,651 modules in 14.17s)

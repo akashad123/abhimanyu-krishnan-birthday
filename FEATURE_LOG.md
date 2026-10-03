@@ -1346,3 +1346,26 @@ Fix the visual disconnection in the mobile hero section where the hanging birthd
 - `src/sections/CommunityMemories.jsx`
 - `CHANGELOG.md`
 - `FEATURE_LOG.md`
+
+
+### Feature: Family Moments Beginning and End Boundary Bug Fix
+
+**Status**: Completed
+
+**Description**
+1. **Root Cause Analysis & Resolution**:
+   - **End Bug (15th Photo)**: In previous versions, skipping to the 15th photo used `window.scrollTo({ behavior: 'smooth' })` near `st.end` (0.99). Native browser smooth-scroll momentum overshot `st.end`, causing ScrollTrigger to unpin `FamilyGallery` (switching it from `fixed top: 0` to `absolute bottom: 0`), flashing `CommunityMemories` onto the screen before bouncing back. Furthermore, `Math.round()` allocated only half the scroll distance to the 15th photo, causing it to unpin almost immediately upon thumb scroll.
+   - **Beginning Bug (1st Photo)**: When entering from `MemoryGallery` or skipping back to Photo 1, `anticipatePin: 1` caused premature pinning, while missing `onEnter`/`onEnterBack` callbacks left active state ambiguous, and upward smooth scroll overshot `st.start`, causing a momentary unpin into `MemoryGallery`.
+   - **Mobile Address Bar Jitter**: Scrolling on mobile devices continuously expanded and collapsed the mobile URL bar, which triggered full ScrollTrigger layout recalculations and visual jumps.
+2. **Implementation**:
+   - Configured `ScrollTrigger.config({ ignoreMobileResize: true })` globally to stop mobile viewport resizes from interrupting active scroll.
+   - Replaced asymmetric `Math.round` with uniform `Math.floor(p * total)` so each of the 15 photos enjoys the exact same scroll runway without quick slips.
+   - Implemented `isNavigatingRef` and instant `behavior: 'auto'` scroll jumps to `(targetIdx + 0.5) / total` for "Skip to 15th Photo", "Back to 1st Photo", and dot navigation, completely preventing momentum overshoot and intermediate photo flicker.
+   - Added full 4-stage lifecycle handlers: `onEnter`, `onLeave`, `onEnterBack`, `onLeaveBack`.
+   - Preloaded all 15 authentic family photos into memory with `loading="eager"` and `decoding="async"` for instant render.
+   - Fixed missing `Heart` icon import from `lucide-react` in `FamilyGallery.jsx`.
+
+**Files Modified**
+- `src/sections/FamilyGallery.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
