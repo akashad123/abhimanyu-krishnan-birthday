@@ -24,6 +24,16 @@
   }
 }
 
+/* On large PC screens: constrain to exactly one viewport height so all elements are visible */
+@media (min-width: 1024px) {
+  .birthday-hero-container {
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    padding-bottom: 2rem;
+  }
+}
+
 /* Layer positioning helpers */
 .hero-layer {
   position: absolute;

@@ -90,10 +90,10 @@ export const BirthdayHero = () => {
       ref={sectionRef}
       className="birthday-hero-container"
     >
-      {/* Layer 1: Top Bunting Garland */}
+      {/* Layer 1: Top Bunting Garland — visible on mobile & tablet, hidden on PC (lg+) */}
       <div
         ref={buntingRef}
-        className="hero-layer hero-layer-bunting flex justify-center"
+        className="hero-layer hero-layer-bunting flex justify-center lg:hidden"
       >
         <img
           src="/decorations/layers/bunting.png"
@@ -113,8 +113,8 @@ export const BirthdayHero = () => {
           className="flex flex-col items-center"
           style={{ transformOrigin: 'top center' }}
         >
-          {/* Braided Rope extending directly from the top */}
-          <div className="braided-rope w-2.5 sm:w-3.5 h-16 sm:h-24 md:h-32" />
+          {/* Braided Rope extending directly from the top ceiling — taller on desktop for proper hang connection */}
+          <div className="braided-rope w-2.5 sm:w-3.5 h-16 sm:h-24 md:h-36 lg:h-48" />
 
           {/* Cloud with Dangling Golden Star */}
           <div className="relative -mt-2">
@@ -143,8 +143,8 @@ export const BirthdayHero = () => {
           className="flex flex-col items-center"
           style={{ transformOrigin: 'top center' }}
         >
-          {/* Braided Rope extending directly from the top */}
-          <div className="braided-rope w-2.5 sm:w-3.5 h-16 sm:h-24 md:h-32" />
+          {/* Braided Rope extending directly from the top ceiling — taller on desktop for proper hang connection */}
+          <div className="braided-rope w-2.5 sm:w-3.5 h-16 sm:h-24 md:h-36 lg:h-48" />
 
           {/* Cloud with Dangling Blue Star */}
           <div className="relative -mt-2">
@@ -264,8 +264,9 @@ export const BirthdayHero = () => {
           {/* Braided Rope extending from the top ceiling down to the card's knot */}
           <div className="braided-rope w-3.5 sm:w-4 md:w-4.5 h-5 sm:h-7 md:h-5 lg:h-6" />
 
-          {/* Central Card with Baby Abhimanyu Krishnan */}
-          <div className="relative w-full max-w-[330px] min-[400px]:max-w-[360px] sm:max-w-[410px] md:max-w-[490px] lg:max-w-[560px] xl:max-w-[620px] -mt-1 px-1">
+          {/* Central Card with Baby Abhimanyu Krishnan
+              — reduced on lg/xl so the complete card is visible within 100vh */}
+          <div className="relative w-full max-w-[330px] min-[400px]:max-w-[360px] sm:max-w-[410px] md:max-w-[490px] lg:max-w-[380px] xl:max-w-[420px] -mt-1 px-1">
             <img
               src="/decorations/layers/birthday-card.png"
               alt="One Whole Year of Abhimanyu Krishnan — First Birthday Plaque"
@@ -278,7 +279,7 @@ export const BirthdayHero = () => {
           <div
             id={APP_CONFIG.sections.pinata}
             ref={pinataRef}
-            className="relative z-10 w-full max-w-[280px] sm:max-w-[340px] md:max-w-[390px] mx-auto -mt-2 sm:-mt-3"
+            className="relative z-10 w-full max-w-[280px] sm:max-w-[340px] md:max-w-[390px] lg:max-w-[280px] xl:max-w-[300px] mx-auto -mt-2 sm:-mt-3"
           >
             <div
               ref={pinataSwingRef}
@@ -297,14 +298,14 @@ export const BirthdayHero = () => {
           {/* Milestone Celebratory Card — Standing cleanly above the wave */}
           <div
             ref={milestoneRef}
-            className="relative z-20 w-full max-w-sm sm:max-w-md bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-6 sm:p-7 text-center shadow-paper mt-6 sm:mt-8 mb-8 sm:mb-12 md:mb-16"
+            className="relative z-20 w-full max-w-sm sm:max-w-md lg:max-w-xs xl:max-w-sm bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-4 sm:p-7 lg:p-5 text-center shadow-paper mt-4 sm:mt-8 lg:mt-4 mb-8 sm:mb-12 md:mb-16 lg:mb-10"
           >
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs mb-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs mb-2 sm:mb-3">
               <Sparkles size={14} className="text-theme-yellow" />
               <span>Milestone Celebration</span>
             </div>
 
-            <h2 className="font-display font-bold text-2xl sm:text-3xl text-theme-navy mb-2">
+            <h2 className="font-display font-bold text-xl sm:text-3xl lg:text-2xl text-theme-navy mb-1 sm:mb-2">
               Turning The Big One!
             </h2>
 
