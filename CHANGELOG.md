@@ -62,6 +62,7 @@ Developer-facing record of meaningful changes.
 - Fixed footer visibility issue by adding `relative z-20 w-full` to `Footer.jsx` and setting background layer to `-z-10` in `App.jsx`, resolving CSS stacking context where the fixed striped wallpaper was rendering over the unpositioned footer.
 - Cleared orphaned background node process and rebound Vite dev server directly to `http://localhost:3000`.
 - Fixed persistent photo deletion issue by integrating `localStorage` deletion persistence layer in `useMemories.js` (`addDeletedId`, `removeDeletedId`, and state initialization filtering), guaranteeing deleted photos never reappear upon page refresh.
-- Updated `supabase/schema.sql` and `docs/SUPABASE_SETUP.md` with explicit RLS `DELETE` policies for both `public.memories` table and `storage.objects` bucket.
 - Removed description/taglines from the 12 milestone cards in the "12 Months of Our Little One" section per user request, displaying solely the baby's photo and the month label (e.g., `01 month`, `02 months`), while also removing the generic intro paragraph description for a cleaner, photo-first presentation.
+- Updated 12-month milestone hover behavior: removed all whole-card hover effects (card lifting `hover:-translate-y-1`, shadow expansion, border color shift), confining the hover interaction strictly to a smooth inner scale on the photo itself (`group-hover:scale-108`), keeping the card firmly stationary.
+
 

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Camera, Heart, X, ZoomIn, Sparkles, ChevronLeft, ChevronRight, Trash2, RotateCcw } from 'lucide-react';
+import { Camera, Heart, X, Sparkles, ChevronLeft, ChevronRight, Trash2, RotateCcw } from 'lucide-react';
 import { APP_CONFIG } from '../config/appConfig';
 import { MONTHLY_MILESTONES } from '../data/initialMemories';
 
@@ -158,23 +158,16 @@ export const MemoryGallery = ({
             <div
               key={item.monthNumber}
               onClick={() => handleOpenLightbox(idx)}
-              className="group cursor-pointer bg-white rounded-2xl sm:rounded-3xl p-2 min-[400px]:p-2.5 sm:p-3.5 shadow-paper hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:border-theme-sky/40 border border-theme-cream flex flex-col justify-between"
+              className="group cursor-pointer bg-white rounded-2xl sm:rounded-3xl p-2 min-[400px]:p-2.5 sm:p-3.5 shadow-paper border border-theme-cream flex flex-col justify-between"
             >
               {/* Photo Frame (Static Curated Photo) */}
               <div className="relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl bg-amber-50/40 border border-theme-cream/80">
                 <img
                   src={item.image}
                   alt={item.alt}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
                   loading="lazy"
                 />
-
-                {/* Subtle Hover Zoom Overlay */}
-                <div className="absolute inset-0 bg-theme-navy/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                  <span className="p-1.5 sm:p-2 bg-white/95 rounded-full text-theme-navy shadow-md transform scale-90 group-hover:scale-100 transition-transform">
-                    <ZoomIn size={14} className="sm:w-4 sm:h-4" />
-                  </span>
-                </div>
               </div>
 
               {/* Month Label */}

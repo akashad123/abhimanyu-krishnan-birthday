@@ -800,6 +800,35 @@ Streamline the 12-Month milestone album by removing all description and tagline 
 - Production build `npm run build` executed successfully with 0 errors (`✓ built in 6.58s`).
 - Verified local dev server is running and hot module reloading applied changes.
 
+---
+
+### [2026-10-03] Milestone Photo Card Hover Isolation (Photo Scale Only)
+
+**Purpose**
+Refine the hover interaction on the "12 Months of Our Little One" milestone cards so that the physical card remains completely stationary and grounded on the grid, with hover feedback isolated strictly to a smooth scale on the photograph.
+
+**User Flow**
+1. Visitor points or taps on any milestone card in the 12-month album.
+2. The card does not elevate, translate upward, change shadow, or highlight border.
+3. The photo gently and smoothly zooms inside its rounded container (`group-hover:scale-108 transition-transform duration-500 ease-out`), creating an elegant, distraction-free photo showcase.
+
+**Technical Changes**
+- `src/sections/MemoryGallery.jsx`:
+  - Removed `hover:-translate-y-1`, `hover:shadow-xl`, `hover:border-theme-sky/40`, and `transition-all duration-300` from the milestone card root container.
+  - Removed the dark hover overlay and `ZoomIn` icon, allowing the photograph to remain clear and unobstructed.
+  - Retained `overflow-hidden` on the image wrapper and enhanced `group-hover:scale-108` with `ease-out` on the `<img>` tag.
+  - Removed unused `ZoomIn` icon import.
+
+**Files Modified**
+- `src/sections/MemoryGallery.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` executed successfully with 0 errors (`✓ built in 3.62s`).
+- Confirmed card elements remain stationary while the inner image responds smoothly to hover.
+
+
 
 
 
