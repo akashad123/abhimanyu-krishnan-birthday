@@ -59,6 +59,7 @@ export const FamilyGallery = () => {
   const [lightboxIdx, setLightboxIdx] = useState(null);
 
   const sectionRef   = useRef(null);
+  const stRef        = useRef(null);    // holds the ScrollTrigger instance for skipToEnd
   const activeIdxRef = useRef(0);       // avoids stale-closure in ScrollTrigger
   const total        = FAMILY_PHOTOS.length;
 
@@ -68,19 +69,16 @@ export const FamilyGallery = () => {
     const section = sectionRef.current;
     if (!section) return;
 
-    // Allow ScrollTrigger to recalculate after any layout changes
     ScrollTrigger.refresh();
 
     const st = ScrollTrigger.create({
       trigger: section,
       start: 'top top',
-      // Give each photo ~60 % of a viewport worth of scrolling room
       end: () => `+=${(total - 1) * window.innerHeight * 0.65}`,
       pin: true,
       pinSpacing: true,
       anticipatePin: 1,
 
-      // Snap to each photo step
       snap: {
         snapTo: 1 / (total - 1),
         duration: { min: 0.25, max: 0.55 },
@@ -97,10 +95,23 @@ export const FamilyGallery = () => {
       },
     });
 
+    stRef.current = st;
+
     return () => {
       st.kill();
+      stRef.current = null;
     };
   }, [total]);
+
+  /**
+   * Jumps the main page scroll to the very end of the pinned section,
+   * advancing to the last photo and releasing the pin immediately.
+   */
+  const skipToEnd = () => {
+    if (stRef.current) {
+      window.scrollTo({ top: stRef.current.end, behavior: 'smooth' });
+    }
+  };
 
   /* ──────────────────── Keyboard (lightbox only) ─────────── */
 
@@ -129,12 +140,12 @@ export const FamilyGallery = () => {
     <section
       id={APP_CONFIG.sections.family}
       ref={sectionRef}
-      className="relative z-30 bg-theme-creamLight pt-6 sm:pt-10 pb-16 sm:pb-24"
+      className="relative z-30 bg-theme-creamLight min-h-screen flex flex-col justify-center py-8 sm:py-10"
     >
-      {/* ── Section Header ── */}
-      <div className="max-w-5xl mx-auto px-3 sm:px-6">
+      {/* ── Section Header — vertically centred in viewport ── */}
+      <div className="max-w-5xl mx-auto px-3 sm:px-6 w-full">
         {/* Decorative divider */}
-        <div className="flex items-center justify-center gap-3 mb-10 sm:mb-14">
+        <div className="flex items-center justify-center gap-3 mb-6 sm:mb-8">
           <div className="h-px bg-theme-rope/30 flex-1 max-w-[100px] sm:max-w-[160px]" />
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-red/10 text-theme-red text-xs font-display font-semibold">
             <Heart size={14} className="fill-theme-red" />
@@ -143,9 +154,9 @@ export const FamilyGallery = () => {
           <div className="h-px bg-theme-rope/30 flex-1 max-w-[100px] sm:max-w-[160px]" />
         </div>
 
-        {/* Title */}
-        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
-          <div className="flex items-center justify-center gap-3 mb-2">
+        {/* Title — centered, no subtitle */}
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+          <div className="flex items-center justify-center gap-3 mb-3">
             <img src="/decorations/layers/star-yellow.png" alt="" className="w-5 sm:w-7 h-auto animate-pulse" aria-hidden="true" />
             <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-theme-sky/20 text-theme-navy font-display font-semibold text-xs border border-theme-sky/30 bg-white/80">
               <Sparkles size={13} className="text-theme-sky fill-theme-sky" />
@@ -154,7 +165,7 @@ export const FamilyGallery = () => {
             <img src="/decorations/layers/star-blue.png" alt="" className="w-5 sm:w-7 h-auto animate-pulse" aria-hidden="true" />
           </div>
 
-          <h2 className="font-display font-extrabold text-3xl min-[400px]:text-4xl sm:text-5xl tracking-tight mb-1 drop-shadow-sm">
+          <h2 className="font-display font-extrabold text-3xl min-[400px]:text-4xl sm:text-5xl tracking-tight drop-shadow-sm">
             <span className="text-[#DE5347]">FA</span>
             <span className="text-[#E5A93C]">MI</span>
             <span className="text-[#4E93CB]">LY </span>
@@ -162,10 +173,7 @@ export const FamilyGallery = () => {
             <span className="text-[#DE5347]">ME</span>
             <span className="text-[#4E93CB]">NTS</span>
           </h2>
-
-          <p className="font-display font-bold text-xs sm:text-sm md:text-base text-theme-navy/80 uppercase tracking-widest">
-            Surrounded by Love &amp; Warmth
-          </p>
+          {/* "SURROUNDED BY LOVE & WARMTH" subtitle intentionally removed per request */}
         </div>
       </div>
 
@@ -405,10 +413,20 @@ export const FamilyGallery = () => {
           })}
         </div>
 
-        {/* ── Scroll hint ── */}
-        <p className="text-center mt-4 font-body text-xs text-theme-navy/40 tracking-wide">
-          scroll to explore family moments
-        </p>
+        {/* ── Skip button — shown when not already at the last photo ── */}
+        {activeIdx < total - 1 && (
+          <div className="flex justify-center mt-4">
+            <button
+              type="button"
+              onClick={skipToEnd}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full font-display font-semibold text-xs text-theme-navy/60 border border-theme-rope/30 bg-white/50 hover:bg-white hover:text-theme-navy hover:border-theme-rope/60 hover:shadow-sm transition-all duration-200 focus:outline-none"
+              aria-label="Skip to last family moment"
+            >
+              Skip all
+              <span aria-hidden="true" className="text-[10px]">→</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* ────────────────── Lightbox Modal ────────────────── */}
