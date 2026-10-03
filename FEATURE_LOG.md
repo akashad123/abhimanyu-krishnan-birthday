@@ -1071,4 +1071,39 @@ Lower the starting position of the multi-layered organic wave transition and rem
 - Production build `npm run build` completed with 0 errors in 3.37s.
 - Confirmed upload card is situated right before the Footer and both photo sections render 3 photos per row on PC and 2 on mobile.
 
+---
+
+### [2026-10-03] Organic Footer Wave Transition
+
+**Purpose**
+Add a multi-layered organic wave transition to the Footer section matching the user's `app.haikei.app` reference, completely replacing the abrupt flat horizontal divider line before the Footer. Styled with the site's celebratory color theme to create a smooth, visually cohesive flow from the upload invitation card into the closing Footer.
+
+**User Flow**
+1. Below the "Have a Photo of Baby Abhimanyu? Add a Memory to the Album" upload card, the flat dividing line is eliminated.
+2. An organic, flowing sky-blue and cream wave rolls across the screen, echoing the celebratory wave transition at the top of the album.
+3. The closing Footer ("AK", "Abhimanyu Krishnan", "With love & blessings, Praveen & Leeba", "Bathakkah Invites") rests harmoniously on the warm cream canvas below the wave.
+
+**Technical Changes**
+- `src/sections/Footer.jsx`:
+  - Removed flat top border (`border-t-2 border-theme-rope/20`).
+  - Added responsive SVG wave transition (`viewBox="0 0 1440 280"`):
+    - Base fill `<rect>` matching `#FCFAF6` (`bg-theme-creamLight`) from the upload section above.
+    - Layer 1: Translucent sky-blue wave (`#5299D3`, 40% opacity).
+    - Layer 2: Solid sky-blue wave (`#5299D3`) matching signature celebration blue.
+    - Layer 3: Foreground cream wave (`#F8F5EE`) matching footer background.
+  - Positioned footer content canvas seamlessly below the wave with `pt-2 pb-12 sm:pb-16`.
+- `src/sections/CommunityMemories.jsx`:
+  - Adjusted bottom padding (`pb-10 sm:pb-14`) for balanced vertical spacing above the footer wave.
+
+**Files Modified**
+- `src/sections/Footer.jsx`
+- `src/sections/CommunityMemories.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` completed with 0 errors in 5.75s.
+- Verified smooth, organic wave rendering with no flat border line before the Footer.
+
+
 

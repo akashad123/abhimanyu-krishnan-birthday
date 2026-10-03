@@ -99,7 +99,7 @@ export const CommunityMemories = ({
   return (
     <section
       id={APP_CONFIG.sections.upload}
-      className="relative z-30 bg-theme-creamLight pt-6 sm:pt-10 pb-16 sm:pb-24 px-3 sm:px-6"
+      className="relative z-30 bg-theme-creamLight pt-6 sm:pt-10 pb-10 sm:pb-14 px-3 sm:px-6"
     >
       <div className="max-w-5xl mx-auto">
         {/* Soft Decorative Divider */}
