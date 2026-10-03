@@ -3,7 +3,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   getResponsiveSideMovement,
   getBalloonAsideDistance,
-  getCloudParallax,
 } from '../../utils/responsiveAnimation';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -37,7 +36,8 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
     balloonGreenRef,
     balloonGreenInnerRef,
     buntingRef,
-    cloudsFgRef,
+    cloudAsideLeftRef,
+    cloudAsideRightRef,
   } = refs;
 
   if (!sectionRef?.current) return () => {};
@@ -155,7 +155,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
    */
   const createHeroScrollTimeline = (isMobile) => {
     const asideDist = getBalloonAsideDistance(isMobile);
-    const clouds = getCloudParallax();
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -270,9 +269,29 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       );
     }
 
-    // 6. Foreground floor clouds subtle parallax
-    if (cloudsFgRef?.current) {
-      tl.to(cloudsFgRef.current, { y: -clouds.fg, ease: 'none' }, 0);
+    // 6. Mid-hero side clouds smoothly move aside to the left and right on scroll
+    if (cloudAsideLeftRef?.current) {
+      tl.to(
+        cloudAsideLeftRef.current,
+        {
+          x: -asideDist * 1.15,
+          opacity: 0.15,
+          ease: 'power1.out',
+        },
+        0
+      );
+    }
+
+    if (cloudAsideRightRef?.current) {
+      tl.to(
+        cloudAsideRightRef.current,
+        {
+          x: asideDist * 1.15,
+          opacity: 0.15,
+          ease: 'power1.out',
+        },
+        0
+      );
     }
 
     return tl;

@@ -49,7 +49,8 @@ export const BirthdayHero = () => {
 
   // Other layer refs
   const buntingRef = useRef(null);
-  const cloudsFgRef = useRef(null);
+  const cloudAsideLeftRef = useRef(null);
+  const cloudAsideRightRef = useRef(null);
   const scrollCtaRef = useRef(null);
 
   const prefersReducedMotion = useReducedMotion();
@@ -76,7 +77,8 @@ export const BirthdayHero = () => {
         balloonGreenRef,
         balloonGreenInnerRef,
         buntingRef,
-        cloudsFgRef,
+        cloudAsideLeftRef,
+        cloudAsideRightRef,
         scrollCtaRef,
       },
       prefersReducedMotion
@@ -225,6 +227,33 @@ export const BirthdayHero = () => {
         </div>
       </div>
 
+      {/* Mid-Hero Side Clouds flanking Scroll Down & Piñata (moves aside on scroll) */}
+      {/* Left Cloud */}
+      <div
+        ref={cloudAsideLeftRef}
+        className="hero-layer top-[44%] sm:top-[42%] -left-8 sm:-left-12 md:-left-16 w-36 min-[400px]:w-44 sm:w-60 md:w-72 lg:w-80 pointer-events-none drop-shadow-xl z-15"
+      >
+        <img
+          src="/decorations/layers/cloud-left.png"
+          alt=""
+          className="w-full h-auto object-contain"
+          aria-hidden="true"
+        />
+      </div>
+
+      {/* Right Cloud */}
+      <div
+        ref={cloudAsideRightRef}
+        className="hero-layer top-[52%] sm:top-[50%] -right-8 sm:-right-12 md:-right-16 w-40 min-[400px]:w-48 sm:w-64 md:w-76 lg:w-88 pointer-events-none drop-shadow-xl z-15"
+      >
+        <img
+          src="/decorations/layers/cloud-right.png"
+          alt=""
+          className="w-full h-auto object-contain"
+          aria-hidden="true"
+        />
+      </div>
+
       {/* Layer 6: Main Birthday Card Assembly hanging from Top Ceiling */}
       <div
         ref={cardScrollRef}
@@ -304,25 +333,6 @@ export const BirthdayHero = () => {
             </a>
           </div>
         </div>
-      </div>
-
-      {/* Layer 7: Foreground Floor Paper Clouds tightly framing the bottom transition */}
-      <div
-        ref={cloudsFgRef}
-        className="relative -mt-20 sm:-mt-28 pointer-events-none flex justify-between z-25 opacity-95 w-full"
-      >
-        <img
-          src="/decorations/layers/cloud-left.png"
-          alt=""
-          className="w-48 sm:w-72 md:w-96 -ml-10 object-contain drop-shadow-lg"
-          aria-hidden="true"
-        />
-        <img
-          src="/decorations/layers/cloud-right.png"
-          alt=""
-          className="w-56 sm:w-80 md:w-[440px] -mr-12 object-contain drop-shadow-lg"
-          aria-hidden="true"
-        />
       </div>
     </section>
   );

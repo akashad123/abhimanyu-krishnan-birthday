@@ -67,6 +67,8 @@ Developer-facing record of meaningful changes.
 - Added "Glossy Photo Sheen" subtle diagonal light shimmer sweep (`bg-gradient-to-r from-transparent via-white/20 to-transparent`) and soft border tint on the photo frame for an attractive photographic effect.
 - Implemented celebratory Option B hover pop-ups on the 12-month milestone cards: added a crisp 3px celebratory border outline (`border-3`) cycling through the celebration theme colors (`#4E93CB` blue, `#DE5347` red, `#E5A93C` yellow, `#55A46D` green) and animated party decoration stickers that spring up on hover (festive balloon at top-left, celebration toy drum at bottom-right, and golden star at top-right) with smooth scaling and 0 card displacement.
 - Replaced the abrupt flat horizontal divider between the hero and memory gallery with an organic, multi-layered SVG wave transition based on user reference (`app.haikei.app`), featuring exact matching sky-blue (`#5299D3`) and warm cream (`#FCFAF6`) waves, with "Milestone Photo Album: 12 Months of Our Little One" positioned gracefully on top of the wave.
+- Repositioned the two side clouds from the bottom of the hero up to the mid-hero level flanking the Scroll Down button and Piñata per user screenshot; added GSAP scroll animations so both clouds smoothly part and move aside off-screen on scroll; and removed the downside floor clouds completely to leave the wave transition clean and uncluttered.
+
 
 
 

@@ -921,6 +921,40 @@ Eliminate the abrupt flat horizontal divider between the blue-and-white striped 
 - Production build `npm run build` executed cleanly in 3.62s with 0 errors.
 - Verified smooth transition from striped wallpaper into the wave without visual gaps or layout clipping.
 
+---
+
+### [2026-10-03] Mid-Hero Side Clouds Repositioning & GSAP Move-Aside Animation
+
+**Purpose**
+Reposition the two side paper clouds from the bottom floor of the hero section up to the mid-hero landing view flanking the "Scroll Down" button and Rainbow Number 1 Piñata (as shown in the user's mobile screenshot and reference design), endow them with smooth GSAP scroll-triggered move-aside animations, and completely eliminate the downside floor clouds to preserve a clean wave transition into the photo album.
+
+**User Flow**
+1. Visitor lands on the hero section on mobile or desktop.
+2. In addition to the top hanging plaque and balloons, two fluffy paper clouds flank the mid-section on the left and right beside the "Scroll Down" pill and top of the Piñata.
+3. As the visitor scrolls down, both clouds smoothly and organically part outward (left cloud moves aside to the left, right cloud moves aside to the right with gentle fade), clearing the central storytelling path.
+4. The bottom of the hero is clean of duplicate floor clouds, transitioning seamlessly into the organic blue and white wave of the memory album.
+
+**Technical Changes**
+- `src/components/BirthdayHero/BirthdayHero.jsx`:
+  - Removed Layer 7 floor clouds (`cloudsFgRef`) from the bottom of the section.
+  - Added `cloudAsideLeftRef` (`top-[44%] sm:top-[42%] -left-8 sm:-left-12 md:-left-16`) and `cloudAsideRightRef` (`top-[52%] sm:top-[50%] -right-8 sm:-right-12 md:-right-16`) flanking the middle assembly.
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`:
+  - Replaced floor clouds parallax with responsive GSAP scroll tweens:
+    - Left cloud: `tl.to(cloudAsideLeftRef.current, { x: -asideDist * 1.15, opacity: 0.15, ease: 'power1.out' }, 0)`
+    - Right cloud: `tl.to(cloudAsideRightRef.current, { x: asideDist * 1.15, opacity: 0.15, ease: 'power1.out' }, 0)`
+  - Cleaned up unused `getCloudParallax` imports and references.
+
+**Files Modified**
+- `src/components/BirthdayHero/BirthdayHero.jsx`
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` succeeded with 0 errors (`✓ built in 3.75s`).
+- Verified mid-hero clouds render properly at the Scroll Down / Piñata level and glide smoothly aside on scroll.
+
+
 
 
 
