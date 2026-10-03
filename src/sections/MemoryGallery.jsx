@@ -116,7 +116,7 @@ export const MemoryGallery = ({
   return (
     <section
       id={APP_CONFIG.sections.memories}
-      className="relative z-30 -mt-6 sm:-mt-10 md:-mt-14"
+      className="relative z-30 pt-2 sm:pt-4 md:pt-6"
     >
       {/* Organic Celebratory Wave Transition from Blue Striped Sky to Cream Photo Album */}
       <div className="relative w-full overflow-hidden leading-none pointer-events-none -mb-1">

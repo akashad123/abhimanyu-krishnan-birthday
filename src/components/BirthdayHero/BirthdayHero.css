@@ -8,8 +8,20 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding-bottom: 0;
+  padding-bottom: 2.5rem;
   overflow-x: hidden;
+}
+
+@media (min-width: 640px) {
+  .birthday-hero-container {
+    padding-bottom: 3.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .birthday-hero-container {
+    padding-bottom: 4.5rem;
+  }
 }
 
 /* Layer positioning helpers */

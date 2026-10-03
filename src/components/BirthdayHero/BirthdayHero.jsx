@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Sparkles, ChevronDown } from 'lucide-react';
-import ScrollDownIndicator from '../ScrollDownIndicator';
+import { Sparkles } from 'lucide-react';
 import { initBirthdayHeroAnimation } from './birthdayHeroAnimation';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { APP_CONFIG } from '../../config/appConfig';
@@ -51,7 +50,6 @@ export const BirthdayHero = () => {
   const buntingRef = useRef(null);
   const cloudAsideLeftRef = useRef(null);
   const cloudAsideRightRef = useRef(null);
-  const scrollCtaRef = useRef(null);
 
   const prefersReducedMotion = useReducedMotion();
 
@@ -79,7 +77,6 @@ export const BirthdayHero = () => {
         buntingRef,
         cloudAsideLeftRef,
         cloudAsideRightRef,
-        scrollCtaRef,
       },
       prefersReducedMotion
     );
@@ -275,21 +272,13 @@ export const BirthdayHero = () => {
               className="w-full h-auto object-contain drop-shadow-2xl"
               loading="eager"
             />
-
-            {/* Suspended Scroll Down CTA */}
-            <div
-              ref={scrollCtaRef}
-              className="-mt-5 sm:-mt-7 md:-mt-8 lg:-mt-10 z-20 flex justify-center"
-            >
-              <ScrollDownIndicator targetId={APP_CONFIG.sections.pinata} />
-            </div>
           </div>
 
-          {/* Connected Suspended Rainbow Number 1 Piñata — joined directly to scroll down downside */}
+          {/* Connected Suspended Rainbow Number 1 Piñata — joined directly below the plaque */}
           <div
             id={APP_CONFIG.sections.pinata}
             ref={pinataRef}
-            className="relative z-10 w-full max-w-[280px] sm:max-w-[340px] md:max-w-[390px] mx-auto -mt-1 sm:-mt-2"
+            className="relative z-10 w-full max-w-[280px] sm:max-w-[340px] md:max-w-[390px] mx-auto -mt-2 sm:-mt-3"
           >
             <div
               ref={pinataSwingRef}
@@ -305,10 +294,10 @@ export const BirthdayHero = () => {
             </div>
           </div>
 
-          {/* Milestone Celebratory Card */}
+          {/* Milestone Celebratory Card — Standing cleanly above the wave */}
           <div
             ref={milestoneRef}
-            className="relative z-20 w-full max-w-sm sm:max-w-md bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-6 sm:p-7 text-center shadow-paper mt-5 sm:mt-6 mb-0"
+            className="relative z-20 w-full max-w-sm sm:max-w-md bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-6 sm:p-7 text-center shadow-paper mt-6 sm:mt-8 mb-8 sm:mb-12 md:mb-16"
           >
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs mb-3">
               <Sparkles size={14} className="text-theme-yellow" />
@@ -319,18 +308,10 @@ export const BirthdayHero = () => {
               Turning The Big One!
             </h2>
 
-            <p className="font-body text-sm sm:text-base text-theme-navy/80 leading-relaxed mb-5">
+            <p className="font-body text-sm sm:text-base text-theme-navy/80 leading-relaxed mb-0">
               365 days of baby giggles, tiny footsteps, curious eyes, and endless love with{' '}
               <strong className="text-theme-blue font-semibold">{APP_CONFIG.childName}</strong>.
             </p>
-
-            <a
-              href={`#${APP_CONFIG.sections.memories}`}
-              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-theme-blue hover:bg-theme-navy text-white font-display font-semibold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-4 focus:ring-theme-blue/30"
-            >
-              <span>Explore The Memory Album</span>
-              <ChevronDown size={16} />
-            </a>
           </div>
         </div>
       </div>

@@ -954,12 +954,37 @@ Reposition the two side paper clouds from the bottom floor of the hero section u
 - Production build `npm run build` succeeded with 0 errors (`✓ built in 3.75s`).
 - Verified mid-hero clouds render properly at the Scroll Down / Piñata level and glide smoothly aside on scroll.
 
+---
 
+### [2026-10-03] Lowered Wave Transition & Landing/Milestone Scroll Button Removal
 
+**Purpose**
+Lower the starting position of the multi-layered organic wave transition and remove the scroll indicator buttons from both the landing page (hero plaque) and the second section (milestone card), so that the "Turning The Big One! — Milestone Celebration" card stands proudly, cleanly, and unobstructed on the blue striped wallpaper directly above the wave.
 
+**User Flow**
+1. Visitor views the hero celebration scene: the central Abhimanyu Krishnan baby photo plaque connects directly to the suspended Rainbow Number 1 Piñata without an intrusive "Scroll Down" pill.
+2. Scrolling smoothly down, the visitor sees the "Turning The Big One! — Milestone Celebration" card ("365 days of baby giggles, tiny footsteps, curious eyes, and endless love with Abhimanyu Krishnan").
+3. The milestone card sits with generous breathing room, completely free of any wave overlap or button clutter, feeling like it is standing proudly on the striped wallpaper.
+4. Directly below the milestone card, the multi-layered organic blue-and-white wave rolls gracefully across the screen, transitioning seamlessly into the "12 Months of Our Little One" memory photo album.
 
+**Technical Changes**
+- `src/components/BirthdayHero/BirthdayHero.jsx`:
+  - Removed `ScrollDownIndicator` import and JSX element (`scrollCtaRef`) below the baby photo plaque.
+  - Connected the rainbow number 1 piñata directly below the baby plaque (`-mt-2 sm:-mt-3`).
+  - Removed `ChevronDown` and the "Explore The Memory Album" scroll link button from the milestone card.
+  - Adjusted milestone card spacing: `mt-6 sm:mt-8 mb-8 sm:mb-12 md:mb-16` with `mb-0` on the paragraph for centered, balanced card padding.
+- `src/components/BirthdayHero/BirthdayHero.css`:
+  - Added responsive bottom padding to `.birthday-hero-container` (`padding-bottom: 2.5rem`, `sm: 3.5rem`, `md: 4.5rem`).
+- `src/sections/MemoryGallery.jsx`:
+  - Removed negative top margin (`-mt-6 sm:-mt-10 md:-mt-14`) and added positive top padding (`pt-2 sm:pt-4 md:pt-6`), lowering the wave start position so it begins cleanly below the hero section.
 
+**Files Modified**
+- `src/components/BirthdayHero/BirthdayHero.jsx`
+- `src/components/BirthdayHero/BirthdayHero.css`
+- `src/sections/MemoryGallery.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
 
-
-
-
+**Verification**
+- Production build `npm run build` completed with 0 errors in 3.65s.
+- Clean layout confirmed with no wave cutting into the milestone card and no scroll buttons on landing or second section.
