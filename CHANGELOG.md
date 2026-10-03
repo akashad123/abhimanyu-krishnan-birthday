@@ -82,3 +82,11 @@ Developer-facing record of meaningful changes.
 - Fixed leftover blue-white wallpaper stripes area on mobile phones, iPad minis, and iPad Pros: wrapped album sections in `App.jsx` with `bg-theme-creamLight`, configured `FamilyGallery` with `min-h-screen min-h-[100dvh]` and vertical centering, and explicitly styled GSAP `st.spacer.style.backgroundColor = CREAM` to eliminate background wallpaper bleed during and after pinning.
 - Fixed "Skip to 15th Photo" button visibility on PC desktop: resized carousel strip (`VISIBLE_H = 360`, `CARD_H = 150`, `CARD_UNIT = 162`) and tightened section spacing so the entire section (~530px total) fits 100% inside any PC or laptop screen without clipping, and added a companion quick-skip pill in the header.
 - Fixed mobile hero physical rope connections in `BirthdayHero.jsx`: joined the central hanging rope all the way to the top ceiling (`top: 0`) through the bunting down to the card bow (eliminating the floating cut-off gap), added a vertical braided rope segment from the bottom of the birthday card directly to the white circular "Scroll Down" button, and connected the button directly into the Pi√±ata rope below it for a finished, seamless hanging mobile experience on mobile devices.
+
+## [2026-10-03] ó fix: PC balloons, mobile rope, back-to-1st button, AK logo removal
+
+- **BirthdayHero**: Balloons (red/yellow/blue/green) restored on PC ó fixed overflow-y:clip?visible that was clipping them; added proper lg/xl sizing classes
+- **BirthdayHero**: Top braided ceiling rope is now lg:hidden (mobile + iPad only). PC already has rope drawn into the card image
+- **FamilyGallery**: Added 'Back to 1st Photo' button (with ChevronUp) when activeIdx === total-1; navigates back up via goTo(0)
+- **Footer**: Removed AK circular monogram badge ó all other footer content preserved
+- Build: ? 0 errors, 1650 modules, commit 89dfea6
