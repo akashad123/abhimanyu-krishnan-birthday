@@ -714,5 +714,59 @@ The footer ("Bathakkah Invites — your story, beautifully invited" and celebrat
 - Verified `http://localhost:3000/src/sections/Footer.jsx` and `http://localhost:3000/logo.png` return HTTP 200.
 - Executed `npm run build` with 0 errors.
 
+---
+
+### [2026-10-03] BUGFIX: Persistent Photo Deletion Across Page Refreshes & Supabase RLS Delete Policies
+
+**User Issue**
+When deleting an uploaded photo in "Moments Shared with Love", it disappears from the screen, but after refreshing the page, it reappears.
+
+**Root Causes**
+1. **Missing Postgres Row Level Security (RLS) DELETE Policy in Supabase**:
+   - `public.memories` and `storage.objects` had RLS enabled, but only had `SELECT` and `INSERT` policies for the `anon` public role.
+   - When the client called `supabase.from('memories').delete().eq('id', memoryId)`, Postgres RLS evaluated to `false` for the anon role and returned `{ data: [], error: null }` without deleting the database row.
+   - Because no error was thrown, client code treated the operation as completed, but the row remained untouched in Supabase.
+2. **Lack of Client-Side Blacklist / Persistence**:
+   - `useMemories.js` managed memory state only in React component memory.
+   - Upon page refresh, `fetchUploadedMemories()` fetched all rows from the database. Since the database row was never deleted, the deleted photo reappeared.
+
+**Fix Applied (Defense-in-Depth)**
+1. **Client-Side Persistence Layer (`src/hooks/useMemories.js`)**:
+   - Added `localStorage` tracking using key `abhimanyu_deleted_memory_ids`.
+   - When a photo is deleted, its ID is instantly added to `localStorage`.
+   - On initial mount and on every background fetch, `memories` state filters out any IDs stored in `localStorage`.
+   - If the user clicks **Undo** within the 6-second grace period, `restoreMemory()` removes the ID from `localStorage` and restores the photo to state.
+   - This guarantees that in the user's browser, deleted photos will **never** reappear upon page refresh, even before remote database policies are applied.
+2. **Remote Supabase RLS DELETE Policies (`supabase/schema.sql` & `docs/SUPABASE_SETUP.md`)**:
+   - Added public DELETE policy for `public.memories`:
+     ```sql
+     CREATE POLICY "Allow public delete on memories"
+     ON public.memories
+     FOR DELETE
+     TO anon, authenticated
+     USING (true);
+     ```
+   - Added public DELETE policy for `storage.objects`:
+     ```sql
+     CREATE POLICY "Allow public delete on memory-photos bucket"
+     ON storage.objects
+     FOR DELETE
+     TO anon, authenticated
+     USING (bucket_id = 'memory-photos');
+     ```
+   - Documented exact SQL steps in `docs/SUPABASE_SETUP.md` for applying these policies in the Supabase Dashboard SQL Editor.
+
+**Files Modified**
+- `src/hooks/useMemories.js`
+- `supabase/schema.sql`
+- `docs/SUPABASE_SETUP.md`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` executed successfully (0 errors, built in 5.34s).
+- Verified `localStorage` key creation, deleted ID filtering, and undo restoration logic.
+
+
 
 

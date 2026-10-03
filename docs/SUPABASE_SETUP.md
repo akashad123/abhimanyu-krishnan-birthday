@@ -31,7 +31,7 @@ If the client later wants private/family-only uploads, authentication or a prote
 
 1. Create a Supabase project.
 2. Create a Storage bucket named `memories` and make it public for the current public-gallery requirement.
-3. Run `supabase/schema.sql` in the SQL editor.
+3. Run `supabase/schema.sql` in the SQL editor (includes select, insert, and delete policies for memories table and storage).
 4. Copy `.env.example` to `.env`.
 5. Add the project's Supabase URL and anon key.
 6. Never put a service-role key in the React application.

@@ -24,6 +24,12 @@ for insert
 to anon, authenticated
 with check (true);
 
+create policy "public can delete memories"
+on public.memories
+for delete
+to anon, authenticated
+using (true);
+
 -- Create the bucket from the Supabase Dashboard if your project does not
 -- support bucket creation through SQL in your environment.
 -- Bucket name: memories
@@ -40,5 +46,11 @@ with check (bucket_id = 'memories');
 create policy "public can view memory images"
 on storage.objects
 for select
+to anon, authenticated
+using (bucket_id = 'memories');
+
+create policy "public can delete memory images"
+on storage.objects
+for delete
 to anon, authenticated
 using (bucket_id = 'memories');

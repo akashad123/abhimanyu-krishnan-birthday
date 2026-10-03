@@ -3,19 +3,60 @@ import { supabase, isSupabaseConfigured } from '../lib/supabaseClient';
 import { INITIAL_MEMORIES } from '../data/initialMemories';
 import { APP_CONFIG } from '../config/appConfig';
 
+const DELETED_STORAGE_KEY = 'abhimanyu_deleted_memory_ids';
+
+function getDeletedIds() {
+  try {
+    const raw = localStorage.getItem(DELETED_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function addDeletedId(id) {
+  try {
+    const list = getDeletedIds();
+    if (!list.includes(id)) {
+      list.push(id);
+      localStorage.setItem(DELETED_STORAGE_KEY, JSON.stringify(list));
+    }
+  } catch (e) {
+    console.warn('Could not save deleted memory id to localStorage:', e);
+  }
+}
+
+function removeDeletedId(id) {
+  try {
+    const list = getDeletedIds().filter((existingId) => existingId !== id);
+    localStorage.setItem(DELETED_STORAGE_KEY, JSON.stringify(list));
+  } catch (e) {
+    console.warn('Could not update deleted memory ids in localStorage:', e);
+  }
+}
+
 /**
  * Custom hook to manage memory photographs.
  * Combines static curated memories with dynamic Supabase uploaded memories.
  * Gracefully operates in static-fallback mode if Supabase is not yet configured.
+ * Persists deletions locally so deleted memories never return upon page refresh.
  */
 export function useMemories() {
-  const [memories, setMemories] = useState(INITIAL_MEMORIES);
+  const [memories, setMemories] = useState(() => {
+    const deleted = getDeletedIds();
+    return INITIAL_MEMORIES.filter((m) => !deleted.includes(m.id));
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   // Fetch memories from Supabase if configured
   const fetchUploadedMemories = useCallback(async () => {
-    if (!isSupabaseConfigured || !supabase) return;
+    const deleted = getDeletedIds();
+
+    if (!isSupabaseConfigured || !supabase) {
+      setMemories(INITIAL_MEMORIES.filter((m) => !deleted.includes(m.id)));
+      return;
+    }
 
     try {
       setLoading(true);
@@ -28,10 +69,19 @@ export function useMemories() {
 
       if (fetchError) throw fetchError;
 
-      if (data && data.length > 0) {
-        // Merge Supabase memories with initial static memories
-        setMemories([...data, ...INITIAL_MEMORIES]);
+      const combined = data && data.length > 0 ? [...data, ...INITIAL_MEMORIES] : [...INITIAL_MEMORIES];
+
+      // Deduplicate by id and filter out any deleted memories
+      const seen = new Set();
+      const filtered = [];
+      for (const item of combined) {
+        if (item && item.id && !seen.has(item.id) && !deleted.includes(item.id)) {
+          seen.add(item.id);
+          filtered.push(item);
+        }
       }
+
+      setMemories(filtered);
     } catch (err) {
       console.error('Error fetching memories from Supabase:', err);
       setError(err.message || 'Failed to load uploaded memories');
@@ -114,27 +164,39 @@ export function useMemories() {
 
   /**
    * Delete a memory photograph by id.
-   * Removes optimistically from local state and deletes from Supabase if configured.
+   * Persists immediately to localStorage and removes from local state,
+   * then deletes from Supabase if configured.
    */
   const deleteMemory = async (id) => {
     const target = memories.find((m) => m.id === id);
     if (!target) return null;
 
-    // Optimistic local state removal
+    // 1. Persist immediately to localStorage so refresh never restores it
+    addDeletedId(id);
+
+    // 2. Remove optimistically from local state
     setMemories((prev) => prev.filter((m) => m.id !== id));
 
-    // Delete from Supabase if configured
+    // 3. Delete from Supabase if configured
     if (isSupabaseConfigured && supabase) {
       try {
-        await supabase
+        const { error: dbError } = await supabase
           .from(APP_CONFIG.storage.tableName)
           .delete()
           .eq('id', id);
 
+        if (dbError) {
+          console.warn('Supabase DB delete warning (check RLS policy):', dbError);
+        }
+
         if (target.storage_path) {
-          await supabase.storage
+          const { error: storageError } = await supabase.storage
             .from(APP_CONFIG.storage.bucketName)
             .remove([target.storage_path]);
+
+          if (storageError) {
+            console.warn('Supabase Storage delete warning (check RLS policy):', storageError);
+          }
         }
       } catch (err) {
         console.error('Error deleting memory from Supabase:', err);
@@ -150,7 +212,10 @@ export function useMemories() {
   const restoreMemory = async (memory) => {
     if (!memory) return;
 
-    // Restore to local state
+    // 1. Remove from localStorage deletion blacklist
+    removeDeletedId(memory.id);
+
+    // 2. Restore to local state
     setMemories((prev) => [memory, ...prev]);
 
     // Restore to Supabase if configured

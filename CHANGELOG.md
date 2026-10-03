@@ -61,3 +61,5 @@ Developer-facing record of meaningful changes.
 - Preserved Supabase integration and trash/undo deletion functionality exclusively for "Moments Shared with Love" (guest & family memories uploaded through the website).
 - Fixed footer visibility issue by adding `relative z-20 w-full` to `Footer.jsx` and setting background layer to `-z-10` in `App.jsx`, resolving CSS stacking context where the fixed striped wallpaper was rendering over the unpositioned footer.
 - Cleared orphaned background node process and rebound Vite dev server directly to `http://localhost:3000`.
+- Fixed persistent photo deletion issue by integrating `localStorage` deletion persistence layer in `useMemories.js` (`addDeletedId`, `removeDeletedId`, and state initialization filtering), guaranteeing deleted photos never reappear upon page refresh.
+- Updated `supabase/schema.sql` and `docs/SUPABASE_SETUP.md` with explicit RLS `DELETE` policies for both `public.memories` table and `storage.objects` bucket.
