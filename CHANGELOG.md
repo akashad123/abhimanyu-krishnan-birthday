@@ -97,3 +97,10 @@ Developer-facing record of meaningful changes.
 - **FamilyGallery**: Positioned the 'Family Photo Album' header at the top of the mobile screen (justify-start pt-3), eliminating excess top whitespace
 - **FamilyGallery**: Expanded photo card height on mobile (< 640px) to dynamically adapt up to 490px and on tablet/iPad up to 520px, while strictly maintaining the existing 330/360px layout on desktop PC
 - Build: verified clean build with 0 errors
+
+## [2026-10-03] - fix: eliminate mobile scroll photo jumping bug in FamilyGallery
+
+- **FamilyGallery**: Eliminated mobile scroll photo jumping/sliding bug by rendering photos inside a stationary stationary frame that smoothly cross-fades in place on mobile/tablet instead of sliding a 7,650px track
+- **FamilyGallery**: Disabled anticipatePin on mobile to eliminate premature scroll jumps when transitioning from Milestone Photo Album into Family Moments
+- **FamilyGallery**: Disabled touch-conflicting snap on mobile viewports while keeping desktop snap and vertical drum scroll intact
+- Build: verified clean build with 0 errors

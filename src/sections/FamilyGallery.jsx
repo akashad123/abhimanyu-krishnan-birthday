@@ -74,14 +74,17 @@ export const FamilyGallery = () => {
     const initTimer = setTimeout(() => {
       ScrollTrigger.refresh();
 
+      const isDesktop = window.innerWidth >= 1024;
+
       const st = ScrollTrigger.create({
         trigger: section,
         start: 'top top',
-        // Give each photo ~60 % of a viewport worth of scrolling room
-        end: () => `+=${(total - 1) * window.innerHeight * 0.6}`,
+        // Give each photo responsive scroll travel (0.6 viewport on desktop, 0.45 on mobile)
+        end: () => `+=${(total - 1) * window.innerHeight * (isDesktop ? 0.6 : 0.45)}`,
         pin: true,
         pinSpacing: true,
-        anticipatePin: 1,
+        // Disable anticipatePin on mobile to eliminate premature jump after Milestone section
+        anticipatePin: isDesktop ? 1 : 0,
         // Recalculate positions on any viewport resize (fixes mobile browser chrome show/hide)
         invalidateOnRefresh: true,
         // Prevent overlapping pins from fighting each other
@@ -89,13 +92,15 @@ export const FamilyGallery = () => {
         // Snap back to nearest step quickly when fast-scrolling
         fastScrollEnd: true,
 
-        // Snap to each photo step
-        snap: {
-          snapTo: 1 / (total - 1),
-          duration: { min: 0.25, max: 0.55 },
-          delay: 0.04,
-          ease: 'power2.inOut',
-        },
+        // Snap to each photo step on desktop mousewheel, disable touch fight on mobile
+        snap: isDesktop
+          ? {
+              snapTo: 1 / (total - 1),
+              duration: { min: 0.25, max: 0.55 },
+              delay: 0.04,
+              ease: 'power2.inOut',
+            }
+          : false,
 
         onUpdate: (self) => {
           const next = Math.round(self.progress * (total - 1));
@@ -180,18 +185,18 @@ export const FamilyGallery = () => {
 
     // Desktop (≥ 1024px): keep original 330/360 unchanged
     if (w >= 1024) {
-      return { cardH: 330, visibleH: 360 };
+      return { cardH: 330, visibleH: 360, isDesktop: true };
     }
 
     // Tablet / iPad / iPad Pro (640px to 1023px)
     if (w >= 640) {
       const tabH = Math.min(520, Math.max(380, Math.round(h * 0.52)));
-      return { cardH: tabH, visibleH: tabH + 20 };
+      return { cardH: tabH, visibleH: tabH + 20, isDesktop: false };
     }
 
     // Mobile (< 640px): expanded height, filling mobile screen below top header
     const mobH = Math.min(490, Math.max(360, Math.round(h * 0.53)));
-    return { cardH: mobH, visibleH: mobH + 16 };
+    return { cardH: mobH, visibleH: mobH + 16, isDesktop: false };
   };
 
   const [cardDims, setCardDims] = useState(getCardDims);
@@ -202,6 +207,7 @@ export const FamilyGallery = () => {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
+  const isDesktop = cardDims.isDesktop;
   const cardH    = cardDims.cardH;
   const cardUnit = cardH + CARD_GAP;      // CARD_GAP = 20 (unchanged)
   const visibleH = cardDims.visibleH;
@@ -370,14 +376,18 @@ export const FamilyGallery = () => {
 
             {/* Overflow clip */}
             <div style={{ height: visibleH, overflow: 'hidden', position: 'relative' }}>
-              {/* Scrolling photo track */}
+              {/* Scrolling photo track on desktop; stationary frame on mobile/tablet */}
               <div
-                style={{
+                style={isDesktop ? {
                   position: 'relative',
                   height: total * cardUnit,
                   transform: `translateY(${stripTY}px)`,
                   transition: 'transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                   willChange: 'transform',
+                } : {
+                  position: 'relative',
+                  height: visibleH,
+                  width: '100%',
                 }}
               >
                 {FAMILY_PHOTOS.map((photo, idx) => {
@@ -388,7 +398,7 @@ export const FamilyGallery = () => {
                     <div
                       key={photo.id}
                       onClick={() => isActive && setLightboxIdx(idx)}
-                      style={{
+                      style={isDesktop ? {
                         position: 'absolute',
                         top: idx * cardUnit,
                         left: 10,
@@ -398,11 +408,23 @@ export const FamilyGallery = () => {
                         overflow: 'hidden',
                         cursor: isActive ? 'pointer' : 'default',
                         pointerEvents: isActive ? 'auto' : 'none',
-
-                        /* Only the active photo is visible */
                         opacity: isActive ? 1 : 0,
                         transition: 'opacity 0.4s ease, box-shadow 0.4s ease',
-
+                        border: isActive ? `2.5px solid ${cardColor}` : '2.5px solid transparent',
+                        boxShadow: isActive ? '0 10px 36px rgba(0,0,0,0.20)' : 'none',
+                      } : {
+                        position: 'absolute',
+                        top: 0,
+                        left: 4,
+                        right: 4,
+                        height: cardH,
+                        borderRadius: 16,
+                        overflow: 'hidden',
+                        cursor: isActive ? 'pointer' : 'default',
+                        pointerEvents: isActive ? 'auto' : 'none',
+                        opacity: isActive ? 1 : 0,
+                        zIndex: isActive ? 10 : 0,
+                        transition: 'opacity 0.35s ease, box-shadow 0.35s ease',
                         border: isActive ? `2.5px solid ${cardColor}` : '2.5px solid transparent',
                         boxShadow: isActive ? '0 10px 36px rgba(0,0,0,0.20)' : 'none',
                       }}

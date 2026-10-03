@@ -1285,3 +1285,20 @@ Fix the visual disconnection in the mobile hero section where the hanging birthd
 - `src/sections/FamilyGallery.jsx`
 - `CHANGELOG.md`
 - `FEATURE_LOG.md`
+
+
+### Bug Fix: Family Gallery Mobile Scroll Stability
+
+**Status**: Completed
+
+**Description**
+- Resolved the mobile photo scroll bug after the 12-month Milestone Photo Album:
+  - On mobile/tablet, replaced the 7,650px moving vertical track (`translateY`) with a stationary photo frame where each photo transitions in place via clean opacity cross-fade. This eliminates photos flying up/down or clipping during mobile scroll.
+  - Set `anticipatePin: 0` on mobile viewports to prevent the ScrollTrigger pin from prematurely engaging while scrolling past the 12-month milestone section.
+  - Disabled ScrollTrigger touch-snapping on mobile to prevent inertial touch scrolling from fighting programmatic scroll snaps, while keeping desktop mousewheel snapping intact.
+  - Desktop vertical drum scroll behavior and layout remain 100% preserved.
+
+**Files Modified**
+- `src/sections/FamilyGallery.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
