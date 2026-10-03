@@ -1169,5 +1169,41 @@ Remove the impersonal, redundant "Community Memories" pill badge and horizontal 
 - Verified with `npm run build` (compiled cleanly in 4.83s).
 - Confirmed zero remaining instances of "Community" in user-facing UI.
 
+---
+
+### [2026-10-03] Family Moments Header Elevation & Skip to 15th Photo Button
+
+**Purpose**
+Clean up the Family Moments carousel header by removing the redundant "Family & Loved Ones" ribbon divider, raising the "Family Photo Album" title towards the center of the viewport, removing the "scroll to explore family moments" hint text while preserving the progress dots, and adding a fast-forward "Skip to 15th Photo" button so visitors who do not want to scroll through all 15 photos can instantly advance to the final photo and continue.
+
+**User Flow**
+1. As visitors scroll into the Family Moments section, the "Family Photo Album" badge and "FAMILY MOMENTS" title sit prominently and proudly near the top center, free of any redundant divider line or "Family & Loved Ones" tag.
+2. Below the active photo and progress dots, the hint text is gone, keeping the UI minimal and focused.
+3. If the visitor is on any photo prior to the 15th, a clean celebratory button labeled "Skip to 15th Photo ⏭️" is visible below the dots.
+4. Clicking "Skip to 15th Photo" (or clicking any individual progress dot or left-drum item) smoothly scrolls the page and carousel directly to that photo's exact scroll position.
+5. Skipping to the 15th photo positions the user right at the exit of the pinned section, allowing normal scrolling to continue immediately into the guest memories and footer.
+
+**Technical Changes**
+- `src/sections/FamilyGallery.jsx`:
+  - Removed decorative divider with `Heart` and `Family & Loved Ones`.
+  - Adjusted section padding (`pt-3 sm:pt-6 pb-12 sm:pb-20`) and header margin (`mb-6 sm:mb-8`) to raise the title towards the center.
+  - Stored ScrollTrigger instance in `stRef`.
+  - Implemented `goTo(idx)` function that maps any photo index directly to its precise scroll offset (`st.start + (targetIdx / (total - 1)) * (st.end - st.start)`).
+  - Added `handleSkipToLast` to smoothly scroll to `st.end` (15th photo).
+  - Made left-drum list items and progress dots clickable buttons that trigger `goTo(idx)`.
+  - Removed `<p>scroll to explore family moments</p>` while keeping progress dots intact.
+  - Added "Skip to 15th Photo" button when `activeIdx < total - 1`.
+
+**Files Modified**
+- `src/sections/FamilyGallery.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` passed with 0 errors in 4.52s.
+- Verified removal of "Family & Loved Ones" text and "scroll to explore family moments" text.
+- Verified progress dots remain visible and are clickable.
+- Verified Skip button triggers smooth scroll to the 15th photo.
+
 
 

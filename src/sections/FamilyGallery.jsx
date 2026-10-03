@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Heart, Sparkles, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Sparkles, X, ChevronLeft, ChevronRight, FastForward } from 'lucide-react';
 import { APP_CONFIG } from '../config/appConfig';
 import { FAMILY_PHOTOS } from '../data/initialMemories';
 
@@ -15,10 +15,10 @@ gsap.registerPlugin(ScrollTrigger);
  * - Each increment of scroll advances ONE photo (snap-to-step via ScrollTrigger).
  * - After all 15 photos the pin releases and normal page scroll resumes.
  * - The left text drum and right photo strip both animate from the scroll progress.
- * - No internal buttons / swipe needed — the main page scroll drives everything.
+ * - Fast-forward "Skip to 15th Photo" button allows jumping straight to the end without scrolling all 15.
  *
  * Visual:
- * - No white card box — blends seamlessly with the page cream background (#FCFAF6).
+ * - Blends seamlessly with the page cream background (#FCFAF6).
  * - Fade-out gradients at the top/bottom of both panels use the exact cream colour.
  * - Active photo: full-size, accent border, shadow.
  * - Neighbour photos: scaled-down, dimmed, peeking above / below.
@@ -59,8 +59,8 @@ export const FamilyGallery = () => {
   const [lightboxIdx, setLightboxIdx] = useState(null);
 
   const sectionRef   = useRef(null);
-  const stRef        = useRef(null);    // holds the ScrollTrigger instance for skipToEnd
   const activeIdxRef = useRef(0);       // avoids stale-closure in ScrollTrigger
+  const stRef        = useRef(null);
   const total        = FAMILY_PHOTOS.length;
 
   /* ──────────────────── GSAP scroll-pin ──────────────────── */
@@ -69,16 +69,19 @@ export const FamilyGallery = () => {
     const section = sectionRef.current;
     if (!section) return;
 
+    // Allow ScrollTrigger to recalculate after any layout changes
     ScrollTrigger.refresh();
 
     const st = ScrollTrigger.create({
       trigger: section,
       start: 'top top',
+      // Give each photo ~60 % of a viewport worth of scrolling room
       end: () => `+=${(total - 1) * window.innerHeight * 0.65}`,
       pin: true,
       pinSpacing: true,
       anticipatePin: 1,
 
+      // Snap to each photo step
       snap: {
         snapTo: 1 / (total - 1),
         duration: { min: 0.25, max: 0.55 },
@@ -103,14 +106,27 @@ export const FamilyGallery = () => {
     };
   }, [total]);
 
-  /**
-   * Jumps the main page scroll to the very end of the pinned section,
-   * advancing to the last photo and releasing the pin immediately.
-   */
-  const skipToEnd = () => {
-    if (stRef.current) {
-      window.scrollTo({ top: stRef.current.end, behavior: 'smooth' });
-    }
+  /* ──────────────────── Navigation & Skip Handlers ───────── */
+
+  const goTo = useCallback(
+    (idx) => {
+      const targetIdx = Math.max(0, Math.min(total - 1, idx));
+      if (stRef.current && typeof stRef.current.start === 'number' && typeof stRef.current.end === 'number') {
+        const targetScroll =
+          stRef.current.start + (targetIdx / (total - 1)) * (stRef.current.end - stRef.current.start);
+        window.scrollTo({
+          top: targetScroll,
+          behavior: 'smooth',
+        });
+      } else {
+        setActiveIdx(targetIdx);
+      }
+    },
+    [total]
+  );
+
+  const handleSkipToLast = () => {
+    goTo(total - 1);
   };
 
   /* ──────────────────── Keyboard (lightbox only) ─────────── */
@@ -140,23 +156,12 @@ export const FamilyGallery = () => {
     <section
       id={APP_CONFIG.sections.family}
       ref={sectionRef}
-      className="relative z-30 bg-theme-creamLight min-h-screen flex flex-col justify-center py-8 sm:py-10"
+      className="relative z-30 bg-theme-creamLight pt-3 sm:pt-6 pb-12 sm:pb-20"
     >
-      {/* ── Section Header — vertically centred in viewport ── */}
-      <div className="max-w-5xl mx-auto px-3 sm:px-6 w-full">
-        {/* Decorative divider */}
-        <div className="flex items-center justify-center gap-3 mb-6 sm:mb-8">
-          <div className="h-px bg-theme-rope/30 flex-1 max-w-[100px] sm:max-w-[160px]" />
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-red/10 text-theme-red text-xs font-display font-semibold">
-            <Heart size={14} className="fill-theme-red" />
-            <span>Family &amp; Loved Ones</span>
-          </div>
-          <div className="h-px bg-theme-rope/30 flex-1 max-w-[100px] sm:max-w-[160px]" />
-        </div>
-
-        {/* Title — centered, no subtitle */}
-        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-          <div className="flex items-center justify-center gap-3 mb-3">
+      {/* ── Section Header (Raised to center without redundant divider) ── */}
+      <div className="max-w-5xl mx-auto px-3 sm:px-6">
+        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8 pt-1 sm:pt-2">
+          <div className="flex items-center justify-center gap-3 mb-2">
             <img src="/decorations/layers/star-yellow.png" alt="" className="w-5 sm:w-7 h-auto animate-pulse" aria-hidden="true" />
             <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-theme-sky/20 text-theme-navy font-display font-semibold text-xs border border-theme-sky/30 bg-white/80">
               <Sparkles size={13} className="text-theme-sky fill-theme-sky" />
@@ -165,7 +170,7 @@ export const FamilyGallery = () => {
             <img src="/decorations/layers/star-blue.png" alt="" className="w-5 sm:w-7 h-auto animate-pulse" aria-hidden="true" />
           </div>
 
-          <h2 className="font-display font-extrabold text-3xl min-[400px]:text-4xl sm:text-5xl tracking-tight drop-shadow-sm">
+          <h2 className="font-display font-extrabold text-3xl min-[400px]:text-4xl sm:text-5xl tracking-tight mb-1 drop-shadow-sm">
             <span className="text-[#DE5347]">FA</span>
             <span className="text-[#E5A93C]">MI</span>
             <span className="text-[#4E93CB]">LY </span>
@@ -173,7 +178,10 @@ export const FamilyGallery = () => {
             <span className="text-[#DE5347]">ME</span>
             <span className="text-[#4E93CB]">NTS</span>
           </h2>
-          {/* "SURROUNDED BY LOVE & WARMTH" subtitle intentionally removed per request */}
+
+          <p className="font-display font-bold text-xs sm:text-sm md:text-base text-theme-navy/80 uppercase tracking-widest">
+            Surrounded by Love &amp; Warmth
+          </p>
         </div>
       </div>
 
@@ -217,8 +225,11 @@ export const FamilyGallery = () => {
                 const color    = ACCENT_COLORS[idx % ACCENT_COLORS.length];
 
                 return (
-                  <div
+                  <button
                     key={photo.id}
+                    type="button"
+                    onClick={() => goTo(idx)}
+                    className="w-full text-left focus:outline-none cursor-pointer"
                     style={{
                       height: TEXT_H,
                       display: 'flex',
@@ -228,6 +239,8 @@ export const FamilyGallery = () => {
                       gap: 10,
                       opacity: dist === 0 ? 1 : dist === 1 ? 0.46 : dist === 2 ? 0.24 : 0.09,
                       transition: 'opacity 0.5s ease',
+                      background: 'transparent',
+                      border: 'none',
                     }}
                   >
                     {/* Active accent bar */}
@@ -259,7 +272,7 @@ export const FamilyGallery = () => {
                     >
                       Moment {String(idx + 1).padStart(2, '0')}
                     </span>
-                  </div>
+                  </button>
                 );
               })}
             </div>
@@ -397,9 +410,12 @@ export const FamilyGallery = () => {
             const dist     = Math.abs(idx - activeIdx);
             const isActive = idx === activeIdx;
             return (
-              <div
+              <button
                 key={idx}
-                className="rounded-full transition-all duration-400"
+                type="button"
+                onClick={() => goTo(idx)}
+                aria-label={`Go to photo ${idx + 1}`}
+                className="rounded-full transition-all duration-300 focus:outline-none cursor-pointer"
                 style={{
                   width:           isActive ? 28 : dist === 1 ? 8 : 5,
                   height:          6,
@@ -407,23 +423,26 @@ export const FamilyGallery = () => {
                     ? ACCENT_COLORS[activeIdx % ACCENT_COLORS.length]
                     : dist <= 2 ? '#c4b8a8' : '#ddd5c8',
                   opacity: dist > 4 ? 0.3 : 1,
+                  border: 'none',
+                  padding: 0,
                 }}
               />
             );
           })}
         </div>
 
-        {/* ── Skip button — shown when not already at the last photo ── */}
+        {/* ── Button to Skip Through to the 15th (Last) Photo ── */}
         {activeIdx < total - 1 && (
           <div className="flex justify-center mt-4">
             <button
               type="button"
-              onClick={skipToEnd}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full font-display font-semibold text-xs text-theme-navy/60 border border-theme-rope/30 bg-white/50 hover:bg-white hover:text-theme-navy hover:border-theme-rope/60 hover:shadow-sm transition-all duration-200 focus:outline-none"
-              aria-label="Skip to last family moment"
+              onClick={handleSkipToLast}
+              className="group inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/15 hover:border-theme-navy font-display font-semibold text-xs sm:text-sm transition-all duration-300 shadow-sm hover:shadow-md focus:outline-none transform hover:-translate-y-0.5 active:translate-y-0"
+              title="Skip to 15th photo"
+              aria-label="Skip through to 15th photo"
             >
-              Skip all
-              <span aria-hidden="true" className="text-[10px]">→</span>
+              <span>Skip to 15th Photo</span>
+              <FastForward size={14} className="text-theme-red group-hover:text-theme-yellow transition-colors" />
             </button>
           </div>
         )}
