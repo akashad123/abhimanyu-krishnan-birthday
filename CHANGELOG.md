@@ -141,3 +141,9 @@ Developer-facing record of meaningful changes.
 - Added a subtle **scroll guide hint** — text Scroll down to browse family moments with an animated bouncing ChevronDown arrow — to help users discover the vertical scroll interaction.
 - Added ChevronDown to lucide-react import.
 - Build: 0 errors, 1,651 modules. Commit: \24546c8\.
+
+## 2026-10-03 — MiniCalendar: Fixed 6-row height jump
+- Root cause: Months 3 (March), 8 (August), and 11 (November) naturally span **6 rows** in a 7-column grid due to their start-day offset, making the calendar grid taller than the usual 5-row months and causing a sudden layout shift.
+- Fix: MiniCalendar now always renders exactly **42 cells (6 rows × 7 cols)** by padding trailing 
+ull cells after the last day of the month. All months now occupy an identical, fixed-height grid — no more jump or jerk when flipping to/from those months.
+- Build: 0 errors, 1,651 modules. Commit: \83835e1\.
