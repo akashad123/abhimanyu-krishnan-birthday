@@ -1105,5 +1105,43 @@ Add a multi-layered organic wave transition to the Footer section matching the u
 - Production build `npm run build` completed with 0 errors in 5.75s.
 - Verified smooth, organic wave rendering with no flat border line before the Footer.
 
+---
+
+### [2026-10-03] Delete Confirmation Pop-Up Modal (Yes / No)
+
+**Purpose**
+Provide a safe, accessible, and user-friendly confirmation pop-up modal when deleting uploaded photos from the "Moments Shared with Love" guest memory section, preventing accidental photo deletion while offering clear "Yes, Delete" and "No, Keep it" options.
+
+**User Flow**
+1. User clicks the trash icon on any uploaded guest memory card or inside the full-screen photo lightbox.
+2. Instead of deleting immediately, an elegant confirmation pop-up modal appears on screen (`z-[70]`), overlaying the grid or lightbox.
+3. The pop-up displays:
+   - A soft red warning trash icon badge.
+   - Title: "Delete this photo?"
+   - Description: "Are you sure you want to delete this memory? It will be removed from the album."
+   - A thumbnail preview of the photo being considered for deletion.
+   - Two clear action buttons:
+     - "No, Keep it" (or clicking the backdrop / pressing Escape): dismisses the modal without deleting the photo.
+     - "Yes, Delete": proceeds with deletion, closes the lightbox if the same photo was open, and displays the existing floating Undo toast notification with its 6-second recovery window.
+
+**Technical Changes**
+- `src/sections/CommunityMemories.jsx`:
+  - Added `deleteConfirmItem` state (`useState(null)`).
+  - Wired `onClick` on grid card trash button to `setDeleteConfirmItem(item)`.
+  - Wired `onClick` on lightbox header trash button to `setDeleteConfirmItem(selectedItem)`.
+  - Added `role="alertdialog"` modal with `z-[70]` backdrop blur, centered white card, warning badge, photo thumbnail, and "No, Keep it" / "Yes, Delete" buttons.
+  - Added Escape key dismiss listener in the keyboard navigation `useEffect`.
+  - Integrated with existing `handleDeleteGuestMemory` and floating `undoState` toast.
+
+**Files Modified**
+- `src/sections/CommunityMemories.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` completed with 0 errors in 3.65s.
+- Verified keyboard accessibility (Escape key closes confirmation modal).
+- Verified backdrop click dismissal and safe deletion execution upon confirmation.
+
 
 

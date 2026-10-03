@@ -21,6 +21,7 @@ export const CommunityMemories = ({
 }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [deleteConfirmItem, setDeleteConfirmItem] = useState(null);
   const [undoState, setUndoState] = useState(null);
   const undoTimerRef = useRef(null);
 
@@ -52,9 +53,13 @@ export const CommunityMemories = ({
     }
   };
 
-  // Keyboard navigation for lightbox
+  // Keyboard navigation for lightbox and delete confirmation modal
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (deleteConfirmItem) {
+        if (e.key === 'Escape') setDeleteConfirmItem(null);
+        return;
+      }
       if (!selectedItem) return;
       if (e.key === 'Escape') handleCloseLightbox();
       if (e.key === 'ArrowLeft') handlePrev();
@@ -63,7 +68,7 @@ export const CommunityMemories = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedItem, lightboxIndex]);
+  }, [selectedItem, lightboxIndex, deleteConfirmItem]);
 
   // Delete guest/uploaded memory handler
   const handleDeleteGuestMemory = async (item) => {
@@ -146,7 +151,7 @@ export const CommunityMemories = ({
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDeleteGuestMemory(item);
+                        setDeleteConfirmItem(item);
                       }}
                       className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 hover:bg-theme-red text-theme-navy/70 hover:text-white shadow-md transition-all transform hover:scale-110 z-20 focus:outline-none"
                       title="Delete photo"
@@ -228,9 +233,7 @@ export const CommunityMemories = ({
               <button
                 type="button"
                 onClick={() => {
-                  const itemToDelete = selectedItem;
-                  handleCloseLightbox();
-                  handleDeleteGuestMemory(itemToDelete);
+                  setDeleteConfirmItem(selectedItem);
                 }}
                 className="p-2 rounded-full bg-theme-cream text-theme-navy/70 hover:bg-theme-red hover:text-white transition-colors shadow-sm"
                 title="Delete photo"
@@ -288,6 +291,78 @@ export const CommunityMemories = ({
               <h4 className="font-display font-bold text-lg sm:text-xl text-theme-navy">
                 {selectedItem.caption || `${APP_CONFIG.childName} — 1st Birthday`}
               </h4>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal (Yes / No pop-up) */}
+      {deleteConfirmItem && (
+        <div
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="delete-confirm-title"
+          aria-describedby="delete-confirm-desc"
+          className="fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setDeleteConfirmItem(null)}
+        >
+          <div
+            className="relative max-w-sm w-full bg-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-theme-cream text-center animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Warning Trash Icon Circle */}
+            <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-red-100 flex items-center justify-center text-theme-red shadow-inner">
+              <Trash2 size={26} />
+            </div>
+
+            <h3
+              id="delete-confirm-title"
+              className="font-display font-bold text-xl sm:text-2xl text-theme-navy mb-2"
+            >
+              Delete this photo?
+            </h3>
+
+            <p
+              id="delete-confirm-desc"
+              className="font-body text-xs sm:text-sm text-theme-navy/70 mb-4"
+            >
+              Are you sure you want to delete this memory? It will be removed from the album.
+            </p>
+
+            {/* Thumbnail Preview */}
+            {deleteConfirmItem.public_url && (
+              <div className="w-20 h-20 mx-auto mb-5 rounded-2xl overflow-hidden border-2 border-theme-cream shadow-sm bg-theme-cream">
+                <img
+                  src={deleteConfirmItem.public_url}
+                  alt="Selected preview"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
+            {/* Action Buttons: No / Yes */}
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setDeleteConfirmItem(null)}
+                className="flex-1 py-2.5 px-4 rounded-full border-2 border-gray-200 hover:border-gray-300 font-display font-semibold text-sm text-theme-navy hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300"
+              >
+                No, Keep it
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  const itemToDelete = deleteConfirmItem;
+                  setDeleteConfirmItem(null);
+                  if (selectedItem && selectedItem.id === itemToDelete.id) {
+                    handleCloseLightbox();
+                  }
+                  await handleDeleteGuestMemory(itemToDelete);
+                }}
+                className="flex-1 py-2.5 px-4 rounded-full bg-theme-red hover:bg-theme-redDark text-white font-display font-bold text-sm shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-theme-red/50"
+              >
+                Yes, Delete
+              </button>
             </div>
           </div>
         </div>
