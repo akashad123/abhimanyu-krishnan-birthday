@@ -24,11 +24,6 @@ export const BirthdayHero = () => {
   const cardScrollRef = useRef(null);
   const cardSwingRef = useRef(null);
 
-  // Piñata and milestone refs
-  const pinataRef = useRef(null);
-  const pinataSwingRef = useRef(null);
-  const milestoneRef = useRef(null);
-
   // Left decoration refs
   const leftDecoScrollRef = useRef(null);
   const leftDecoSwingRef = useRef(null);
@@ -60,9 +55,6 @@ export const BirthdayHero = () => {
         sectionRef,
         cardScrollRef,
         cardSwingRef,
-        pinataRef,
-        pinataSwingRef,
-        milestoneRef,
         leftDecoScrollRef,
         leftDecoSwingRef,
         rightDecoScrollRef,
@@ -255,61 +247,13 @@ export const BirthdayHero = () => {
               <ScrollDownIndicator targetId={APP_CONFIG.sections.pinata} />
             </div>
           </div>
-
-          {/* Connected Suspended Rainbow Number 1 Piñata — joined directly to scroll down downside */}
-          <div
-            id={APP_CONFIG.sections.pinata}
-            ref={pinataRef}
-            className="relative z-10 w-full max-w-[280px] sm:max-w-[340px] md:max-w-[390px] mx-auto -mt-1 sm:-mt-2"
-          >
-            <div
-              ref={pinataSwingRef}
-              className="w-full h-auto flex justify-center"
-              style={{ transformOrigin: 'top center' }}
-            >
-              <img
-                src="/decorations/layers/pinata.png"
-                alt="Abhimanyu Krishnan Number 1 Rainbow Piñata"
-                className="w-full h-auto object-contain drop-shadow-2xl"
-                loading="lazy"
-              />
-            </div>
-          </div>
-
-          {/* Milestone Celebratory Card */}
-          <div
-            ref={milestoneRef}
-            className="relative z-20 w-full max-w-sm sm:max-w-md bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-6 sm:p-7 text-center shadow-paper mt-5 sm:mt-6 mb-0"
-          >
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs mb-3">
-              <Sparkles size={14} className="text-theme-yellow" />
-              <span>Milestone Celebration</span>
-            </div>
-
-            <h2 className="font-display font-bold text-2xl sm:text-3xl text-theme-navy mb-2">
-              Turning The Big One!
-            </h2>
-
-            <p className="font-body text-sm sm:text-base text-theme-navy/80 leading-relaxed mb-5">
-              365 days of baby giggles, tiny footsteps, curious eyes, and endless love with{' '}
-              <strong className="text-theme-blue font-semibold">{APP_CONFIG.childName}</strong>.
-            </p>
-
-            <a
-              href={`#${APP_CONFIG.sections.memories}`}
-              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-theme-blue hover:bg-theme-navy text-white font-display font-semibold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-4 focus:ring-theme-blue/30"
-            >
-              <span>Explore The Memory Album</span>
-              <ChevronDown size={16} />
-            </a>
-          </div>
         </div>
       </div>
 
       {/* Layer 7: Foreground Floor Paper Clouds tightly framing the bottom transition */}
       <div
         ref={cloudsFgRef}
-        className="relative -mt-20 sm:-mt-28 pointer-events-none flex justify-between z-25 opacity-95 w-full"
+        className="relative -mt-10 sm:-mt-16 pointer-events-none flex justify-between z-25 opacity-95 w-full"
       >
         <img
           src="/decorations/layers/cloud-left.png"

@@ -21,9 +21,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
     sectionRef,
     cardScrollRef,
     cardSwingRef,
-    pinataRef,
-    pinataSwingRef,
-    milestoneRef,
     leftDecoScrollRef,
     leftDecoSwingRef,
     rightDecoScrollRef,
@@ -251,24 +248,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       );
     }
 
-
-    // 5. Celebratory GSAP entrance for the Milestone Card ("Turning The Big One!")
-    if (milestoneRef?.current) {
-      tl.fromTo(
-        milestoneRef.current,
-        {
-          opacity: 0.35,
-          scale: 0.96,
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          ease: 'power1.out',
-          duration: 0.4,
-        },
-        0.45
-      );
-    }
 
     // 6. Foreground floor clouds subtle parallax
     if (cloudsFgRef?.current) {

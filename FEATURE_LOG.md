@@ -635,3 +635,56 @@ Completely eliminate the empty vertical gap between the "Turning The Big One!" m
 - Production build `npm run build` executed successfully with 0 errors.
 - Verified all components compile and bundle cleanly with Vite.
 
+---
+
+### FEATURE: Hanging Number "1" Piñata Explosion with Drums, Balloons, and Center Emergence of "12 Months of Our Little One"
+
+**User Request**
+- When it comes to the second section, the one which hangs from the top, make it explode, and from the center, the 12 months of our little one section comes.
+- The explosion should include party drums and balloons bursting outward.
+- From the center of that explosion, the "12 months of our little one" should emerge.
+
+**User Flow**
+1. Visitor arrives at the website and scrolls down from the top baby plaque past the "Scroll Down" button.
+2. Directly below, suspended from the braided rope, hangs the vibrant Rainbow Number "1" Piñata, gently swaying in the breeze with a milestone celebratory badge: *"Turning The Big One! — 365 days of baby giggles and pure joy"*.
+3. An inviting pulsating button *"Pop The Piñata! 🎈"* invites interaction.
+4. When the visitor scrolls into the section (or taps the button/piñata directly):
+   - The Piñata quivers rapidly with celebratory energy.
+   - A golden-white radial shockwave flash expands from the center.
+   - **KABOOM! The Number "1" Piñata bursts open!**
+   - Two illustrated celebration snare drums (`PartyDrum.jsx`) with crossed drumsticks and floating musical notes (`♪ ♫`) bounce outward to the left and right.
+   - Four colorful celebration balloons (red, blue, yellow, green) launch outward into the sky.
+   - Eight sparkling stars and 24 colorful confetti streamers spray out 360 degrees.
+   - **Directly from the center of that explosion:** The entire "12 Months of Our Little One" memory section emerges and scales outward (`scale: 0.12 -> 1.0, opacity: 0 -> 1.0, ease: back.out(1.18)`).
+   - The 12 monthly polaroid photo cards bloom outward into their full, responsive grid.
+   - The explosion particles gently float away into the background and fade out.
+5. The memory album is now completely revealed and fully interactive (lightbox preview, delete/undo photo buttons, upload modal, etc.).
+6. A discreet *"Pop Again! 🎉"* button in the header allows visitors to replay the explosion animation at any time.
+
+**Technical Flow & Architecture**
+- Created `src/components/PartyDrum.jsx`:
+  - Crisp SVG celebration snare drum with crimson & cream body, golden rims, criss-cross tension cords, crossed drumsticks, and musical vibration notes.
+- In `src/sections/MemoryGallery.jsx`:
+  - Consolidated the hanging Number "1" Piñata assembly (`#pinata-section`) with idle pendulum swaying.
+  - Built master GSAP explosion timeline with matchMedia responsiveness for mobile (< 768px) and desktop (>= 768px).
+  - Integrated dual-trigger mechanism: automatic ScrollTrigger detection (`start: top 65%`) and interactive click/tap handler (`handlePop`).
+  - Implemented center-origin expansion on `galleryContainerRef` (`transformOrigin: top center`).
+  - Added replay capability (`handleReplay`) with smooth scroll-back and timeline restart.
+  - Full `prefers-reduced-motion` compliance.
+- In `src/components/BirthdayHero/BirthdayHero.jsx` and `birthdayHeroAnimation.js`:
+  - Removed old static duplicate milestone card and pinata refs to eliminate section duplication and empty gaps.
+  - Softened floor clouds margin to cleanly frame the bottom of the hero plaque.
+
+**Files Modified**
+- `src/components/PartyDrum.jsx` (created)
+- `src/sections/MemoryGallery.jsx`
+- `src/components/BirthdayHero/BirthdayHero.jsx`
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` executed with 0 errors.
+- Verified local dev server is responding with HTTP 200.
+
+
