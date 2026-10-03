@@ -114,13 +114,7 @@
 /* Balloons layer */
 .hero-layer-balloon {
   z-index: 12;
-  will-change: transform, opacity;
-}
-
-/* Celebration drums layer */
-.hero-layer-drum {
-  z-index: 13;
-  will-change: transform, opacity;
+  will-change: transform;
 }
 
 /* Clouds depth layer */
@@ -128,4 +122,3 @@
   z-index: 5;
   will-change: transform;
 }
-

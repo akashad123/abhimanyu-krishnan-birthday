@@ -47,12 +47,6 @@ export const BirthdayHero = () => {
   const balloonGreenRef = useRef(null);
   const balloonGreenInnerRef = useRef(null);
 
-  // Celebration Drums outer (scroll) & inner (idle) refs
-  const drumRightRef = useRef(null);
-  const drumRightInnerRef = useRef(null);
-  const drumLeftRef = useRef(null);
-  const drumLeftInnerRef = useRef(null);
-
   // Other layer refs
   const buntingRef = useRef(null);
   const cloudsFgRef = useRef(null);
@@ -81,10 +75,6 @@ export const BirthdayHero = () => {
         balloonBlueInnerRef,
         balloonGreenRef,
         balloonGreenInnerRef,
-        drumRightRef,
-        drumRightInnerRef,
-        drumLeftRef,
-        drumLeftInnerRef,
         buntingRef,
         cloudsFgRef,
         scrollCtaRef,
@@ -230,37 +220,6 @@ export const BirthdayHero = () => {
             src="/decorations/layers/balloon-green.png"
             alt="Green Celebration Balloon"
             className="w-full h-auto object-contain"
-            loading="eager"
-          />
-        </div>
-      </div>
-
-      {/* Layer 5B: Celebration Party Toy Drums (Interactive 3D Celebratory Decor) */}
-      {/* Right Celebration Drum */}
-      <div
-        ref={drumRightRef}
-        className="hero-layer hero-layer-drum top-[73%] sm:top-[71%] md:top-[69%] right-2 sm:right-6 md:right-14 lg:right-24 w-18 sm:w-24 md:w-30 lg:w-36 drop-shadow-2xl"
-      >
-        <div ref={drumRightInnerRef} className="w-full h-full">
-          <img
-            src="/decorations/layers/drum.png"
-            alt="First Birthday Celebration Toy Drum"
-            className="w-full h-auto object-contain hover:scale-105 transition-transform"
-            loading="eager"
-          />
-        </div>
-      </div>
-
-      {/* Left Celebration Drum */}
-      <div
-        ref={drumLeftRef}
-        className="hero-layer hero-layer-drum top-[75%] sm:top-[73%] md:top-[71%] left-2 sm:left-6 md:left-12 lg:left-20 w-16 sm:w-22 md:w-28 lg:w-32 drop-shadow-2xl"
-      >
-        <div ref={drumLeftInnerRef} className="w-full h-full">
-          <img
-            src="/decorations/layers/drum.png"
-            alt="First Birthday Celebration Toy Drum"
-            className="w-full h-auto object-contain -scale-x-100 hover:scale-105 transition-transform"
             loading="eager"
           />
         </div>

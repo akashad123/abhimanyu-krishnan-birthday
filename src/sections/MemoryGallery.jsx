@@ -1,18 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Camera, Heart, X, ZoomIn, Sparkles, ChevronLeft, ChevronRight, Trash2, RotateCcw } from 'lucide-react';
 import { APP_CONFIG } from '../config/appConfig';
 import { MONTHLY_MILESTONES } from '../data/initialMemories';
-import { initMemoryGalleryAnimation } from './memoryGalleryAnimation';
-import { useReducedMotion } from '../hooks/useReducedMotion';
 
 /**
  * MemoryGallery Section — "12 Months of Our Little One"
  * 
  * Styled according to client reference `reference/memories-section.jpeg`:
- * - Playful colorful header with floating celebration stars and letter-wave entrance
+ * - Playful colorful header with floating celebration stars
  * - 12 Monthly polaroid photo milestone cards (01 month to 12 months)
- * - Staggered polaroid scrapbook entrance with natural resting tilts
- * - Rich interactive hover micro-interactions (warm shadow, slight lift, photo zoom, corner sparkle)
  * - Individual month taglines ("A brand new you", "So curious", "All smiles", etc.)
  * - Delete icon / Undo functionality on guest & family celebration memories
  * - Interactive photo lightbox modal for high-resolution viewing
@@ -30,48 +26,14 @@ export const MemoryGallery = ({
   const [undoState, setUndoState] = useState(null);
   const undoTimerRef = useRef(null);
 
-  // GSAP Animation Refs
-  const sectionRef = useRef(null);
-  const headerRef = useRef(null);
-  const titleLettersRef = useRef([]);
-  const starLeftRef = useRef(null);
-  const starRightRef = useRef(null);
-  const gridRef = useRef(null);
-  const milestoneCardsRef = useRef([]);
-  const floatingDecoLeftRef = useRef(null);
-  const floatingDecoRightRef = useRef(null);
-  const guestSectionRef = useRef(null);
-
-  const prefersReducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    const cleanup = initMemoryGalleryAnimation(
-      {
-        sectionRef,
-        headerRef,
-        titleLettersRef,
-        starLeftRef,
-        starRightRef,
-        gridRef,
-        milestoneCardsRef,
-        floatingDecoLeftRef,
-        floatingDecoRightRef,
-        guestSectionRef,
-      },
-      prefersReducedMotion
-    );
-
-    return cleanup;
-  }, [prefersReducedMotion]);
-
   // Combine static monthly milestones and guest memories for lightbox navigation
   const allLightboxItems = [
     ...MONTHLY_MILESTONES.map((m) => ({
       id: m.monthNumber,
       type: 'milestone',
-      title: `${m.monthLabel} — ${m.tagline}`,
-      subtitle: m.tagline,
-      badge: m.monthLabel,
+      title: m.monthLabel,
+      subtitle: null,
+      badge: `${APP_CONFIG.childName} — Milestone`,
       image: m.image,
       alt: m.alt,
       raw: m,
@@ -146,142 +108,82 @@ export const MemoryGallery = ({
   return (
     <section
       id={APP_CONFIG.sections.memories}
-      ref={sectionRef}
-      className="relative pt-8 sm:pt-14 pb-16 sm:pb-24 px-3 sm:px-6 bg-theme-creamLight border-t-4 border-theme-rope/25 shadow-inner mt-6 sm:mt-8 z-30 overflow-hidden"
+      className="relative pt-8 sm:pt-12 pb-16 sm:pb-24 px-3 sm:px-6 bg-theme-creamLight border-t-4 border-theme-rope/25 shadow-inner mt-6 sm:mt-8 z-30"
     >
-      {/* Decorative Celebration Stars in Margins */}
-      <div
-        ref={floatingDecoLeftRef}
-        className="hidden lg:block absolute top-28 left-6 xl:left-12 w-8 xl:w-10 opacity-70 pointer-events-none drop-shadow-md"
-        aria-hidden="true"
-      >
-        <img src="/decorations/layers/star-yellow.png" alt="" className="w-full h-auto" />
-      </div>
-
-      <div
-        ref={floatingDecoRightRef}
-        className="hidden lg:block absolute top-44 right-6 xl:right-12 w-8 xl:w-10 opacity-70 pointer-events-none drop-shadow-md"
-        aria-hidden="true"
-      >
-        <img src="/decorations/layers/star-blue.png" alt="" className="w-full h-auto" />
-      </div>
-
       <div className="max-w-5xl mx-auto">
         {/* Section Header: Styled after reference/memories-section.jpeg */}
-        <div ref={headerRef} className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
+        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-10">
           {/* Decorative Stars & Tag */}
-          <div className="flex items-center justify-center gap-3 mb-2.5">
-            <div ref={starLeftRef}>
-              <img
-                src="/decorations/layers/star-yellow.png"
-                alt=""
-                className="w-5 sm:w-7 h-auto animate-pulse drop-shadow-sm"
-                aria-hidden="true"
-              />
-            </div>
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs shadow-xs">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <img
+              src="/decorations/layers/star-yellow.png"
+              alt=""
+              className="w-5 sm:w-7 h-auto animate-pulse"
+              aria-hidden="true"
+            />
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs">
               <Sparkles size={13} className="text-theme-yellow fill-theme-yellow" />
               <span>Milestone Photo Album</span>
             </div>
-            <div ref={starRightRef}>
-              <img
-                src="/decorations/layers/star-blue.png"
-                alt=""
-                className="w-5 sm:w-7 h-auto animate-pulse drop-shadow-sm"
-                aria-hidden="true"
-              />
-            </div>
+            <img
+              src="/decorations/layers/star-blue.png"
+              alt=""
+              className="w-5 sm:w-7 h-auto animate-pulse"
+              aria-hidden="true"
+            />
           </div>
 
-          {/* Main Title: "12 MONTHS" in celebratory colors with bouncy letters */}
-          <h2 className="font-display font-extrabold text-3xl min-[400px]:text-4xl sm:text-5xl tracking-tight mb-1 select-none">
-            <span
-              ref={(el) => (titleLettersRef.current[0] = el)}
-              className="inline-block text-[#DE5347]"
-            >
-              1
-            </span>
-            <span
-              ref={(el) => (titleLettersRef.current[1] = el)}
-              className="inline-block text-[#DE5347] mr-1.5 sm:mr-2"
-            >
-              2
-            </span>
+          {/* Main Title: "12 MONTHS" in celebratory colors matching the reference */}
+          <h2 className="font-display font-extrabold text-3xl min-[400px]:text-4xl sm:text-5xl tracking-tight mb-1">
+            <span className="text-[#DE5347]">12 </span>
             <span className="tracking-wider">
-              <span ref={(el) => (titleLettersRef.current[2] = el)} className="inline-block text-[#E5A93C]">M</span>
-              <span ref={(el) => (titleLettersRef.current[3] = el)} className="inline-block text-[#4E93CB]">O</span>
-              <span ref={(el) => (titleLettersRef.current[4] = el)} className="inline-block text-[#55A46D]">N</span>
-              <span ref={(el) => (titleLettersRef.current[5] = el)} className="inline-block text-[#DE5347]">T</span>
-              <span ref={(el) => (titleLettersRef.current[6] = el)} className="inline-block text-[#4E93CB]">H</span>
-              <span ref={(el) => (titleLettersRef.current[7] = el)} className="inline-block text-[#E5A93C]">S</span>
+              <span className="text-[#E5A93C]">M</span>
+              <span className="text-[#4E93CB]">O</span>
+              <span className="text-[#55A46D]">N</span>
+              <span className="text-[#DE5347]">T</span>
+              <span className="text-[#4E93CB]">H</span>
+              <span className="text-[#E5A93C]">S</span>
             </span>
           </h2>
 
           {/* Subtitle: "OF OUR LITTLE ONE" */}
-          <p className="font-display font-bold text-xs sm:text-sm md:text-base text-theme-navy/80 uppercase tracking-widest mb-3">
+          <p className="font-display font-bold text-xs sm:text-sm md:text-base text-theme-navy/80 uppercase tracking-widest">
             OF OUR LITTLE ONE
           </p>
-
-          <p className="font-body text-xs sm:text-sm md:text-base text-theme-navy/70 leading-relaxed max-w-lg mx-auto mb-5">
-            A whole year of sweet baby giggles, tiny footsteps, curious eyes, and endless love with{' '}
-            <strong className="text-theme-blue font-semibold">{APP_CONFIG.childName}</strong>.
-          </p>
-
-          {/* Celebratory Milestone Journey Ribbon */}
-          <div className="inline-flex items-center gap-2 sm:gap-3 px-4 py-1.5 rounded-full bg-white/90 border border-theme-rope/20 shadow-xs text-theme-navy/85 font-display text-xs sm:text-sm">
-            <span>🍼 Newborn</span>
-            <span className="text-theme-rope/40">⟶</span>
-            <span>✨ First Smiles</span>
-            <span className="text-theme-rope/40">⟶</span>
-            <span className="font-bold text-[#DE5347]">🎂 Big ONE!</span>
-          </div>
         </div>
 
         {/* 12 Months Grid: 3 columns on mobile matching reference, 3 on tablet, 4 on desktop */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 min-[400px]:gap-3 sm:gap-5 md:gap-6"
-        >
+        <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 min-[400px]:gap-3 sm:gap-5 md:gap-6">
           {MONTHLY_MILESTONES.map((item, idx) => (
             <div
               key={item.monthNumber}
-              ref={(el) => (milestoneCardsRef.current[idx] = el)}
               onClick={() => handleOpenLightbox(idx)}
-              className="group cursor-pointer bg-white rounded-2xl sm:rounded-3xl p-2 min-[400px]:p-2.5 sm:p-3.5 shadow-paper hover:shadow-2xl hover:shadow-theme-sky/25 transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.02] hover:border-theme-yellow/60 border-2 border-theme-cream flex flex-col justify-between relative overflow-hidden"
+              className="group cursor-pointer bg-white rounded-2xl sm:rounded-3xl p-2 min-[400px]:p-2.5 sm:p-3.5 shadow-paper hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:border-theme-sky/40 border border-theme-cream flex flex-col justify-between"
             >
-              {/* Corner celebration sparkle badge on hover */}
-              <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-75 group-hover:scale-100 z-10 pointer-events-none">
-                <Sparkles size={14} className="text-theme-yellow fill-theme-yellow drop-shadow-sm" />
-              </div>
-
-              {/* Photo Frame with subtle warmth and smooth zoom */}
+              {/* Photo Frame (Static Curated Photo) */}
               <div className="relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl bg-amber-50/40 border border-theme-cream/80">
                 <img
                   src={item.image}
                   alt={item.alt}
-                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
 
                 {/* Subtle Hover Zoom Overlay */}
-                <div className="absolute inset-0 bg-theme-navy/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
-                  <span className="p-1.5 sm:p-2 bg-white/95 rounded-full text-theme-navy shadow-md transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                <div className="absolute inset-0 bg-theme-navy/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                  <span className="p-1.5 sm:p-2 bg-white/95 rounded-full text-theme-navy shadow-md transform scale-90 group-hover:scale-100 transition-transform">
                     <ZoomIn size={14} className="sm:w-4 sm:h-4" />
                   </span>
                 </div>
               </div>
 
-              {/* Month Label & Tagline matching reference with subtle bounce on hover */}
-              <div className="pt-2 sm:pt-2.5 text-center px-0.5">
-                <p className="font-display leading-tight text-xs sm:text-sm group-hover:scale-105 transition-transform duration-200">
+              {/* Month Label */}
+              <div className="pt-2 sm:pt-2.5 text-center px-0.5 pb-0.5">
+                <p className="font-display leading-tight text-xs sm:text-sm">
                   <span className="font-bold text-[#DE5347]">{item.monthNumber} </span>
                   <span className="font-semibold text-theme-navy">
                     {item.monthNumber === '01' ? 'month' : 'months'}
                   </span>
-                </p>
-
-                <p className="font-body text-[10px] min-[400px]:text-[11px] sm:text-xs text-theme-navy/70 italic leading-tight mt-0.5 truncate">
-                  {item.tagline}
                 </p>
               </div>
             </div>
@@ -290,7 +192,7 @@ export const MemoryGallery = ({
 
         {/* Optional Community / Guest Memories Section */}
         {memories.length > 0 && (
-          <div ref={guestSectionRef} className="mt-16 sm:mt-20 pt-10 border-t-2 border-theme-rope/20">
+          <div className="mt-16 sm:mt-20 pt-10 border-t-2 border-theme-rope/20">
             <div className="text-center mb-8">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-sky/15 text-theme-navy font-display font-semibold text-xs mb-2">
                 <Heart size={13} className="text-theme-red fill-theme-red" />

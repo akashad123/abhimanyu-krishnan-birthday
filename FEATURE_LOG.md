@@ -769,59 +769,36 @@ When deleting an uploaded photo in "Moments Shared with Love", it disappears fro
 
 ---
 
-### [2026-10-03] Celebration Party Drums, Scroll-Away Hero Decorations, and 12-Month Milestone Album Animations
+### [2026-10-03] Milestone Gallery Description Removal (Photo & Month Only)
 
 **Purpose**
-1. Add festive 3D celebration Party Toy Drums and responsive decorations to the opening celebration scene.
-2. Ensure that as the user scrolls down, all decorations (bunting, side clouds/stars, 4 floating balloons, and celebration drums) gracefully swoop aside, upward, and away, completely exiting the viewport with smooth GSAP animations.
-3. Elevate the "12 Months of Our Little One" milestone photo album from a basic static grid into an interactive, high-end, playful memory scrapbook with rich GSAP animations and micro-interactions.
+Streamline the 12-Month milestone album by removing all description and tagline copy from the cards and section header, presenting an uncluttered, photography-first gallery displaying solely baby Abhimanyu's photo and the corresponding month (e.g. `01 month`, `02 months`, etc.).
 
 **User Flow**
-1. **Hero Celebration Scene**:
-   - The user lands on the vibrant celebration scene with suspended bunting, side hanging clouds & stars, floating colorful balloons, and two 3D celebratory Party Toy Drums bobbing rhythmically.
-   - As the user scrolls down toward the Number "1" Piñata and milestone card:
-     - The floating balloons swoop up and outward into the sky (`y: -360px`, `x: ±450px`, `scale: 0.5`, `opacity: 0`).
-     - The celebration drums roll and drift downward-outward (`y: 280px`, `x: ±400px`, `rotation: ±45deg`, `opacity: 0`).
-     - The side clouds and stars part completely to the left and right borders and fade away (`x: ±440px`, `opacity: 0`).
-     - The top bunting garland scrolls upward out of view (`y: -130px`, `opacity: 0`).
-     - By the time the user reaches the milestone card, all floating decorations have completely cleared the screen.
-2. **"12 Months of Our Little One" Milestone Photo Album**:
-   - As the memory section scrolls into view:
-     - Decorative stars spin and pop into view (360° rotation, scale: 0 -> 1).
-     - The "12 MONTHS" letters bounce in with a lively letter-by-letter spring wave (`back.out(2)`).
-     - A celebratory milestone journey ribbon displays *"🍼 Newborn ⟶ ✨ First Smiles ⟶ 🎂 Big ONE!"*.
-     - All 12 monthly polaroid photo cards cascade in with a staggered scrapbook entrance (`back.out(1.3)`), settling naturally with playful alternating polaroid photo tilts.
-     - Floating celebration stars gently drift in the margins with an idle sine wave.
-     - On desktop hover, cards lift (`-translate-y-2`), straighten to 0°, zoom gently, show a golden-baby glow shadow, and reveal a corner celebration sparkle badge.
-     - On mobile, lightweight and performant touch feedback with zero lag.
+1. Visitor navigates to the "12 Months of Our Little One" memory section.
+2. Directly below the celebratory "12 MONTHS OF OUR LITTLE ONE" header, the visitor sees the 12 monthly photo cards.
+3. Each card displays baby Abhimanyu's square photo with soft rounded corners and hover zoom, followed strictly by the clean month label (e.g., `01 month`, `02 months`).
+4. Clicking any photo opens the lightbox with high-resolution viewing and the clean month label, without any extra description copy.
 
-**Technical Architecture**
-1. **Hero Animations (`src/components/BirthdayHero/birthdayHeroAnimation.js` & `BirthdayHero.jsx`)**:
-   - Created `/decorations/layers/drum.png` (isolated with flood-fill transparency).
-   - Added `drumRightRef`, `drumRightInnerRef`, `drumLeftRef`, and `drumLeftInnerRef`.
-   - Continuous idle bobbing in `gsap.context` for drums.
-   - Master ScrollTrigger scrub timeline animating all decorations completely to `opacity: 0` and off-screen coordinates.
-2. **Milestone Album Animations (`src/sections/memoryGalleryAnimation.js` & `MemoryGallery.jsx`)**:
-   - Created modular `initMemoryGalleryAnimation` using `gsap.matchMedia()`.
-   - Separate timelines for mobile (<768px) and desktop (>=768px) ensuring 60fps performance on handheld devices.
-   - Staggered card entrance with dynamic polaroid angle offsets.
-   - Accessible `useReducedMotion()` fallback.
+**Technical Changes**
+- `src/sections/MemoryGallery.jsx`:
+  - Removed `{item.tagline}` text element from the card markup in the 12-month milestone grid.
+  - Removed the introductory paragraph description (`<p className="font-body ...">A whole year of sweet baby giggles...</p>`) from the section header.
+  - Adjusted header bottom margin from `mb-10 sm:mb-16` to `mb-6 sm:mb-10` for tight, balanced vertical rhythm.
+  - Cleaned lightbox milestone mapping (`title: m.monthLabel`, `subtitle: null`).
+- `src/data/initialMemories.js`:
+  - Removed `tagline` attributes from `MONTHLY_MILESTONES` entries.
+  - Simplified `alt` text to `'Baby Abhimanyu at 01 month'`, etc.
 
-**Files Created & Modified**
-- `public/decorations/layers/drum.png`
-- `reference/drum.png`
-- `src/assets/birthday/common/drum.png`
-- `src/components/BirthdayHero/BirthdayHero.jsx`
-- `src/components/BirthdayHero/BirthdayHero.css`
-- `src/components/BirthdayHero/birthdayHeroAnimation.js`
-- `src/sections/memoryGalleryAnimation.js`
+**Files Modified**
 - `src/sections/MemoryGallery.jsx`
+- `src/data/initialMemories.js`
 - `CHANGELOG.md`
 - `FEATURE_LOG.md`
 
 **Verification**
-- Production build `npm run build` executed successfully (0 errors, built in 10.52s).
-- Local dev server verified running on `http://localhost:3000` (HTTP 200).
+- Production build `npm run build` executed successfully with 0 errors (`✓ built in 6.58s`).
+- Verified local dev server is running and hot module reloading applied changes.
 
 
 
