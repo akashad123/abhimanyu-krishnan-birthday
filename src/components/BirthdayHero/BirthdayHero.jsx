@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, ChevronDown } from 'lucide-react';
 import { initBirthdayHeroAnimation } from './birthdayHeroAnimation';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { APP_CONFIG } from '../../config/appConfig';
@@ -8,12 +8,16 @@ import './BirthdayHero.css';
 /**
  * BirthdayHero Component
  * Implements the layered, physical celebration scene with independent image layers:
- * - Striped wallpaper background
- * - Top bunting garland
- * - Left and right hanging paper decorations suspended from the top ceiling
+ * - Striped wallpaper background (fixed, always visible)
+ * - Top bunting garland — shown on mobile & tablet, hidden on PC (lg+)
+ * - Left and right hanging paper cloud+star decorations suspended from the top ceiling
  * - Individual floating balloons (red, yellow, blue, green)
- * - Centered "ONE WHOLE YEAR" Abhimanyu Krishnan birthday plaque hanging from top ceiling
- * - Natural physical pendulum swaying on all hanging decorations
+ * - Centered "ONE WHOLE YEAR" Abhimanyu Krishnan birthday plaque hanging directly from top ceiling
+ *   (no stub rope — the card image itself has the rope and bow drawn in)
+ * - Rainbow Number 1 Piñata connected below the card
+ * - Scroll Down chevron button between card and piñata
+ * - Milestone Celebratory Card at the bottom
+ * - Natural pendulum swaying on all hanging decorations
  * - Scroll-driven upward card pull and outward side parting
  */
 export const BirthdayHero = () => {
@@ -84,6 +88,14 @@ export const BirthdayHero = () => {
     return cleanup;
   }, [prefersReducedMotion]);
 
+  /** Smooth-scrolls down to the memories section */
+  const handleScrollDown = () => {
+    const target = document.getElementById(APP_CONFIG.sections.memories);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section
       id={APP_CONFIG.sections.hero}
@@ -113,7 +125,8 @@ export const BirthdayHero = () => {
           className="flex flex-col items-center"
           style={{ transformOrigin: 'top center' }}
         >
-          {/* Braided Rope extending directly from the top ceiling — taller on desktop for proper hang connection */}
+          {/* Braided Rope extending directly from the top ceiling
+              — taller on desktop so the cloud visibly hangs from the very top edge */}
           <div className="braided-rope w-2.5 sm:w-3.5 h-16 sm:h-24 md:h-36 lg:h-48" />
 
           {/* Cloud with Dangling Golden Star */}
@@ -143,7 +156,8 @@ export const BirthdayHero = () => {
           className="flex flex-col items-center"
           style={{ transformOrigin: 'top center' }}
         >
-          {/* Braided Rope extending directly from the top ceiling — taller on desktop for proper hang connection */}
+          {/* Braided Rope extending directly from the top ceiling
+              — taller on desktop so the cloud visibly hangs from the very top edge */}
           <div className="braided-rope w-2.5 sm:w-3.5 h-16 sm:h-24 md:h-36 lg:h-48" />
 
           {/* Cloud with Dangling Blue Star */}
@@ -251,7 +265,12 @@ export const BirthdayHero = () => {
         />
       </div>
 
-      {/* Layer 6: Main Birthday Card Assembly hanging from Top Ceiling */}
+      {/*
+       * Layer 6: Main Birthday Card Assembly
+       * Positioned absolute from top:0 so the card hangs from the very ceiling edge
+       * on ALL screen sizes — no stub rope above it, the card image itself contains
+       * the rope and bow knot at the top.
+       */}
       <div
         ref={cardScrollRef}
         className="hero-card-assembly"
@@ -261,12 +280,10 @@ export const BirthdayHero = () => {
           className="flex flex-col items-center w-full"
           style={{ transformOrigin: 'top center' }}
         >
-          {/* Braided Rope extending from the top ceiling down to the card's knot */}
-          <div className="braided-rope w-3.5 sm:w-4 md:w-4.5 h-5 sm:h-7 md:h-5 lg:h-6" />
-
           {/* Central Card with Baby Abhimanyu Krishnan
-              — reduced on lg/xl so the complete card is visible within 100vh */}
-          <div className="relative w-full max-w-[330px] min-[400px]:max-w-[360px] sm:max-w-[410px] md:max-w-[490px] lg:max-w-[380px] xl:max-w-[420px] -mt-1 px-1">
+              The birthday-card.png includes its own rope and bow at the top,
+              so no extra rope div is needed — the card hangs directly from the ceiling. */}
+          <div className="relative w-full max-w-[300px] min-[400px]:max-w-[330px] sm:max-w-[390px] md:max-w-[450px] lg:max-w-[370px] xl:max-w-[410px] px-1">
             <img
               src="/decorations/layers/birthday-card.png"
               alt="One Whole Year of Abhimanyu Krishnan — First Birthday Plaque"
@@ -275,11 +292,26 @@ export const BirthdayHero = () => {
             />
           </div>
 
-          {/* Connected Suspended Rainbow Number 1 Piñata — joined directly below the plaque */}
+          {/* Scroll Down button — between the birthday card and the Piñata */}
+          <button
+            type="button"
+            onClick={handleScrollDown}
+            aria-label="Scroll down to the memory album"
+            className="flex flex-col items-center gap-1 mt-1 sm:mt-2 mb-1 group focus:outline-none"
+          >
+            <span className="font-display font-semibold text-[10px] sm:text-xs text-theme-navy/70 tracking-widest uppercase group-hover:text-theme-blue transition-colors">
+              Scroll Down
+            </span>
+            <span className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm border border-theme-rope/30 shadow-md group-hover:bg-theme-sky/20 transition-all">
+              <ChevronDown size={16} className="text-theme-navy/70 group-hover:text-theme-blue transition-colors" />
+            </span>
+          </button>
+
+          {/* Connected Suspended Rainbow Number 1 Piñata — joined directly below the scroll CTA */}
           <div
             id={APP_CONFIG.sections.pinata}
             ref={pinataRef}
-            className="relative z-10 w-full max-w-[280px] sm:max-w-[340px] md:max-w-[390px] lg:max-w-[280px] xl:max-w-[300px] mx-auto -mt-2 sm:-mt-3"
+            className="relative z-10 w-full max-w-[250px] sm:max-w-[310px] md:max-w-[360px] lg:max-w-[260px] xl:max-w-[290px] mx-auto -mt-1 sm:-mt-2"
           >
             <div
               ref={pinataSwingRef}
@@ -298,7 +330,7 @@ export const BirthdayHero = () => {
           {/* Milestone Celebratory Card — Standing cleanly above the wave */}
           <div
             ref={milestoneRef}
-            className="relative z-20 w-full max-w-sm sm:max-w-md lg:max-w-xs xl:max-w-sm bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-4 sm:p-7 lg:p-5 text-center shadow-paper mt-4 sm:mt-8 lg:mt-4 mb-8 sm:mb-12 md:mb-16 lg:mb-10"
+            className="relative z-20 w-full max-w-[280px] sm:max-w-md lg:max-w-xs xl:max-w-sm bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-4 sm:p-7 lg:p-5 text-center shadow-paper mt-4 sm:mt-6 lg:mt-3 mb-8 sm:mb-12 md:mb-16 lg:mb-8"
           >
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs mb-2 sm:mb-3">
               <Sparkles size={14} className="text-theme-yellow" />
@@ -309,7 +341,7 @@ export const BirthdayHero = () => {
               Turning The Big One!
             </h2>
 
-            <p className="font-body text-sm sm:text-base text-theme-navy/80 leading-relaxed mb-0">
+            <p className="font-body text-xs sm:text-base text-theme-navy/80 leading-relaxed mb-0">
               365 days of baby giggles, tiny footsteps, curious eyes, and endless love with{' '}
               <strong className="text-theme-blue font-semibold">{APP_CONFIG.childName}</strong>.
             </p>
