@@ -133,3 +133,11 @@ Developer-facing record of meaningful changes.
 - **MemoryGallery (Uniform Photo Frame)**: Fixed photo frame sizing fluctuation where portrait photos (Month 1, 2, 12) rendered taller and landscape photos (Month 4, 5) shrank / stringed; corrected arbitrary Tailwind bracket syntax to `aspect-[4/3]` and added inline `style={{ aspectRatio: '4 / 3' }}` to guarantee standard, identical dimensions across all 12 calendar pages
 - **Initial Memories (Focal Coordinates)**: Added calibrated `objectPosition` coordinates to each milestone in `MONTHLY_MILESTONES` so Baby Abhimanyu's face and features are beautifully centered in the uniform 4:3 frame without clipping
 - Build: verified clean build with 0 errors (1,651 modules in 12.80s)
+
+## 2026-10-03 — FamilyGallery: Dual Navigation Buttons + Scroll Guide
+- Replaced single conditional toggle button (Skip / Back) with two **always-visible separate buttons** — Back to 1st Photo and Skip to 15th Photo.
+- Both buttons are permanently rendered; the irrelevant one is dimmed (30% opacity) and disabled rather than hidden.
+- Updated desktop header pill area to show both 1st and 15th navigation pills simultaneously (each dimmed when already at that endpoint).
+- Added a subtle **scroll guide hint** — text Scroll down to browse family moments with an animated bouncing ChevronDown arrow — to help users discover the vertical scroll interaction.
+- Added ChevronDown to lucide-react import.
+- Build: 0 errors, 1,651 modules. Commit: \24546c8\.

@@ -1389,3 +1389,18 @@ Fix the visual disconnection in the mobile hero section where the hanging birthd
 - `src/data/initialMemories.js`
 - `CHANGELOG.md`
 - `FEATURE_LOG.md`
+
+---
+
+## FamilyGallery — Dual Buttons + Scroll Guide
+**Date**: 2026-10-03
+**Commit**: \24546c8\`r
+
+### What changed
+- Bottom button area now always shows **two buttons side-by-side**: Back to 1st Photo (left) and Skip to 15th Photo (right).
+- Buttons are always rendered. When you are already at photo 1, the Back button is disabled + 30% opacity. When at photo 15, the Skip button is disabled + 30% opacity.
+- Desktop header pill row also shows both 1st and 15th pills simultaneously with the same disable/dim logic.
+- Added a Scroll down to browse family moments tagline with a bouncing ChevronDown icon below the buttons to guide new visitors.
+
+### Files changed
+- \src/sections/FamilyGallery.jsx\ — buttons + scroll guide
