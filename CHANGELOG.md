@@ -147,3 +147,8 @@ Developer-facing record of meaningful changes.
 - Fix: MiniCalendar now always renders exactly **42 cells (6 rows × 7 cols)** by padding trailing 
 ull cells after the last day of the month. All months now occupy an identical, fixed-height grid — no more jump or jerk when flipping to/from those months.
 - Build: 0 errors, 1,651 modules. Commit: \83835e1\.
+
+## 2026-10-03 — FamilyGallery: Removed Header Navigation Pills
+- Removed the '1st' and '15th' navigation pill buttons to the right of 'Family Photo Album' badge in the header of the Family Moments section, keeping the section title clean.
+- Staged and verified latest milestone media assets and birthday card assets.
+- Build: 0 errors, 1,651 modules.

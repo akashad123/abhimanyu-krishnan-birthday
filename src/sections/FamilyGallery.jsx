@@ -277,28 +277,6 @@ export const FamilyGallery = () => {
               <span>Family Photo Album</span>
             </div>
             <img src="/decorations/layers/star-blue.png" alt="" className="w-4 sm:w-5 h-auto animate-pulse" aria-hidden="true" />
-
-            {/* Quick navigation pills in header — both visible, dimmed when at endpoint */}
-            <button
-              type="button"
-              onClick={() => goTo(0)}
-              disabled={activeIdx === 0}
-              className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/90 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/20 font-display font-semibold text-[11px] transition-all shadow-xs focus:outline-none cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/90 disabled:hover:text-theme-navy"
-              title="Back to 1st photo"
-            >
-              <ChevronUp size={11} className="text-theme-blue" />
-              <span>1st</span>
-            </button>
-            <button
-              type="button"
-              onClick={handleSkipToLast}
-              disabled={activeIdx === total - 1}
-              className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/90 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/20 font-display font-semibold text-[11px] transition-all shadow-xs focus:outline-none cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/90 disabled:hover:text-theme-navy"
-              title="Skip to 15th photo"
-            >
-              <span>15th</span>
-              <FastForward size={11} className="text-theme-red" />
-            </button>
           </div>
 
           <h2 className="font-display font-extrabold text-2xl min-[400px]:text-3xl sm:text-4xl tracking-tight mb-0.5 drop-shadow-sm">

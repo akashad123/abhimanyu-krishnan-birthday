@@ -1404,3 +1404,15 @@ Fix the visual disconnection in the mobile hero section where the hanging birthd
 
 ### Files changed
 - \src/sections/FamilyGallery.jsx\ — buttons + scroll guide
+
+---
+
+## FamilyGallery â€” Header Navigation Pills Removed
+**Date**: 2026-10-03
+
+### What changed
+- Removed the desktop header pill buttons ('1st' and '15th') next to 'Family Photo Album' entirely as requested by user.
+- Synchronized updated memory photos and reference assets.
+
+### Files changed
+- src/sections/FamilyGallery.jsx
