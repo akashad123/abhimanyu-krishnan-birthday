@@ -267,9 +267,10 @@ export const BirthdayHero = () => {
 
       {/*
        * Layer 6: Main Birthday Card Assembly
-       * Positioned absolute from top:0 so the card hangs from the very ceiling edge
-       * on ALL screen sizes — no stub rope above it, the card image itself contains
-       * the rope and bow knot at the top.
+       * position: relative keeps it in document flow so the section has natural height,
+       * which is required for GSAP ScrollTrigger to correctly measure scroll distance.
+       * The card image (birthday-card.png) already includes the rope and bow at the top —
+       * no extra rope stub is needed here.
        */}
       <div
         ref={cardScrollRef}

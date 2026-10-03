@@ -10,6 +10,8 @@
   justify-content: flex-start;
   padding-bottom: 2.5rem;
   overflow-x: hidden;
+  /* Prevent vertical scrollbar appearing inside the hero section */
+  overflow-y: clip;
 }
 
 @media (min-width: 640px) {
@@ -46,22 +48,22 @@
 }
 
 /*
- * Central Hanging Assembly — hangs directly from the very top ceiling.
- * position: absolute; top: 0 ensures the card starts at the top edge,
- * exactly like the side decorations, giving a true "hung from the ceiling" feel
- * on ALL screen sizes (mobile, tablet, desktop PC).
+ * Central Hanging Assembly
+ * position: relative keeps it in normal document flow so the section
+ * has full natural height — critical for GSAP ScrollTrigger to measure
+ * the correct scroll distance and fire animations at the right time.
+ * margin-top: 0 keeps it flush to the top of the flex column.
  */
 .hero-card-assembly {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: relative;
   z-index: 20;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   pointer-events: auto;
   will-change: transform;
+  margin-top: 0;
 }
 
 /* Left & Right Hanging Assemblies hanging from top ceiling */
