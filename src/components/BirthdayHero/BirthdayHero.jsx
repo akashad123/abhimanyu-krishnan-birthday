@@ -24,7 +24,8 @@ export const BirthdayHero = () => {
   const cardScrollRef = useRef(null);
   const cardSwingRef = useRef(null);
 
-  // Piñata and milestone refs
+  // Piñata and milestone refs (Stage 2)
+  const pinataStageRef = useRef(null);
   const pinataRef = useRef(null);
   const pinataSwingRef = useRef(null);
   const milestoneRef = useRef(null);
@@ -54,12 +55,31 @@ export const BirthdayHero = () => {
 
   const prefersReducedMotion = useReducedMotion();
 
+  // Smooth scroll down to Stage 2 (Turning The Big One)
+  const handleScrollDown = (e) => {
+    e?.preventDefault?.();
+    if (typeof window === 'undefined') return;
+    const st = window.ScrollTrigger?.getById?.('birthdayHeroTrigger');
+    if (st) {
+      window.scrollTo({
+        top: st.start + (st.end - st.start) * 0.95,
+        behavior: 'smooth',
+      });
+    } else {
+      const pinataEl = document.getElementById(APP_CONFIG.sections.pinata);
+      if (pinataEl) {
+        pinataEl.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   useEffect(() => {
     const cleanup = initBirthdayHeroAnimation(
       {
         sectionRef,
         cardScrollRef,
         cardSwingRef,
+        pinataStageRef,
         pinataRef,
         pinataSwingRef,
         milestoneRef,
@@ -225,21 +245,21 @@ export const BirthdayHero = () => {
         </div>
       </div>
 
-      {/* Layer 6: Main Birthday Card Assembly hanging from Top Ceiling */}
+      {/* Stage 1: Abhimanyu Krishnan Card Tag Assembly */}
       <div
         ref={cardScrollRef}
-        className="hero-card-assembly"
+        className="hero-stage hero-stage-tag"
       >
         <div
           ref={cardSwingRef}
-          className="flex flex-col items-center w-full"
+          className="flex flex-col items-center w-full max-h-[92vh] justify-center px-2"
           style={{ transformOrigin: 'top center' }}
         >
-          {/* Braided Rope extending from the top ceiling down to the card's knot */}
-          <div className="braided-rope w-3.5 sm:w-4 md:w-4.5 h-5 sm:h-7 md:h-5 lg:h-6" />
+          {/* Braided Rope extending from top ceiling */}
+          <div className="braided-rope w-3.5 sm:w-4 md:w-4.5 h-8 sm:h-12 md:h-14" />
 
           {/* Central Card with Baby Abhimanyu Krishnan */}
-          <div className="relative w-full max-w-[330px] min-[400px]:max-w-[360px] sm:max-w-[410px] md:max-w-[490px] lg:max-w-[560px] xl:max-w-[620px] -mt-1 px-1">
+          <div className="relative w-full max-w-[320px] min-[400px]:max-w-[350px] sm:max-w-[400px] md:max-w-[480px] lg:max-w-[550px] xl:max-w-[600px] -mt-1 px-1">
             <img
               src="/decorations/layers/birthday-card.png"
               alt="One Whole Year of Abhimanyu Krishnan — First Birthday Plaque"
@@ -252,15 +272,32 @@ export const BirthdayHero = () => {
               ref={scrollCtaRef}
               className="-mt-5 sm:-mt-7 md:-mt-8 lg:-mt-10 z-20 flex justify-center"
             >
-              <ScrollDownIndicator targetId={APP_CONFIG.sections.pinata} />
+              <ScrollDownIndicator
+                targetId={APP_CONFIG.sections.pinata}
+                onScrollDown={handleScrollDown}
+              />
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Connected Suspended Rainbow Number 1 Piñata — joined directly to scroll down downside */}
+      {/* Stage 2: Turning The Big One Assembly (Rainbow Number 1 Piñata + Milestone Card) */}
+      <div
+        id={APP_CONFIG.sections.pinata}
+        ref={pinataStageRef}
+        className="hero-stage hero-stage-pinata"
+      >
+        <div
+          className="flex flex-col items-center w-full max-h-[95vh] justify-center px-4"
+          style={{ transformOrigin: 'top center' }}
+        >
+          {/* Ceiling Braided Rope extending down to the Piñata */}
+          <div className="braided-rope w-3.5 sm:w-4 md:w-4.5 h-6 sm:h-10 md:h-12" />
+
+          {/* Rainbow Number 1 Piñata */}
           <div
-            id={APP_CONFIG.sections.pinata}
             ref={pinataRef}
-            className="relative z-10 w-full max-w-[280px] sm:max-w-[340px] md:max-w-[390px] mx-auto -mt-1 sm:-mt-2"
+            className="relative z-10 w-full max-w-[220px] min-[400px]:max-w-[250px] sm:max-w-[300px] md:max-w-[350px] mx-auto -mt-1"
           >
             <div
               ref={pinataSwingRef}
@@ -279,28 +316,28 @@ export const BirthdayHero = () => {
           {/* Milestone Celebratory Card */}
           <div
             ref={milestoneRef}
-            className="relative z-20 w-full max-w-sm sm:max-w-md bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-6 sm:p-7 text-center shadow-paper mt-5 sm:mt-6 mb-0"
+            className="relative z-20 w-full max-w-sm sm:max-w-md bg-theme-creamLight/95 backdrop-blur-md border-2 border-theme-rope/40 rounded-3xl p-4 sm:p-5 text-center shadow-paper mt-2 sm:mt-3 mb-1"
           >
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs mb-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-yellow/20 text-theme-navy font-display font-semibold text-xs mb-1.5">
               <Sparkles size={14} className="text-theme-yellow" />
               <span>Milestone Celebration</span>
             </div>
 
-            <h2 className="font-display font-bold text-2xl sm:text-3xl text-theme-navy mb-2">
+            <h2 className="font-display font-bold text-xl sm:text-2xl md:text-3xl text-theme-navy mb-1">
               Turning The Big One!
             </h2>
 
-            <p className="font-body text-sm sm:text-base text-theme-navy/80 leading-relaxed mb-5">
+            <p className="font-body text-xs sm:text-sm text-theme-navy/80 leading-relaxed mb-3">
               365 days of baby giggles, tiny footsteps, curious eyes, and endless love with{' '}
               <strong className="text-theme-blue font-semibold">{APP_CONFIG.childName}</strong>.
             </p>
 
             <a
               href={`#${APP_CONFIG.sections.memories}`}
-              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-theme-blue hover:bg-theme-navy text-white font-display font-semibold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-4 focus:ring-theme-blue/30"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-full bg-theme-blue hover:bg-theme-navy text-white font-display font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-4 focus:ring-theme-blue/30"
             >
               <span>Explore The Memory Album</span>
-              <ChevronDown size={16} />
+              <ChevronDown size={15} />
             </a>
           </div>
         </div>
@@ -309,7 +346,7 @@ export const BirthdayHero = () => {
       {/* Layer 7: Foreground Floor Paper Clouds tightly framing the bottom transition */}
       <div
         ref={cloudsFgRef}
-        className="relative -mt-20 sm:-mt-28 pointer-events-none flex justify-between z-25 opacity-95 w-full"
+        className="hero-layer-clouds-fg"
       >
         <img
           src="/decorations/layers/cloud-left.png"

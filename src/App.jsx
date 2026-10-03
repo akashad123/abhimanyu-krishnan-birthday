@@ -14,6 +14,12 @@ export function App() {
       {/* Truly Fixed Static Striped Background — Guaranteed 100% stationary on all devices */}
       <div
         className="fixed inset-0 -z-10 bg-striped-wallpaper pointer-events-none"
+        style={{
+          transform: 'translate3d(0, 0, 0)',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
+          willChange: 'transform',
+        }}
         aria-hidden="true"
       />
 

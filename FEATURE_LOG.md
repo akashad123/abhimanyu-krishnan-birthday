@@ -767,6 +767,59 @@ When deleting an uploaded photo in "Moments Shared with Love", it disappears fro
 - Production build `npm run build` executed successfully (0 errors, built in 5.34s).
 - Verified `localStorage` key creation, deleted ID filtering, and undo restoration logic.
 
+---
+
+### [2026-10-03] Pinned Two-Stage Hero Scroll Reveal & 100% Static Background Stabilization
+
+**User Request**
+"Now it is like a single long scroll. What I want is that this Abhimanyu Krishnan only, that tag, should go up, and the turning the big one should also come up. It also feels like the background is also moving. Could you please change it?"
+
+**Purpose**
+Transform the celebration hero from a flat, vertically stacked single-column scroll into a theatrical, two-stage experience where:
+1. Stage 1 presents baby Abhimanyu Krishnan's card tag hanging in the center of the viewport on initial load without any clutter.
+2. Scrolling or clicking "Scroll Down" pulls the Abhimanyu Krishnan card tag smoothly UP into the top ceiling, while the Rainbow Number 1 Piñata and "Turning The Big One!" milestone card glides smoothly UP from below into center view.
+3. The blue-and-cream vertical striped background wallpaper remains 100% rock-solid and static throughout the scroll, eliminating any optical illusion or browser jitter.
+
+**Technical Architecture & Flow**
+1. **Two-Stage Layout Architecture (`BirthdayHero.jsx` & `BirthdayHero.css`)**:
+   - Split `BirthdayHero` into two discrete stages occupying the 100vh viewport:
+     - `hero-stage-tag`: Stage 1 containing ceiling braided rope, "One Whole Year of Abhimanyu Krishnan" card plaque, and the "Scroll Down" pill button.
+     - `hero-stage-pinata`: Stage 2 containing ceiling braided rope, Rainbow Number 1 Piñata (with continuous physical pendulum sway), and "Turning The Big One! Milestone Celebration" card.
+   - Initial layout state:
+     - Stage 1 is centered at `y: 0`, `opacity: 1`.
+     - Stage 2 is placed off-screen below at `y: 85vh` (mobile) / `95vh` (desktop), `opacity: 0`.
+2. **GSAP ScrollTrigger Pinned Timeline (`birthdayHeroAnimation.js`)**:
+   - Pinned the `BirthdayHero` section (`pin: true`, `anticipatePin: 1`, `scrub: 0.8`, `id: 'birthdayHeroTrigger'`).
+   - Stage 1 Translation: `cardScrollRef` translates up to `-85vh` (mobile) / `-95vh` (desktop) and fades out cleanly into the top ceiling.
+   - Stage 2 Translation: `pinataStageRef` translates up from `85vh`/`95vh` to `0vh` and fades in, bringing the Number 1 Piñata and Milestone card to center stage.
+   - Floating Balloons: Decoupled left and right balloons part smoothly to the left (`x: -asideDist`) and right (`x: asideDist`) borders to frame the Number 1 Piñata.
+   - Side Clouds & Stars: Left and right hanging clouds gracefully drift outward toward the screen edges.
+   - Reduced Motion: When `prefersReducedMotion` is active, animations are bypassed and static layouts render with full opacity.
+3. **Scroll CTA Button Integration (`ScrollDownIndicator.jsx` & `BirthdayHero.jsx`)**:
+   - Added `onScrollDown` callback prop to `ScrollDownIndicator`.
+   - When clicked, it smoothly scrolls the page to `st.start + (st.end - st.start) * 0.95`, triggering the cinematic transition to Stage 2.
+4. **100% Static Background Stabilization**:
+   - Eliminated `background-attachment: fixed` and duplicate `background-image` from `body` in `src/styles/index.css`. This removes the subpixel jitter and compositor thrashing that occurred in Chromium/WebKit on desktop and mobile.
+   - Removed redundant `#static-celebration-background` div from `index.html`.
+   - Enhanced the single authoritative fixed layer in `src/App.jsx` with GPU hardware compositing: `transform: translate3d(0,0,0)`, `backface-visibility: hidden`, `will-change: transform`.
+   - Because `BirthdayHero` is pinned during the stage transition, the viewport scroll remains locked, guaranteeing that the background stripes stay 100% stationary with zero movement or optical distortion.
+
+**Files Modified**
+- `src/components/BirthdayHero/BirthdayHero.jsx`
+- `src/components/BirthdayHero/BirthdayHero.css`
+- `src/components/BirthdayHero/birthdayHeroAnimation.js`
+- `src/components/ScrollDownIndicator.jsx`
+- `src/styles/index.css`
+- `src/App.jsx`
+- `index.html`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` executed successfully without errors or warnings (`✓ built in 8.29s`).
+- Dev server running cleanly on `http://localhost:3000` returning HTTP 200.
+
+
 
 
 

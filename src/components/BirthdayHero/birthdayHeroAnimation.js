@@ -3,7 +3,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   getResponsiveSideMovement,
   getBalloonAsideDistance,
-  getCloudParallax,
 } from '../../utils/responsiveAnimation';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -21,6 +20,7 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
     sectionRef,
     cardScrollRef,
     cardSwingRef,
+    pinataStageRef,
     pinataRef,
     pinataSwingRef,
     milestoneRef,
@@ -43,6 +43,8 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
   if (!sectionRef?.current) return () => {};
 
   if (prefersReducedMotion) {
+    if (cardScrollRef?.current) gsap.set(cardScrollRef.current, { y: 0, opacity: 1 });
+    if (pinataStageRef?.current) gsap.set(pinataStageRef.current, { y: 0, opacity: 1 });
     return () => {};
   }
 
@@ -60,6 +62,17 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       });
     }
 
+    // Number 1 Piñata gently sways like a real suspended festive piñata
+    if (pinataSwingRef?.current) {
+      gsap.to(pinataSwingRef.current, {
+        rotation: -2.8,
+        transformOrigin: 'top center',
+        duration: 3.4,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+    }
 
     // Top bunting garland sways gently left to right across top ceiling
     if (buntingRef?.current) {
@@ -155,42 +168,56 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
    */
   const createHeroScrollTimeline = (isMobile) => {
     const asideDist = getBalloonAsideDistance(isMobile);
-    const clouds = getCloudParallax();
+
+    // Initial positioning:
+    // Stage 1 (Abhimanyu Krishnan tag) starts centered in viewport
+    // Stage 2 (Turning The Big One) starts below viewport
+    if (cardScrollRef?.current) {
+      gsap.set(cardScrollRef.current, { y: 0, opacity: 1 });
+    }
+    if (pinataStageRef?.current) {
+      gsap.set(pinataStageRef.current, {
+        y: isMobile ? '85vh' : '95vh',
+        opacity: 0,
+      });
+    }
 
     const tl = gsap.timeline({
       scrollTrigger: {
+        id: 'birthdayHeroTrigger',
         trigger: sectionRef.current,
         start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.6,
+        end: isMobile ? '+=80%' : '+=100%',
+        pin: true,
+        anticipatePin: 1,
+        scrub: 0.8,
         invalidateOnRefresh: true,
       },
     });
 
-
-    // 2. Side hanging clouds slowly and gracefully part towards the edges
-    // Subtle downward resistance keeps them visible longer in upper view
-    if (leftDecoScrollRef?.current) {
+    // 1. "this Abhimanyu Krishnan only, that tag, should go up"
+    // The Abhimanyu Krishnan card tag and scroll down smoothly glide UP into the ceiling
+    if (cardScrollRef?.current) {
       tl.to(
-        leftDecoScrollRef.current,
+        cardScrollRef.current,
         {
-          x: () => -getResponsiveSideMovement(isMobile),
-          y: isMobile ? 120 : 160,
-          opacity: 0.95,
-          ease: 'none',
+          y: isMobile ? '-85vh' : '-95vh',
+          opacity: 0,
+          ease: 'power1.inOut',
         },
         0
       );
     }
 
-    if (rightDecoScrollRef?.current) {
+    // 2. "and the turning the big one should also come up"
+    // The Number 1 Piñata and Turning The Big One card smoothly glide UP into center view
+    if (pinataStageRef?.current) {
       tl.to(
-        rightDecoScrollRef.current,
+        pinataStageRef.current,
         {
-          x: () => getResponsiveSideMovement(isMobile),
-          y: isMobile ? 120 : 160,
-          opacity: 0.95,
-          ease: 'none',
+          y: '0vh',
+          opacity: 1,
+          ease: 'power1.inOut',
         },
         0
       );
@@ -203,8 +230,8 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         balloonRedRef.current,
         {
           x: -asideDist,
-          y: -140,
-          opacity: 0.4,
+          y: -40,
+          opacity: 0.35,
           ease: 'power1.out',
         },
         0
@@ -215,9 +242,9 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       tl.to(
         balloonYellowRef.current,
         {
-          x: -(asideDist * 1.08),
-          y: -100,
-          opacity: 0.4,
+          x: -(asideDist * 1.1),
+          y: -30,
+          opacity: 0.35,
           ease: 'power1.out',
         },
         0
@@ -230,8 +257,8 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         balloonBlueRef.current,
         {
           x: asideDist,
-          y: -140,
-          opacity: 0.4,
+          y: -40,
+          opacity: 0.35,
           ease: 'power1.out',
         },
         0
@@ -242,37 +269,61 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       tl.to(
         balloonGreenRef.current,
         {
-          x: asideDist * 1.08,
-          y: -100,
-          opacity: 0.4,
+          x: asideDist * 1.1,
+          y: -30,
+          opacity: 0.35,
           ease: 'power1.out',
         },
         0
       );
     }
 
-
-    // 5. Celebratory GSAP entrance for the Milestone Card ("Turning The Big One!")
-    if (milestoneRef?.current) {
-      tl.fromTo(
-        milestoneRef.current,
+    // 4. Side hanging clouds slowly and gracefully part towards the edges
+    if (leftDecoScrollRef?.current) {
+      tl.to(
+        leftDecoScrollRef.current,
         {
-          opacity: 0.35,
-          scale: 0.96,
+          x: () => -getResponsiveSideMovement(isMobile),
+          opacity: 0.85,
+          ease: 'none',
         },
-        {
-          opacity: 1,
-          scale: 1,
-          ease: 'power1.out',
-          duration: 0.4,
-        },
-        0.45
+        0
       );
     }
 
-    // 6. Foreground floor clouds subtle parallax
+    if (rightDecoScrollRef?.current) {
+      tl.to(
+        rightDecoScrollRef.current,
+        {
+          x: () => getResponsiveSideMovement(isMobile),
+          opacity: 0.85,
+          ease: 'none',
+        },
+        0
+      );
+    }
+
+    // 5. Playful entrance pop for the Number 1 Piñata as it takes center stage
+    if (pinataRef?.current) {
+      tl.fromTo(
+        pinataRef.current,
+        {
+          scale: 0.92,
+          rotation: -3,
+        },
+        {
+          scale: 1.0,
+          rotation: 0,
+          ease: 'back.out(1.4)',
+          duration: 0.4,
+        },
+        0.4
+      );
+    }
+
+    // 6. Foreground floor clouds subtle grounded drift
     if (cloudsFgRef?.current) {
-      tl.to(cloudsFgRef.current, { y: -clouds.fg, ease: 'none' }, 0);
+      tl.to(cloudsFgRef.current, { y: 15, ease: 'none' }, 0);
     }
 
     return tl;

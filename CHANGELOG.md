@@ -63,3 +63,11 @@ Developer-facing record of meaningful changes.
 - Cleared orphaned background node process and rebound Vite dev server directly to `http://localhost:3000`.
 - Fixed persistent photo deletion issue by integrating `localStorage` deletion persistence layer in `useMemories.js` (`addDeletedId`, `removeDeletedId`, and state initialization filtering), guaranteeing deleted photos never reappear upon page refresh.
 - Updated `supabase/schema.sql` and `docs/SUPABASE_SETUP.md` with explicit RLS `DELETE` policies for both `public.memories` table and `storage.objects` bucket.
+- Converted celebration scene from a single long scroll into a theatrical two-stage pinned scroll reveal:
+  - Stage 1: Dedicated hero view displaying only the "One Whole Year of Abhimanyu Krishnan" card tag with top braided rope and "Scroll Down" CTA button.
+  - Stage 2: "Turning The Big One!" assembly (Rainbow Number 1 Piñata with pendulum sway + Milestone Celebration card) positioned below the viewport on load.
+  - Scroll Interaction: Scrolling or clicking "Scroll Down" pulls the Abhimanyu Krishnan tag smoothly UP into the ceiling (`y: -95vh`), while the "Turning The Big One" section glides smoothly UP from below (`y: 0vh`) into center stage.
+  - Balloons gracefully part aside to the left and right borders to frame the Number 1 Piñata.
+  - Pinned `BirthdayHero` section locks the viewport during this transition (`pin: true`), guaranteeing the blue-and-cream vertical striped wallpaper remains 100% rock-solid and static without any optical illusion of moving.
+  - Completely resolved background jitter and subpixel movement by removing conflicting `background-attachment: fixed` from `body`, removing redundant `#static-celebration-background` from `index.html`, and consolidating onto a single GPU-accelerated fixed layer in `App.jsx` (`transform: translate3d(0,0,0)`, `backface-visibility: hidden`).
+
