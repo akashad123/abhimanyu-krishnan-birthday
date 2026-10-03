@@ -5,6 +5,7 @@ import FamilyGallery from './sections/FamilyGallery';
 import CommunityMemories from './sections/CommunityMemories';
 import UploadSection from './sections/UploadSection';
 import Footer from './sections/Footer';
+import BackgroundMusic from './components/AudioPlayer/BackgroundMusic';
 import { useMemories } from './hooks/useMemories';
 
 export function App() {
@@ -52,6 +53,8 @@ export function App() {
         onUpload={uploadMemory}
         isConfigured={isConfigured}
       />
+      {/* Floating Background Music Control with Auto-Pause on App Close */}
+      <BackgroundMusic />
     </div>
   );
 }

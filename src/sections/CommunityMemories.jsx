@@ -104,13 +104,13 @@ export const CommunityMemories = ({
   return (
     <section
       id={APP_CONFIG.sections.upload}
-      className="relative z-30 bg-theme-creamLight pt-6 sm:pt-10 pb-10 sm:pb-14 px-3 sm:px-6"
+      className="relative z-30 bg-theme-creamLight pt-0 sm:pt-6 md:pt-10 pb-10 sm:pb-14 px-3 sm:px-6 -mt-1 sm:mt-0"
     >
       <div className="max-w-5xl mx-auto">
         {/* Optional Guest / Shared Memories Grid (if any photos uploaded) */}
         {memories.length > 0 && (
-          <div className="mb-14 sm:mb-20">
-            <div className="text-center mb-8">
+          <div className="mb-10 sm:mb-16">
+            <div className="text-center mb-6 sm:mb-8">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-sky/15 text-theme-navy font-display font-semibold text-xs mb-2">
                 <Heart size={13} className="text-theme-red fill-theme-red" />
                 <span>Guest & Family Memories</span>
@@ -161,11 +161,23 @@ export const CommunityMemories = ({
           </div>
         )}
 
-        {/* Upload Invitation Card: Positioned at the last before the Footer */}
+        {/* Upload Invitation Card: Raised to the ending of Family Moments with Baby Abhimanyu photo */}
         <div className="max-w-xl mx-auto text-center bg-white/95 border-2 border-theme-sky/30 rounded-3xl p-6 sm:p-8 shadow-paper">
-          <span className="inline-block p-3 rounded-full bg-theme-sky/15 text-theme-sky mb-3">
-            <Camera size={26} />
-          </span>
+          {/* Framed Photo of Baby Abhimanyu */}
+          <div className="relative inline-block mb-3.5">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-3 border-[#4E93CB] shadow-md mx-auto bg-amber-50">
+              <img
+                src="/memories/abhimanyu-baby.jpg"
+                alt="Baby Abhimanyu Krishnan"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {/* Camera badge floating on bottom-right of baby's photo */}
+            <span className="absolute -bottom-1.5 -right-1.5 p-2 rounded-full bg-theme-navy text-white shadow-md border-2 border-white">
+              <Camera size={15} />
+            </span>
+          </div>
+
           <h3 className="font-display font-bold text-xl sm:text-2xl text-theme-navy mb-2">
             Have a Photo of Baby Abhimanyu?
           </h3>
@@ -175,7 +187,7 @@ export const CommunityMemories = ({
           <button
             type="button"
             onClick={onOpenUpload}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-theme-red hover:bg-theme-redDark text-white font-display font-semibold text-sm sm:text-base shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-4 focus:ring-theme-red/30"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-theme-red hover:bg-theme-redDark text-white font-display font-semibold text-sm sm:text-base shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-4 focus:ring-theme-red/30 cursor-pointer"
           >
             <Camera size={18} />
             <span>Add a Memory to the Album</span>

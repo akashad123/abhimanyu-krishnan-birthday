@@ -111,3 +111,10 @@ Developer-facing record of meaningful changes.
 - **Interactivity**: Smooth 3D page flip animation, circular arrow navigation buttons (< and >), keyboard arrow navigation, touch swipe support for mobile/tablet, quick month jump bar (1m to 12m), and full-size photo lightbox modal
 - Scope: Only \src/sections/MemoryGallery.jsx\ modified per explicit user instruction to prevent regressions
 - Build: verified clean build with 0 errors
+
+## [2026-10-03] - feat: background music with auto-pause on app close, family gallery navigation stability, and baby photo upload card
+
+- **BackgroundMusic**: Added floating music player with Web Audio API celebratory music box chime, complete with automatic pause on mobile app close, tab minimize, or screen lock via \isibilitychange\ and \pagehide\`n- **FamilyGallery**: Fixed 15th photo and 1st photo navigation overlapping/interlapping bug by bounding target scroll inside the pin span and instantly setting active index, preventing premature unpinning
+- **CommunityMemories**: Raised the section directly to the ending of Family Moments on mobile, closing the dead gap after the 15th photo
+- **CommunityMemories**: Added framed photo of Baby Abhimanyu with camera badge on the \Have a Photo of Baby Abhimanyu? Add a Memory to the Album\ card
+- Build: verified clean build with 0 errors

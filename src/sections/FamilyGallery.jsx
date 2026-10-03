@@ -110,6 +110,12 @@ export const FamilyGallery = () => {
           }
         },
 
+        // When scrolling past the end into next section, lock at final photo
+        onLeave: () => {
+          activeIdxRef.current = total - 1;
+          setActiveIdx(total - 1);
+        },
+
         // When scrolling back past the start, reset to photo 1 cleanly
         onLeaveBack: () => {
           activeIdxRef.current = 0;
@@ -139,15 +145,23 @@ export const FamilyGallery = () => {
   const goTo = useCallback(
     (idx) => {
       const targetIdx = Math.max(0, Math.min(total - 1, idx));
+      activeIdxRef.current = targetIdx;
+      setActiveIdx(targetIdx);
+
       if (stRef.current && typeof stRef.current.start === 'number' && typeof stRef.current.end === 'number') {
-        const targetScroll =
-          stRef.current.start + (targetIdx / (total - 1)) * (stRef.current.end - stRef.current.start);
+        const span = stRef.current.end - stRef.current.start;
+        // Keep slightly inside the pin bounds so the pin does NOT prematurely unpin or interlap with next section
+        const progressFrac = targetIdx === 0
+          ? 0.005
+          : targetIdx === total - 1
+          ? 0.99
+          : targetIdx / (total - 1);
+
+        const targetScroll = stRef.current.start + progressFrac * span;
         window.scrollTo({
           top: targetScroll,
           behavior: 'smooth',
         });
-      } else {
-        setActiveIdx(targetIdx);
       }
     },
     [total]

@@ -1320,3 +1320,29 @@ Fix the visual disconnection in the mobile hero section where the hanging birthd
 - `src/sections/MemoryGallery.jsx`
 - `CHANGELOG.md`
 - `FEATURE_LOG.md`
+
+
+### Feature: Background Music, Family Gallery Navigation Stability & Baby Photo Upload Card
+
+**Status**: Completed
+
+**Description**
+1. **Background Music with Auto-Pause on App Close**:
+   - Implemented `BackgroundMusic` component using a crystalline procedural Web Audio API Music Box synthesizer that plays a soothing, celebratory baby birthday melody with 0 external network dependencies.
+   - Listens to `visibilitychange`, `pagehide`, and `beforeunload`. When the mobile screen is locked, browser is minimized, or tab is closed, the music **immediately pauses**.
+   - Floating interactive badge in the bottom-right corner allows manual play/pause toggle.
+2. **Family Gallery 15th Photo & 1st Photo Navigation Fix**:
+   - Resolved the overlapping / interlapping bug when skipping to the 15th photo or returning to the 1st photo.
+   - Bounded `goTo` scroll coordinates slightly within pin limits (`0.005` to `0.99`) so ScrollTrigger remains engaged and never unpins prematurely during smooth scroll.
+   - Added `onLeave` handler locking at the final photo.
+3. **Closing Mobile Gap After 15th Photo & Baby Abhimanyu Card**:
+   - Raised `CommunityMemories` directly to the ending of Family Moments on mobile (`pt-0 -mt-1`), eliminating the empty dead space after the 15th photo.
+   - Added a framed portrait of Baby Abhimanyu (`/memories/abhimanyu-baby.jpg`) with a camera badge to the "Have a Photo of Baby Abhimanyu? Add a Memory to the Album" invitation card.
+
+**Files Modified**
+- `src/components/AudioPlayer/BackgroundMusic.jsx` (New)
+- `src/App.jsx`
+- `src/sections/FamilyGallery.jsx`
+- `src/sections/CommunityMemories.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
