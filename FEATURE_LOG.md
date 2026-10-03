@@ -637,54 +637,47 @@ Completely eliminate the empty vertical gap between the "Turning The Big One!" m
 
 ---
 
-### FEATURE: Hanging Number "1" Piñata Explosion with Drums, Balloons, and Center Emergence of "12 Months of Our Little One"
+### FEATURE: 12 Genuine Monthly Milestone Photos Integration & Static Milestone Lock
 
 **User Request**
-- When it comes to the second section, the one which hangs from the top, make it explode, and from the center, the 12 months of our little one section comes.
-- The explosion should include party drums and balloons bursting outward.
-- From the center of that explosion, the "12 months of our little one" should emerge.
+1. Replace the 12 images in the "12 Months of Our Little One" memory section with the 12 photos in `reference/` named `1.jpeg` through `12.jpeg`.
+2. Remove the trash icon from the "12 Months of Our Little One" section only.
+3. Keep the 12-month section 100% static (not connected to Supabase, permanent milestone memories).
+4. Keep the Supabase connection exclusively for "Moments Shared with Love" (guest and family uploads from the website), which retains the trash/delete icon.
 
 **User Flow**
-1. Visitor arrives at the website and scrolls down from the top baby plaque past the "Scroll Down" button.
-2. Directly below, suspended from the braided rope, hangs the vibrant Rainbow Number "1" Piñata, gently swaying in the breeze with a milestone celebratory badge: *"Turning The Big One! — 365 days of baby giggles and pure joy"*.
-3. An inviting pulsating button *"Pop The Piñata! 🎈"* invites interaction.
-4. When the visitor scrolls into the section (or taps the button/piñata directly):
-   - The Piñata quivers rapidly with celebratory energy.
-   - A golden-white radial shockwave flash expands from the center.
-   - **KABOOM! The Number "1" Piñata bursts open!**
-   - Two illustrated celebration snare drums (`PartyDrum.jsx`) with crossed drumsticks and floating musical notes (`♪ ♫`) bounce outward to the left and right.
-   - Four colorful celebration balloons (red, blue, yellow, green) launch outward into the sky.
-   - Eight sparkling stars and 24 colorful confetti streamers spray out 360 degrees.
-   - **Directly from the center of that explosion:** The entire "12 Months of Our Little One" memory section emerges and scales outward (`scale: 0.12 -> 1.0, opacity: 0 -> 1.0, ease: back.out(1.18)`).
-   - The 12 monthly polaroid photo cards bloom outward into their full, responsive grid.
-   - The explosion particles gently float away into the background and fade out.
-5. The memory album is now completely revealed and fully interactive (lightbox preview, delete/undo photo buttons, upload modal, etc.).
-6. A discreet *"Pop Again! 🎉"* button in the header allows visitors to replay the explosion animation at any time.
+1. **12 Months of Our Little One**:
+   - The milestone grid displays the 12 genuine high-resolution photographs of baby Abhimanyu from newborn (`1.jpeg` — "A brand new you") through crawling in traditional Krishna attire (`12.jpeg` — "One whole year").
+   - These 12 milestone cards are clean, permanent, and static — with NO trash icon and NO delete button.
+   - Clicking any of the 12 milestone cards opens the high-resolution lightbox preview with previous/next navigation and milestone tagline.
+   - The lightbox preview for milestone photos contains only navigation and close controls, without any delete button.
+2. **Moments Shared with Love (Dynamic Guest Uploads)**:
+   - Guest and family photos uploaded through the website ("Add a Memory to the Album") are uploaded to Supabase Storage and registered in the database.
+   - They appear dynamically in the "Moments Shared with Love" gallery section.
+   - Each uploaded memory card features a discreet delete button in the top-right corner, allowing guests/family to delete their uploads with an instant Undo option.
 
-**Technical Flow & Architecture**
-- Created `src/components/PartyDrum.jsx`:
-  - Crisp SVG celebration snare drum with crimson & cream body, golden rims, criss-cross tension cords, crossed drumsticks, and musical vibration notes.
-- In `src/sections/MemoryGallery.jsx`:
-  - Consolidated the hanging Number "1" Piñata assembly (`#pinata-section`) with idle pendulum swaying.
-  - Built master GSAP explosion timeline with matchMedia responsiveness for mobile (< 768px) and desktop (>= 768px).
-  - Integrated dual-trigger mechanism: automatic ScrollTrigger detection (`start: top 65%`) and interactive click/tap handler (`handlePop`).
-  - Implemented center-origin expansion on `galleryContainerRef` (`transformOrigin: top center`).
-  - Added replay capability (`handleReplay`) with smooth scroll-back and timeline restart.
-  - Full `prefers-reduced-motion` compliance.
-- In `src/components/BirthdayHero/BirthdayHero.jsx` and `birthdayHeroAnimation.js`:
-  - Removed old static duplicate milestone card and pinata refs to eliminate section duplication and empty gaps.
-  - Softened floor clouds margin to cleanly frame the bottom of the hero plaque.
+**Technical Architecture & Flow**
+- Assets:
+  - Copied `reference/1.jpeg` through `reference/12.jpeg` into `public/memories/month-01.jpg`..`month-12.jpg` and `public/memories/month-01.jpeg`..`month-12.jpeg`.
+- Data:
+  - Updated `src/data/initialMemories.js` to reference the genuine photo assets in `MONTHLY_MILESTONES`.
+- Component:
+  - In `src/sections/MemoryGallery.jsx`:
+    - Removed `milestones` state and `handleDeleteMilestone` handler.
+    - Rendered `MONTHLY_MILESTONES` statically without delete buttons.
+    - Updated lightbox controls to conditionally render the delete button only for guest memories (`selectedItem?.type === 'guest'`).
+    - Kept Supabase data flow and deletion for `memories` ("Moments Shared with Love").
 
 **Files Modified**
-- `src/components/PartyDrum.jsx` (created)
+- `public/memories/month-01.jpeg` through `month-12.jpeg`
+- `public/memories/month-01.jpg` through `month-12.jpg`
+- `src/data/initialMemories.js`
 - `src/sections/MemoryGallery.jsx`
-- `src/components/BirthdayHero/BirthdayHero.jsx`
-- `src/components/BirthdayHero/birthdayHeroAnimation.js`
 - `CHANGELOG.md`
 - `FEATURE_LOG.md`
 
 **Verification**
-- Production build `npm run build` executed with 0 errors.
-- Verified local dev server is responding with HTTP 200.
+- Production build `npm run build` executed successfully with 0 errors.
+- Verified all 12 photos exist and load properly.
 
 

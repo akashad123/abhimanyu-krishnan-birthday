@@ -56,8 +56,6 @@ Developer-facing record of meaningful changes.
 - Implemented floating Undo toast notification with 6-second timer to restore deleted photos instantly.
 - Added "Bathakkah Invites" branding to `Footer.jsx` featuring official monogram logo (`/logo.png`) and tagline *"your story, beautifully invited"*.
 - Adjusted vertical spacing between "Turning the Big One!" milestone card and "12 Months of Our Little One" memories section (`mt-6 sm:mt-8`), introducing the requested subtle, elegant gap.
-- Implemented celebratory Number "1" Piñata explosion sequence: when arriving at the hanging Number "1", it quivers and explodes with celebratory party drums (`PartyDrum.jsx`), flying balloons, radial starbursts, and colorful confetti streamers.
-- Orchestrated the "12 Months of Our Little One" memory section to emerge directly from the center of the exploded Piñata (`scale: 0.12 -> 1.0, opacity: 0 -> 1.0, back.out(1.18)`) with staggered monthly milestone card reveals.
-- Added dual trigger support for the explosion: automatic scroll-driven activation via GSAP ScrollTrigger (`top 65%`) and interactive click/tap ("Pop The Piñata! 🎈").
-- Added "Pop Again! 🎉" replay functionality in the section header for re-experiencing the explosion animation.
-- Removed old static duplicate milestone card from `BirthdayHero.jsx`, unifying the hero transition directly into the Piñata explosion scene.
+- Replaced the 12 milestone photos in the "12 Months of Our Little One" memory section with baby Abhimanyu's genuine photos (`1.jpeg` to `12.jpeg` from `reference/` copied into `public/memories/`).
+- Removed the trash icon from the "12 Months of Our Little One" milestone cards and lightbox, making the 12-month timeline strictly static and permanent without Supabase connection.
+- Preserved Supabase integration and trash/undo deletion functionality exclusively for "Moments Shared with Love" (guest & family memories uploaded through the website).
