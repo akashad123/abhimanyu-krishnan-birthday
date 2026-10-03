@@ -59,3 +59,5 @@ Developer-facing record of meaningful changes.
 - Replaced the 12 milestone photos in the "12 Months of Our Little One" memory section with baby Abhimanyu's genuine photos (`1.jpeg` to `12.jpeg` from `reference/` copied into `public/memories/`).
 - Removed the trash icon from the "12 Months of Our Little One" milestone cards and lightbox, making the 12-month timeline strictly static and permanent without Supabase connection.
 - Preserved Supabase integration and trash/undo deletion functionality exclusively for "Moments Shared with Love" (guest & family memories uploaded through the website).
+- Fixed footer visibility issue by adding `relative z-20 w-full` to `Footer.jsx` and setting background layer to `-z-10` in `App.jsx`, resolving CSS stacking context where the fixed striped wallpaper was rendering over the unpositioned footer.
+- Cleared orphaned background node process and rebound Vite dev server directly to `http://localhost:3000`.

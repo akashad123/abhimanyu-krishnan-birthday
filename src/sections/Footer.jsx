@@ -9,7 +9,7 @@ import { APP_CONFIG } from '../config/appConfig';
  */
 export const Footer = () => {
   return (
-    <footer className="bg-theme-cream py-12 px-4 border-t-2 border-theme-cream border-opacity-80 text-center">
+    <footer className="relative z-20 w-full bg-theme-cream py-12 px-4 border-t-2 border-theme-rope/20 text-center">
       <div className="max-w-2xl mx-auto flex flex-col items-center">
         {/* Monogram emblem */}
         <div className="w-12 h-12 rounded-full bg-theme-sky/20 border-2 border-theme-sky flex items-center justify-center text-theme-navy font-display font-bold text-lg mb-3 shadow-sm">

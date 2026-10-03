@@ -13,7 +13,7 @@ export function App() {
     <div className="relative min-h-screen flex flex-col font-body text-theme-navy bg-transparent overflow-x-hidden">
       {/* Truly Fixed Static Striped Background — Guaranteed 100% stationary on all devices */}
       <div
-        className="fixed inset-0 z-0 bg-striped-wallpaper pointer-events-none"
+        className="fixed inset-0 -z-10 bg-striped-wallpaper pointer-events-none"
         aria-hidden="true"
       />
 

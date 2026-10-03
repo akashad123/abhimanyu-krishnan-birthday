@@ -680,4 +680,39 @@ Completely eliminate the empty vertical gap between the "Turning The Big One!" m
 - Production build `npm run build` executed successfully with 0 errors.
 - Verified all 12 photos exist and load properly.
 
+---
+
+### BUGFIX: Footer Visibility & Stacking Order Resolution
+
+**User Issue**
+The footer ("Bathakkah Invites — your story, beautifully invited" and celebration credits) was not visible at the bottom of the page, showing only blue and cream striped wallpaper below the memory gallery card.
+
+**Root Causes**
+1. **CSS Stacking Order**:
+   - The stationary wallpaper was placed in `App.jsx` as a fixed element with `fixed inset-0 z-0 bg-striped-wallpaper`.
+   - The `<main>` element was positioned with `relative z-10`, so it painted above the wallpaper.
+   - However, `<footer className="bg-theme-cream ...">` was unpositioned (`position: static` with no z-index).
+   - According to CSS specification, positioned elements with `z-index: 0` or higher render above non-positioned (static) elements in the normal document flow. Consequently, the fixed wallpaper painted directly over the footer, concealing it.
+2. **Orphaned Local Dev Process**:
+   - An orphaned background Node.js process was holding port 3000 running a stale build from earlier, while Vite had bound to port 3001. The browser open at `localhost:3000` was hitting the stale server.
+
+**Fix Applied**
+- In `src/sections/Footer.jsx`:
+  - Added `relative z-20 w-full` to `<footer className="relative z-20 w-full bg-theme-cream py-12 px-4 border-t-2 border-theme-rope/20 text-center">`, giving it an explicit foreground position and high stacking index.
+- In `src/App.jsx`:
+  - Adjusted the fixed wallpaper layer to `fixed inset-0 -z-10 bg-striped-wallpaper pointer-events-none`, guaranteeing it remains below all content (both `<main>` and `<Footer />`).
+- Server:
+  - Terminated the orphaned background process and restarted Vite directly on `http://localhost:3000`.
+
+**Files Modified**
+- `src/sections/Footer.jsx`
+- `src/App.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Verified `http://localhost:3000/src/sections/Footer.jsx` and `http://localhost:3000/logo.png` return HTTP 200.
+- Executed `npm run build` with 0 errors.
+
+
 
