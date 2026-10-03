@@ -161,13 +161,16 @@ export const MemoryGallery = ({
               className="group cursor-pointer bg-white rounded-2xl sm:rounded-3xl p-2 min-[400px]:p-2.5 sm:p-3.5 shadow-paper border border-theme-cream flex flex-col justify-between"
             >
               {/* Photo Frame (Static Curated Photo) */}
-              <div className="relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl bg-amber-50/40 border border-theme-cream/80">
+              <div className="relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl bg-amber-50/40 border border-theme-cream/80 group-hover:border-theme-sky/50 transition-colors duration-300">
                 <img
                   src={item.image}
                   alt={item.alt}
-                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
                   loading="lazy"
                 />
+
+                {/* Subtle Glossy Photo Light Sweep */}
+                <div className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out bg-gradient-to-r from-transparent via-white/20 to-transparent" />
               </div>
 
               {/* Month Label */}

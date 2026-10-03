@@ -828,6 +828,34 @@ Refine the hover interaction on the "12 Months of Our Little One" milestone card
 - Production build `npm run build` executed successfully with 0 errors (`✓ built in 3.62s`).
 - Confirmed card elements remain stationary while the inner image responds smoothly to hover.
 
+---
+
+### [2026-10-03] Milestone Photo Scale Resolution & "Glossy Photo Sheen" Hover Effect
+
+**Issue Diagnosis**
+- The prior class `group-hover:scale-108` is not a standard utility class in Tailwind CSS without manual configuration. Consequently, the build compiler omitted it, leaving the photos with zero hover animation.
+- Restored standard Tailwind `group-hover:scale-110` with `transition-transform duration-500 ease-out`.
+
+**Design Enhancements Applied**
+1. **Stationary Card Boundary**:
+   - The outer card remains 100% grounded with zero translation, lift, or card-level shadow changes.
+2. **Smooth Photo Zoom**:
+   - When hovering, baby Abhimanyu's photo gently zooms in (`scale-110`) within the clean rounded frame.
+3. **Glossy Photo Sheen Glint**:
+   - Added an elegant translucent light shimmer (`bg-gradient-to-r from-transparent via-white/20 to-transparent`) that sweeps across the photo on hover, mimicking the glossy finish of a physical photograph in a luxury album.
+4. **Soft Border Accent**:
+   - Subtle frame border warming on hover (`group-hover:border-theme-sky/50`) to frame the active photo.
+
+**Files Modified**
+- `src/sections/MemoryGallery.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` succeeded with 0 errors (`✓ built in 4.75s`).
+- Verified CSS bundle contains `group-hover:scale-110` and `group-hover:translate-x-full`.
+
+
 
 
 

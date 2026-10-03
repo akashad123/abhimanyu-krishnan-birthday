@@ -63,6 +63,8 @@ Developer-facing record of meaningful changes.
 - Cleared orphaned background node process and rebound Vite dev server directly to `http://localhost:3000`.
 - Fixed persistent photo deletion issue by integrating `localStorage` deletion persistence layer in `useMemories.js` (`addDeletedId`, `removeDeletedId`, and state initialization filtering), guaranteeing deleted photos never reappear upon page refresh.
 - Removed description/taglines from the 12 milestone cards in the "12 Months of Our Little One" section per user request, displaying solely the baby's photo and the month label (e.g., `01 month`, `02 months`), while also removing the generic intro paragraph description for a cleaner, photo-first presentation.
-- Updated 12-month milestone hover behavior: removed all whole-card hover effects (card lifting `hover:-translate-y-1`, shadow expansion, border color shift), confining the hover interaction strictly to a smooth inner scale on the photo itself (`group-hover:scale-108`), keeping the card firmly stationary.
+- Fixed milestone photo hover scaling by switching to valid Tailwind `group-hover:scale-110` (from invalid uncompiled `scale-108`), restoring active smooth image zoom on hover while maintaining stationary card boundaries.
+- Added "Glossy Photo Sheen" subtle diagonal light shimmer sweep (`bg-gradient-to-r from-transparent via-white/20 to-transparent`) and soft border tint on the photo frame for an attractive photographic effect.
+
 
 
