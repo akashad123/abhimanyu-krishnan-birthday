@@ -282,8 +282,10 @@ export const BirthdayHero = () => {
           style={{ transformOrigin: 'top center' }}
         >
           {/* Braided Rope extending from the top ceiling to the card's knot — mobile & iPad only.
-              On PC (lg+) the birthday-card.png image already has the rope and bow drawn in. */}
-          <div className="braided-rope w-3 sm:w-3.5 md:w-4 h-8 sm:h-10 md:h-12 -mb-2 z-10 lg:hidden" />
+              On PC (lg+) the birthday-card.png image already has the rope and bow drawn in.
+              Height is generous so it fully bridges the gap between the bunting bottom and
+              the visual knot drawn inside the card PNG (which has ~15% transparent top padding). */}
+          <div className="braided-rope w-3 sm:w-3.5 md:w-4 h-20 sm:h-24 md:h-36 -mb-6 sm:-mb-7 md:-mb-10 z-10 lg:hidden" />
 
           {/* Central Card with Baby Abhimanyu Krishnan */}
           <div className="relative w-full max-w-[300px] min-[400px]:max-w-[330px] sm:max-w-[390px] md:max-w-[450px] lg:max-w-[370px] xl:max-w-[410px] px-1 z-10">
