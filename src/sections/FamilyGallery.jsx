@@ -30,15 +30,15 @@ const ACCENT_COLORS = ['#4E93CB', '#DE5347', '#E5A93C', '#55A46D'];
 /** Page cream-light colour (matches bg-theme-creamLight in tailwind.config) */
 const CREAM = '#FCFAF6';
 
-/** Carousel layout constants */
-const CARD_H    = 180;           // px — height of each photo card
+/** Carousel layout constants — scaled to fit 100% within any PC/laptop viewport without clipping */
+const CARD_H    = 150;           // px — height of each photo card
 const CARD_GAP  = 12;            // px — gap between cards
-const CARD_UNIT = CARD_H + CARD_GAP; // 192 px per slot
-const VISIBLE_H = 530;           // px — clip-container height for the strip
+const CARD_UNIT = CARD_H + CARD_GAP; // 162 px per slot
+const VISIBLE_H = 360;           // px — clip-container height for the strip
 
 /** Left text drum constants */
-const TEXT_H    = 52;            // px — height of each text row
-const TEXT_VIS  = VISIBLE_H;     // same visible height as strip
+const TEXT_H    = 44;            // px — height of each text row
+const TEXT_VIS  = VISIBLE_H;     // 360 px — same visible height as strip
 
 /**
  * Returns the translateY that centres the active item inside a clipping container.
@@ -76,7 +76,7 @@ export const FamilyGallery = () => {
       trigger: section,
       start: 'top top',
       // Give each photo ~60 % of a viewport worth of scrolling room
-      end: () => `+=${(total - 1) * window.innerHeight * 0.65}`,
+      end: () => `+=${(total - 1) * window.innerHeight * 0.6}`,
       pin: true,
       pinSpacing: true,
       anticipatePin: 1,
@@ -97,6 +97,11 @@ export const FamilyGallery = () => {
         }
       },
     });
+
+    // Ensure the pin-spacer has solid cream background to eliminate any stripe bleed
+    if (st.spacer) {
+      st.spacer.style.backgroundColor = CREAM;
+    }
 
     stRef.current = st;
 
@@ -156,21 +161,34 @@ export const FamilyGallery = () => {
     <section
       id={APP_CONFIG.sections.family}
       ref={sectionRef}
-      className="relative z-30 bg-theme-creamLight pt-3 sm:pt-6 pb-12 sm:pb-20"
+      className="relative z-30 bg-theme-creamLight min-h-screen min-h-[100dvh] w-full flex flex-col justify-center items-center py-4 sm:py-6 overflow-hidden"
     >
       {/* ── Section Header (Raised to center without redundant divider) ── */}
-      <div className="max-w-5xl mx-auto px-3 sm:px-6">
-        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8 pt-1 sm:pt-2">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <img src="/decorations/layers/star-yellow.png" alt="" className="w-5 sm:w-7 h-auto animate-pulse" aria-hidden="true" />
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-theme-sky/20 text-theme-navy font-display font-semibold text-xs border border-theme-sky/30 bg-white/80">
-              <Sparkles size={13} className="text-theme-sky fill-theme-sky" />
+      <div className="max-w-5xl mx-auto px-3 sm:px-6 w-full">
+        <div className="text-center max-w-2xl mx-auto mb-2.5 sm:mb-4 pt-1">
+          <div className="flex items-center justify-center gap-2 mb-1.5">
+            <img src="/decorations/layers/star-yellow.png" alt="" className="w-4 sm:w-5 h-auto animate-pulse" aria-hidden="true" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-theme-sky/20 text-theme-navy font-display font-semibold text-xs border border-theme-sky/30 bg-white/80">
+              <Sparkles size={12} className="text-theme-sky fill-theme-sky" />
               <span>Family Photo Album</span>
             </div>
-            <img src="/decorations/layers/star-blue.png" alt="" className="w-5 sm:w-7 h-auto animate-pulse" aria-hidden="true" />
+            <img src="/decorations/layers/star-blue.png" alt="" className="w-4 sm:w-5 h-auto animate-pulse" aria-hidden="true" />
+
+            {/* Quick Skip pill in header for instant desktop accessibility */}
+            {activeIdx < total - 1 && (
+              <button
+                type="button"
+                onClick={handleSkipToLast}
+                className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/90 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/20 font-display font-semibold text-[11px] transition-all shadow-xs focus:outline-none cursor-pointer"
+                title="Skip to 15th photo"
+              >
+                <span>Skip to 15th</span>
+                <FastForward size={11} className="text-theme-red" />
+              </button>
+            )}
           </div>
 
-          <h2 className="font-display font-extrabold text-3xl min-[400px]:text-4xl sm:text-5xl tracking-tight mb-1 drop-shadow-sm">
+          <h2 className="font-display font-extrabold text-2xl min-[400px]:text-3xl sm:text-4xl tracking-tight mb-0.5 drop-shadow-sm">
             <span className="text-[#DE5347]">FA</span>
             <span className="text-[#E5A93C]">MI</span>
             <span className="text-[#4E93CB]">LY </span>
@@ -179,26 +197,26 @@ export const FamilyGallery = () => {
             <span className="text-[#4E93CB]">NTS</span>
           </h2>
 
-          <p className="font-display font-bold text-xs sm:text-sm md:text-base text-theme-navy/80 uppercase tracking-widest">
+          <p className="font-display font-bold text-[11px] sm:text-xs text-theme-navy/70 uppercase tracking-widest">
             Surrounded by Love &amp; Warmth
           </p>
         </div>
       </div>
 
       {/* ── Two-Panel Carousel (no card box — blends with page bg) ── */}
-      <div className="max-w-3xl mx-auto px-3 sm:px-6">
-        <div className="relative flex gap-0">
+      <div className="max-w-3xl mx-auto px-3 sm:px-6 w-full">
+        <div className="relative flex gap-0 justify-center">
 
           {/* ── LEFT: Text Drum / Wheel (desktop & tablet only) ── */}
           <div
             className="hidden md:block relative shrink-0 select-none"
-            style={{ width: 210, height: TEXT_VIS, overflow: 'hidden' }}
+            style={{ width: 190, height: TEXT_VIS, overflow: 'hidden' }}
           >
             {/* Top cream fade */}
             <div
               className="absolute top-0 left-0 right-0 z-10 pointer-events-none"
               style={{
-                height: 130,
+                height: 85,
                 background: `linear-gradient(to bottom, ${CREAM} 0%, transparent 100%)`,
               }}
             />
@@ -206,7 +224,7 @@ export const FamilyGallery = () => {
             <div
               className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none"
               style={{
-                height: 130,
+                height: 85,
                 background: `linear-gradient(to top, ${CREAM} 0%, transparent 100%)`,
               }}
             />
@@ -293,7 +311,7 @@ export const FamilyGallery = () => {
             <div
               className="absolute top-0 left-0 right-0 z-10 pointer-events-none"
               style={{
-                height: 110,
+                height: 75,
                 background: `linear-gradient(to bottom, ${CREAM} 0%, transparent 100%)`,
               }}
             />
@@ -301,7 +319,7 @@ export const FamilyGallery = () => {
             <div
               className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none"
               style={{
-                height: 110,
+                height: 75,
                 background: `linear-gradient(to top, ${CREAM} 0%, transparent 100%)`,
               }}
             />
@@ -395,7 +413,7 @@ export const FamilyGallery = () => {
         </div>
 
         {/* ── Mobile: current moment label ── */}
-        <div className="md:hidden flex items-center justify-between mt-4 px-1">
+        <div className="md:hidden flex items-center justify-between mt-2.5 px-1">
           <span className="font-display font-bold text-sm" style={{ color: accentColor }}>
             Moment {String(activeIdx + 1).padStart(2, '0')}
           </span>
@@ -405,7 +423,7 @@ export const FamilyGallery = () => {
         </div>
 
         {/* ── Progress dots ── */}
-        <div className="flex items-center justify-center gap-1.5 mt-5">
+        <div className="flex items-center justify-center gap-1.5 mt-3 sm:mt-3.5">
           {FAMILY_PHOTOS.map((_, idx) => {
             const dist     = Math.abs(idx - activeIdx);
             const isActive = idx === activeIdx;
@@ -417,8 +435,8 @@ export const FamilyGallery = () => {
                 aria-label={`Go to photo ${idx + 1}`}
                 className="rounded-full transition-all duration-300 focus:outline-none cursor-pointer"
                 style={{
-                  width:           isActive ? 28 : dist === 1 ? 8 : 5,
-                  height:          6,
+                  width:           isActive ? 26 : dist === 1 ? 7 : 5,
+                  height:          5,
                   backgroundColor: isActive
                     ? ACCENT_COLORS[activeIdx % ACCENT_COLORS.length]
                     : dist <= 2 ? '#c4b8a8' : '#ddd5c8',
@@ -433,16 +451,16 @@ export const FamilyGallery = () => {
 
         {/* ── Button to Skip Through to the 15th (Last) Photo ── */}
         {activeIdx < total - 1 && (
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center mt-2.5 sm:mt-3">
             <button
               type="button"
               onClick={handleSkipToLast}
-              className="group inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/15 hover:border-theme-navy font-display font-semibold text-xs sm:text-sm transition-all duration-300 shadow-sm hover:shadow-md focus:outline-none transform hover:-translate-y-0.5 active:translate-y-0"
+              className="group inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-white/95 hover:bg-theme-navy text-theme-navy hover:text-white border border-theme-navy/20 hover:border-theme-navy font-display font-semibold text-xs sm:text-sm transition-all duration-300 shadow-sm hover:shadow-md focus:outline-none transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
               title="Skip to 15th photo"
               aria-label="Skip through to 15th photo"
             >
               <span>Skip to 15th Photo</span>
-              <FastForward size={14} className="text-theme-red group-hover:text-theme-yellow transition-colors" />
+              <FastForward size={13} className="text-theme-red group-hover:text-theme-yellow transition-colors" />
             </button>
           </div>
         )}

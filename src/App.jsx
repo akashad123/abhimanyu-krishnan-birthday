@@ -27,16 +27,19 @@ export function App() {
         {/* Section 2: 12 Months of Our Little One (2 on mobile, 3 on desktop) */}
         <MemoryGallery />
 
-        {/* Section 3: Dedicated Family Moments Photo Album (2 on mobile, 3 on desktop) */}
-        <FamilyGallery />
+        {/* Continuous Solid Cream Canvas for Album Sections — guarantees zero background stripe bleed during pin */}
+        <div className="relative z-20 bg-theme-creamLight">
+          {/* Section 3: Dedicated Family Moments Photo Album (Scroll-pinned drum carousel) */}
+          <FamilyGallery />
 
-        {/* Section 4: Community Memories & Upload Invitation Card (Last before Footer) */}
-        <CommunityMemories
-          memories={memories}
-          onDeleteMemory={deleteMemory}
-          onRestoreMemory={restoreMemory}
-          onOpenUpload={() => setIsUploadOpen(true)}
-        />
+          {/* Section 4: Community Memories & Upload Invitation Card (Last before Footer) */}
+          <CommunityMemories
+            memories={memories}
+            onDeleteMemory={deleteMemory}
+            onRestoreMemory={restoreMemory}
+            onOpenUpload={() => setIsUploadOpen(true)}
+          />
+        </div>
       </main>
 
       {/* Celebratory Closing Footer */}

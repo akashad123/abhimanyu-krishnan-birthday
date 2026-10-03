@@ -1205,5 +1205,39 @@ Clean up the Family Moments carousel header by removing the redundant "Family & 
 - Verified progress dots remain visible and are clickable.
 - Verified Skip button triggers smooth scroll to the 15th photo.
 
+---
+
+### [2026-10-03] Eliminate Blue-White Stripe Wallpaper Bleed & Fix Desktop Skip Button Visibility
+
+**Purpose**
+Fix the visual bug where the fixed blue-and-white striped wallpaper was leaking through as an unsightly leftover gap beneath the Family Moments section on mobile phones, iPad minis, and iPad Pros. In addition, resolve the issue on PC desktop displays where the carousel was previously too tall (`530px` strip alone) causing the "Skip to 15th Photo" button and progress dots to overflow off the bottom of the screen.
+
+**User Flow**
+1. On all screen sizes (phones, iPad minis, iPad Pros, and PCs), visitors scrolling into the Family Moments section experience a solid, uninterrupted warm cream (`#FCFAF6`) canvas.
+2. When reaching the 15th photo on mobile or tablets, zero blue-and-white wallpaper stripes appear beneath the section—the cream background fills the screen completely until the next section smoothly rolls up.
+3. On PC desktop monitors and laptops, the entire Family Moments section is scaled to ~530px total height, centered vertically in the viewport.
+4. The "Skip to 15th Photo" button below the progress dots is 100% visible on PC desktop screens without any clipping. A companion quick-skip pill is also present in the section header for instantaneous access.
+
+**Technical Changes**
+- `src/App.jsx`:
+  - Wrapped `FamilyGallery` and `CommunityMemories` in a continuous `<div className="relative z-20 bg-theme-creamLight">` container, guaranteeing that any pin-spacer or inter-section area is solid cream `#FCFAF6` and cannot reveal the underlying `-z-10 bg-striped-wallpaper`.
+- `src/sections/FamilyGallery.jsx`:
+  - Added `min-h-screen min-h-[100dvh] w-full flex flex-col justify-center items-center overflow-hidden` to the section element so it fills 100% of the viewport height on any phone or tablet during pinning.
+  - Set GSAP ScrollTrigger's `st.spacer.style.backgroundColor = CREAM` so the spacer height is solid `#FCFAF6`.
+  - Resized carousel constants: `CARD_H = 150`, `CARD_UNIT = 162`, `VISIBLE_H = 360`, and `TEXT_H = 44`, saving over 170px of vertical space.
+  - Tightened header and bottom spacing so the entire section occupies only ~530px, fitting comfortably within any desktop, laptop, or tablet viewport.
+  - Added a companion quick-skip pill button directly in the section header (`hidden sm:inline-flex`) in addition to the primary button below the progress dots.
+
+**Files Modified**
+- `src/App.jsx`
+- `src/sections/FamilyGallery.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` compiled cleanly in 4.30s with 0 errors.
+- Verified full-screen cream background coverage on mobile (iPhone 16 Pro Max 440x956), iPad Mini, iPad Pro, and desktop.
+- Verified visibility of both "Skip to 15th Photo" buttons on desktop PC and mobile viewports.
+
 
 
