@@ -102,18 +102,7 @@ export const BirthdayHero = () => {
       ref={sectionRef}
       className="birthday-hero-container"
     >
-      {/* Layer 1: Top Bunting Garland — visible on mobile & tablet, hidden on PC (lg+) */}
-      <div
-        ref={buntingRef}
-        className="hero-layer hero-layer-bunting flex justify-center lg:hidden"
-      >
-        <img
-          src="/decorations/layers/bunting.png"
-          alt="Festive Bunting"
-          className="w-full max-w-[1400px] h-auto object-contain drop-shadow-md"
-          loading="eager"
-        />
-      </div>
+      {/* Layer 1: Bunting Garland — removed per user request (not shown on any device) */}
 
       {/* Layer 3: Left Hanging Decoration (Hangs from Top Ceiling) */}
       <div
