@@ -69,45 +69,63 @@ export const FamilyGallery = () => {
     const section = sectionRef.current;
     if (!section) return;
 
-    // Allow ScrollTrigger to recalculate after any layout changes
-    ScrollTrigger.refresh();
+    // Small delay so the DOM and layout fully settle before ScrollTrigger measures heights.
+    // Critical on mobile where layout paint can be deferred.
+    const initTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
 
-    const st = ScrollTrigger.create({
-      trigger: section,
-      start: 'top top',
-      // Give each photo ~60 % of a viewport worth of scrolling room
-      end: () => `+=${(total - 1) * window.innerHeight * 0.6}`,
-      pin: true,
-      pinSpacing: true,
-      anticipatePin: 1,
+      const st = ScrollTrigger.create({
+        trigger: section,
+        start: 'top top',
+        // Give each photo ~60 % of a viewport worth of scrolling room
+        end: () => `+=${(total - 1) * window.innerHeight * 0.6}`,
+        pin: true,
+        pinSpacing: true,
+        anticipatePin: 1,
+        // Recalculate positions on any viewport resize (fixes mobile browser chrome show/hide)
+        invalidateOnRefresh: true,
+        // Prevent overlapping pins from fighting each other
+        preventOverlaps: true,
+        // Snap back to nearest step quickly when fast-scrolling
+        fastScrollEnd: true,
 
-      // Snap to each photo step
-      snap: {
-        snapTo: 1 / (total - 1),
-        duration: { min: 0.25, max: 0.55 },
-        delay: 0.04,
-        ease: 'power2.inOut',
-      },
+        // Snap to each photo step
+        snap: {
+          snapTo: 1 / (total - 1),
+          duration: { min: 0.25, max: 0.55 },
+          delay: 0.04,
+          ease: 'power2.inOut',
+        },
 
-      onUpdate: (self) => {
-        const next = Math.round(self.progress * (total - 1));
-        if (next !== activeIdxRef.current) {
-          activeIdxRef.current = next;
-          setActiveIdx(next);
-        }
-      },
-    });
+        onUpdate: (self) => {
+          const next = Math.round(self.progress * (total - 1));
+          if (next !== activeIdxRef.current) {
+            activeIdxRef.current = next;
+            setActiveIdx(next);
+          }
+        },
 
-    // Ensure the pin-spacer has solid cream background to eliminate any stripe bleed
-    if (st.spacer) {
-      st.spacer.style.backgroundColor = CREAM;
-    }
+        // When scrolling back past the start, reset to photo 1 cleanly
+        onLeaveBack: () => {
+          activeIdxRef.current = 0;
+          setActiveIdx(0);
+        },
+      });
 
-    stRef.current = st;
+      // Ensure the pin-spacer has solid cream background to eliminate any stripe bleed
+      if (st.spacer) {
+        st.spacer.style.backgroundColor = CREAM;
+      }
+
+      stRef.current = st;
+    }, 100);
 
     return () => {
-      st.kill();
-      stRef.current = null;
+      clearTimeout(initTimer);
+      if (stRef.current) {
+        stRef.current.kill();
+        stRef.current = null;
+      }
     };
   }, [total]);
 
