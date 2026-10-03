@@ -3,14 +3,13 @@
 .birthday-hero-container {
   position: relative;
   width: 100%;
-  height: 100vh;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding-bottom: 0;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 /* Layer positioning helpers */
@@ -23,7 +22,7 @@
 
 /* Top Bunting Garland - stays gracefully suspended across the top ceiling */
 .hero-layer-bunting {
-  position: absolute;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -34,47 +33,17 @@
   will-change: transform;
 }
 
-/* Hero Stages (Stage 1: Abhimanyu Krishnan Tag, Stage 2: Turning The Big One) */
-.hero-stage {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
+/* Central Connected Hanging Assembly (Ceiling Rope -> Plaque -> Scroll Down -> Piñata -> Milestone) */
+.hero-card-assembly {
+  position: relative;
+  z-index: 20;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  will-change: transform, opacity;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
-.hero-stage-tag {
-  z-index: 20;
-  pointer-events: auto;
-}
-
-.hero-stage-pinata {
-  z-index: 20;
-  pointer-events: auto;
-}
-
-/* Foreground Floor Clouds positioned at bottom */
-.hero-layer-clouds-fg {
-  position: absolute;
-  bottom: -20px;
-  left: 0;
-  right: 0;
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  pointer-events: none;
-  z-index: 28;
-  opacity: 0.95;
+  pointer-events: auto;
   will-change: transform;
+  margin-top: 0;
 }
 
 /* Left & Right Hanging Assemblies hanging from top ceiling */
@@ -145,26 +114,18 @@
 /* Balloons layer */
 .hero-layer-balloon {
   z-index: 12;
-  will-change: transform;
+  will-change: transform, opacity;
+}
+
+/* Celebration drums layer */
+.hero-layer-drum {
+  z-index: 13;
+  will-change: transform, opacity;
 }
 
 /* Clouds depth layer */
 .hero-layer-clouds {
   z-index: 5;
   will-change: transform;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .birthday-hero-container {
-    height: auto;
-    min-height: 100vh;
-    overflow: visible;
-  }
-  .hero-stage {
-    position: relative;
-    height: auto;
-    opacity: 1 !important;
-    transform: none !important;
-  }
 }
 

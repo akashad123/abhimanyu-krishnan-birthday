@@ -3,6 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   getResponsiveSideMovement,
   getBalloonAsideDistance,
+  getCloudParallax,
 } from '../../utils/responsiveAnimation';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -20,7 +21,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
     sectionRef,
     cardScrollRef,
     cardSwingRef,
-    pinataStageRef,
     pinataRef,
     pinataSwingRef,
     milestoneRef,
@@ -36,6 +36,10 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
     balloonBlueInnerRef,
     balloonGreenRef,
     balloonGreenInnerRef,
+    drumRightRef,
+    drumRightInnerRef,
+    drumLeftRef,
+    drumLeftInnerRef,
     buntingRef,
     cloudsFgRef,
   } = refs;
@@ -43,8 +47,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
   if (!sectionRef?.current) return () => {};
 
   if (prefersReducedMotion) {
-    if (cardScrollRef?.current) gsap.set(cardScrollRef.current, { y: 0, opacity: 1 });
-    if (pinataStageRef?.current) gsap.set(pinataStageRef.current, { y: 0, opacity: 1 });
     return () => {};
   }
 
@@ -56,18 +58,6 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         rotation: 2.2,
         transformOrigin: 'top center',
         duration: 3.6,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      });
-    }
-
-    // Number 1 Piñata gently sways like a real suspended festive piñata
-    if (pinataSwingRef?.current) {
-      gsap.to(pinataSwingRef.current, {
-        rotation: -2.8,
-        transformOrigin: 'top center',
-        duration: 3.4,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -155,6 +145,29 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
         ease: 'sine.inOut',
       });
     }
+
+    // Idle gentle floating and rhythmic rocking for Celebration Party Drums
+    if (drumRightInnerRef?.current) {
+      gsap.to(drumRightInnerRef.current, {
+        y: -9,
+        rotation: 3.5,
+        duration: 3.1,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+    }
+
+    if (drumLeftInnerRef?.current) {
+      gsap.to(drumLeftInnerRef.current, {
+        y: -9,
+        rotation: -3.5,
+        duration: 3.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+      });
+    }
   }, sectionRef);
 
   // 2. Responsive ScrollTrigger timeline using matchMedia()
@@ -162,130 +175,48 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
 
   /**
    * Builds the scroll timeline for mobile (< 768px) and desktop (>= 768px).
+   * As the user scrolls down, all decorations (bunting, balloons, drums, side clouds)
+   * gracefully move aside, upward, and away, fading completely out of view.
    * 
    * @param {boolean} isMobile - True if mobile layout
    * @returns {gsap.core.Timeline}
    */
   const createHeroScrollTimeline = (isMobile) => {
-    const asideDist = getBalloonAsideDistance(isMobile);
-
-    // Initial positioning:
-    // Stage 1 (Abhimanyu Krishnan tag) starts centered in viewport
-    // Stage 2 (Turning The Big One) starts below viewport
-    if (cardScrollRef?.current) {
-      gsap.set(cardScrollRef.current, { y: 0, opacity: 1 });
-    }
-    if (pinataStageRef?.current) {
-      gsap.set(pinataStageRef.current, {
-        y: isMobile ? '85vh' : '95vh',
-        opacity: 0,
-      });
-    }
+    const clouds = getCloudParallax();
 
     const tl = gsap.timeline({
       scrollTrigger: {
-        id: 'birthdayHeroTrigger',
         trigger: sectionRef.current,
         start: 'top top',
-        end: isMobile ? '+=80%' : '+=100%',
-        pin: true,
-        anticipatePin: 1,
-        scrub: 0.8,
+        end: 'bottom bottom',
+        scrub: 0.6,
         invalidateOnRefresh: true,
       },
     });
 
-    // 1. "this Abhimanyu Krishnan only, that tag, should go up"
-    // The Abhimanyu Krishnan card tag and scroll down smoothly glide UP into the ceiling
-    if (cardScrollRef?.current) {
+    // 1. Top Bunting garland moves up and away as user scrolls down
+    if (buntingRef?.current) {
       tl.to(
-        cardScrollRef.current,
+        buntingRef.current,
         {
-          y: isMobile ? '-85vh' : '-95vh',
+          y: -130,
           opacity: 0,
-          ease: 'power1.inOut',
+          ease: 'power1.in',
         },
         0
       );
     }
 
-    // 2. "and the turning the big one should also come up"
-    // The Number 1 Piñata and Turning The Big One card smoothly glide UP into center view
-    if (pinataStageRef?.current) {
-      tl.to(
-        pinataStageRef.current,
-        {
-          y: '0vh',
-          opacity: 1,
-          ease: 'power1.inOut',
-        },
-        0
-      );
-    }
-
-    // 3. Balloons smoothly move aside off the screen without glitching
-    // Left balloons move aside to the LEFT
-    if (balloonRedRef?.current) {
-      tl.to(
-        balloonRedRef.current,
-        {
-          x: -asideDist,
-          y: -40,
-          opacity: 0.35,
-          ease: 'power1.out',
-        },
-        0
-      );
-    }
-
-    if (balloonYellowRef?.current) {
-      tl.to(
-        balloonYellowRef.current,
-        {
-          x: -(asideDist * 1.1),
-          y: -30,
-          opacity: 0.35,
-          ease: 'power1.out',
-        },
-        0
-      );
-    }
-
-    // Right balloons move aside to the RIGHT
-    if (balloonBlueRef?.current) {
-      tl.to(
-        balloonBlueRef.current,
-        {
-          x: asideDist,
-          y: -40,
-          opacity: 0.35,
-          ease: 'power1.out',
-        },
-        0
-      );
-    }
-
-    if (balloonGreenRef?.current) {
-      tl.to(
-        balloonGreenRef.current,
-        {
-          x: asideDist * 1.1,
-          y: -30,
-          opacity: 0.35,
-          ease: 'power1.out',
-        },
-        0
-      );
-    }
-
-    // 4. Side hanging clouds slowly and gracefully part towards the edges
+    // 2. Side hanging clouds & stars part completely toward the outer edges and fade away
     if (leftDecoScrollRef?.current) {
       tl.to(
         leftDecoScrollRef.current,
         {
-          x: () => -getResponsiveSideMovement(isMobile),
-          opacity: 0.85,
-          ease: 'none',
+          x: () => -(isMobile ? 260 : 440),
+          y: 60,
+          scale: 0.75,
+          opacity: 0,
+          ease: 'power1.in',
         },
         0
       );
@@ -295,35 +226,131 @@ export function initBirthdayHeroAnimation(refs, prefersReducedMotion = false) {
       tl.to(
         rightDecoScrollRef.current,
         {
-          x: () => getResponsiveSideMovement(isMobile),
-          opacity: 0.85,
-          ease: 'none',
+          x: () => (isMobile ? 260 : 440),
+          y: 60,
+          scale: 0.75,
+          opacity: 0,
+          ease: 'power1.in',
         },
         0
       );
     }
 
-    // 5. Playful entrance pop for the Number 1 Piñata as it takes center stage
-    if (pinataRef?.current) {
-      tl.fromTo(
-        pinataRef.current,
+    // 3. Balloons smoothly swoop upward and outward into the sky, completely going away
+    // Left balloons (Red & Yellow) fly away to the left and up
+    if (balloonRedRef?.current) {
+      tl.to(
+        balloonRedRef.current,
         {
-          scale: 0.92,
-          rotation: -3,
+          x: () => -(isMobile ? 260 : 450),
+          y: -360,
+          rotation: -30,
+          scale: 0.5,
+          opacity: 0,
+          ease: 'power1.in',
         },
-        {
-          scale: 1.0,
-          rotation: 0,
-          ease: 'back.out(1.4)',
-          duration: 0.4,
-        },
-        0.4
+        0
       );
     }
 
-    // 6. Foreground floor clouds subtle grounded drift
+    if (balloonYellowRef?.current) {
+      tl.to(
+        balloonYellowRef.current,
+        {
+          x: () => -(isMobile ? 290 : 490),
+          y: -320,
+          rotation: -25,
+          scale: 0.5,
+          opacity: 0,
+          ease: 'power1.in',
+        },
+        0
+      );
+    }
+
+    // Right balloons (Blue & Green) fly away to the right and up
+    if (balloonBlueRef?.current) {
+      tl.to(
+        balloonBlueRef.current,
+        {
+          x: () => (isMobile ? 260 : 450),
+          y: -360,
+          rotation: 30,
+          scale: 0.5,
+          opacity: 0,
+          ease: 'power1.in',
+        },
+        0
+      );
+    }
+
+    if (balloonGreenRef?.current) {
+      tl.to(
+        balloonGreenRef.current,
+        {
+          x: () => (isMobile ? 290 : 490),
+          y: -320,
+          rotation: 25,
+          scale: 0.5,
+          opacity: 0,
+          ease: 'power1.in',
+        },
+        0
+      );
+    }
+
+    // 4. Celebration Party Drums roll and drift outward and down off-screen
+    if (drumRightRef?.current) {
+      tl.to(
+        drumRightRef.current,
+        {
+          x: () => (isMobile ? 240 : 400),
+          y: 280,
+          rotation: 45,
+          scale: 0.6,
+          opacity: 0,
+          ease: 'power1.in',
+        },
+        0
+      );
+    }
+
+    if (drumLeftRef?.current) {
+      tl.to(
+        drumLeftRef.current,
+        {
+          x: () => -(isMobile ? 240 : 400),
+          y: 280,
+          rotation: -45,
+          scale: 0.6,
+          opacity: 0,
+          ease: 'power1.in',
+        },
+        0
+      );
+    }
+
+    // 5. Celebratory GSAP entrance for the Milestone Card ("Turning The Big One!")
+    if (milestoneRef?.current) {
+      tl.fromTo(
+        milestoneRef.current,
+        {
+          opacity: 0.35,
+          scale: 0.96,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          ease: 'power1.out',
+          duration: 0.4,
+        },
+        0.45
+      );
+    }
+
+    // 6. Foreground floor clouds subtle parallax
     if (cloudsFgRef?.current) {
-      tl.to(cloudsFgRef.current, { y: 15, ease: 'none' }, 0);
+      tl.to(cloudsFgRef.current, { y: -clouds.fg, ease: 'none' }, 0);
     }
 
     return tl;

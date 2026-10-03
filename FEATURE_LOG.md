@@ -769,55 +769,59 @@ When deleting an uploaded photo in "Moments Shared with Love", it disappears fro
 
 ---
 
-### [2026-10-03] Pinned Two-Stage Hero Scroll Reveal & 100% Static Background Stabilization
-
-**User Request**
-"Now it is like a single long scroll. What I want is that this Abhimanyu Krishnan only, that tag, should go up, and the turning the big one should also come up. It also feels like the background is also moving. Could you please change it?"
+### [2026-10-03] Celebration Party Drums, Scroll-Away Hero Decorations, and 12-Month Milestone Album Animations
 
 **Purpose**
-Transform the celebration hero from a flat, vertically stacked single-column scroll into a theatrical, two-stage experience where:
-1. Stage 1 presents baby Abhimanyu Krishnan's card tag hanging in the center of the viewport on initial load without any clutter.
-2. Scrolling or clicking "Scroll Down" pulls the Abhimanyu Krishnan card tag smoothly UP into the top ceiling, while the Rainbow Number 1 Piñata and "Turning The Big One!" milestone card glides smoothly UP from below into center view.
-3. The blue-and-cream vertical striped background wallpaper remains 100% rock-solid and static throughout the scroll, eliminating any optical illusion or browser jitter.
+1. Add festive 3D celebration Party Toy Drums and responsive decorations to the opening celebration scene.
+2. Ensure that as the user scrolls down, all decorations (bunting, side clouds/stars, 4 floating balloons, and celebration drums) gracefully swoop aside, upward, and away, completely exiting the viewport with smooth GSAP animations.
+3. Elevate the "12 Months of Our Little One" milestone photo album from a basic static grid into an interactive, high-end, playful memory scrapbook with rich GSAP animations and micro-interactions.
 
-**Technical Architecture & Flow**
-1. **Two-Stage Layout Architecture (`BirthdayHero.jsx` & `BirthdayHero.css`)**:
-   - Split `BirthdayHero` into two discrete stages occupying the 100vh viewport:
-     - `hero-stage-tag`: Stage 1 containing ceiling braided rope, "One Whole Year of Abhimanyu Krishnan" card plaque, and the "Scroll Down" pill button.
-     - `hero-stage-pinata`: Stage 2 containing ceiling braided rope, Rainbow Number 1 Piñata (with continuous physical pendulum sway), and "Turning The Big One! Milestone Celebration" card.
-   - Initial layout state:
-     - Stage 1 is centered at `y: 0`, `opacity: 1`.
-     - Stage 2 is placed off-screen below at `y: 85vh` (mobile) / `95vh` (desktop), `opacity: 0`.
-2. **GSAP ScrollTrigger Pinned Timeline (`birthdayHeroAnimation.js`)**:
-   - Pinned the `BirthdayHero` section (`pin: true`, `anticipatePin: 1`, `scrub: 0.8`, `id: 'birthdayHeroTrigger'`).
-   - Stage 1 Translation: `cardScrollRef` translates up to `-85vh` (mobile) / `-95vh` (desktop) and fades out cleanly into the top ceiling.
-   - Stage 2 Translation: `pinataStageRef` translates up from `85vh`/`95vh` to `0vh` and fades in, bringing the Number 1 Piñata and Milestone card to center stage.
-   - Floating Balloons: Decoupled left and right balloons part smoothly to the left (`x: -asideDist`) and right (`x: asideDist`) borders to frame the Number 1 Piñata.
-   - Side Clouds & Stars: Left and right hanging clouds gracefully drift outward toward the screen edges.
-   - Reduced Motion: When `prefersReducedMotion` is active, animations are bypassed and static layouts render with full opacity.
-3. **Scroll CTA Button Integration (`ScrollDownIndicator.jsx` & `BirthdayHero.jsx`)**:
-   - Added `onScrollDown` callback prop to `ScrollDownIndicator`.
-   - When clicked, it smoothly scrolls the page to `st.start + (st.end - st.start) * 0.95`, triggering the cinematic transition to Stage 2.
-4. **100% Static Background Stabilization**:
-   - Eliminated `background-attachment: fixed` and duplicate `background-image` from `body` in `src/styles/index.css`. This removes the subpixel jitter and compositor thrashing that occurred in Chromium/WebKit on desktop and mobile.
-   - Removed redundant `#static-celebration-background` div from `index.html`.
-   - Enhanced the single authoritative fixed layer in `src/App.jsx` with GPU hardware compositing: `transform: translate3d(0,0,0)`, `backface-visibility: hidden`, `will-change: transform`.
-   - Because `BirthdayHero` is pinned during the stage transition, the viewport scroll remains locked, guaranteeing that the background stripes stay 100% stationary with zero movement or optical distortion.
+**User Flow**
+1. **Hero Celebration Scene**:
+   - The user lands on the vibrant celebration scene with suspended bunting, side hanging clouds & stars, floating colorful balloons, and two 3D celebratory Party Toy Drums bobbing rhythmically.
+   - As the user scrolls down toward the Number "1" Piñata and milestone card:
+     - The floating balloons swoop up and outward into the sky (`y: -360px`, `x: ±450px`, `scale: 0.5`, `opacity: 0`).
+     - The celebration drums roll and drift downward-outward (`y: 280px`, `x: ±400px`, `rotation: ±45deg`, `opacity: 0`).
+     - The side clouds and stars part completely to the left and right borders and fade away (`x: ±440px`, `opacity: 0`).
+     - The top bunting garland scrolls upward out of view (`y: -130px`, `opacity: 0`).
+     - By the time the user reaches the milestone card, all floating decorations have completely cleared the screen.
+2. **"12 Months of Our Little One" Milestone Photo Album**:
+   - As the memory section scrolls into view:
+     - Decorative stars spin and pop into view (360° rotation, scale: 0 -> 1).
+     - The "12 MONTHS" letters bounce in with a lively letter-by-letter spring wave (`back.out(2)`).
+     - A celebratory milestone journey ribbon displays *"🍼 Newborn ⟶ ✨ First Smiles ⟶ 🎂 Big ONE!"*.
+     - All 12 monthly polaroid photo cards cascade in with a staggered scrapbook entrance (`back.out(1.3)`), settling naturally with playful alternating polaroid photo tilts.
+     - Floating celebration stars gently drift in the margins with an idle sine wave.
+     - On desktop hover, cards lift (`-translate-y-2`), straighten to 0°, zoom gently, show a golden-baby glow shadow, and reveal a corner celebration sparkle badge.
+     - On mobile, lightweight and performant touch feedback with zero lag.
 
-**Files Modified**
+**Technical Architecture**
+1. **Hero Animations (`src/components/BirthdayHero/birthdayHeroAnimation.js` & `BirthdayHero.jsx`)**:
+   - Created `/decorations/layers/drum.png` (isolated with flood-fill transparency).
+   - Added `drumRightRef`, `drumRightInnerRef`, `drumLeftRef`, and `drumLeftInnerRef`.
+   - Continuous idle bobbing in `gsap.context` for drums.
+   - Master ScrollTrigger scrub timeline animating all decorations completely to `opacity: 0` and off-screen coordinates.
+2. **Milestone Album Animations (`src/sections/memoryGalleryAnimation.js` & `MemoryGallery.jsx`)**:
+   - Created modular `initMemoryGalleryAnimation` using `gsap.matchMedia()`.
+   - Separate timelines for mobile (<768px) and desktop (>=768px) ensuring 60fps performance on handheld devices.
+   - Staggered card entrance with dynamic polaroid angle offsets.
+   - Accessible `useReducedMotion()` fallback.
+
+**Files Created & Modified**
+- `public/decorations/layers/drum.png`
+- `reference/drum.png`
+- `src/assets/birthday/common/drum.png`
 - `src/components/BirthdayHero/BirthdayHero.jsx`
 - `src/components/BirthdayHero/BirthdayHero.css`
 - `src/components/BirthdayHero/birthdayHeroAnimation.js`
-- `src/components/ScrollDownIndicator.jsx`
-- `src/styles/index.css`
-- `src/App.jsx`
-- `index.html`
+- `src/sections/memoryGalleryAnimation.js`
+- `src/sections/MemoryGallery.jsx`
 - `CHANGELOG.md`
 - `FEATURE_LOG.md`
 
 **Verification**
-- Production build `npm run build` executed successfully without errors or warnings (`✓ built in 8.29s`).
-- Dev server running cleanly on `http://localhost:3000` returning HTTP 200.
+- Production build `npm run build` executed successfully (0 errors, built in 10.52s).
+- Local dev server verified running on `http://localhost:3000` (HTTP 200).
 
 
 

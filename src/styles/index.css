@@ -10,6 +10,38 @@
   body {
     overflow-x: hidden;
     background-color: #5299D3;
+    background-attachment: fixed;
+    background-image: repeating-linear-gradient(
+      90deg,
+      #5299D3 0px,
+      #5299D3 36px,
+      #F6F2EA 36px,
+      #F6F2EA 72px
+    );
+  }
+
+  @media (min-width: 768px) {
+    body {
+      background-image: repeating-linear-gradient(
+        90deg,
+        #5299D3 0px,
+        #5299D3 52px,
+        #F6F2EA 52px,
+        #F6F2EA 104px
+      );
+    }
+  }
+
+  @media (min-width: 1280px) {
+    body {
+      background-image: repeating-linear-gradient(
+        90deg,
+        #5299D3 0px,
+        #5299D3 60px,
+        #F6F2EA 60px,
+        #F6F2EA 120px
+      );
+    }
   }
 }
 
@@ -24,11 +56,6 @@
       #F6F2EA 36px,
       #F6F2EA 72px
     );
-    transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    will-change: transform;
   }
 
   @media (min-width: 768px) {

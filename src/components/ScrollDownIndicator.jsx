@@ -7,13 +7,9 @@ import { APP_CONFIG } from '../config/appConfig';
  * Renders the suspended pill-shaped "Scroll Down" indicator button.
  * Suspended by two rope links below the main plaque in the reference image.
  */
-export const ScrollDownIndicator = ({ targetId = APP_CONFIG.sections.pinata, onScrollDown }) => {
+export const ScrollDownIndicator = ({ targetId = APP_CONFIG.sections.pinata }) => {
   const handleClick = (e) => {
     e.preventDefault();
-    if (onScrollDown) {
-      onScrollDown(e);
-      return;
-    }
     const targetElement = document.getElementById(targetId);
     if (targetElement) {
       targetElement.scrollIntoView({ behavior: 'smooth' });
