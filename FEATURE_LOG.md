@@ -1269,3 +1269,19 @@ Fix the visual disconnection in the mobile hero section where the hanging birthd
 
 
 
+
+
+### Feature: Family Gallery Mobile Optimization (Clean Photo View & Expanded Height)
+
+**Status**: Completed
+
+**Description**
+- Removed top and bottom fade gradient overlays from the photo strip so family photos are crisp and completely unobstructed.
+- Positioned the Family Moments section header and album badge at the very top of mobile screens by switching alignment to `justify-start` and setting compact top padding (`pt-3`).
+- Expanded photo card height on mobile devices up to 490px and on tablet / iPad devices up to 520px, making photos prominent and immersive.
+- Strictly maintained the existing 330/360px dimensions on desktop PC to preserve the exact approved layout.
+
+**Files Modified**
+- `src/sections/FamilyGallery.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`

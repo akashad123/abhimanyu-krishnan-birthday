@@ -90,3 +90,10 @@ Developer-facing record of meaningful changes.
 - **FamilyGallery**: Added 'Back to 1st Photo' button (with ChevronUp) when activeIdx === total-1; navigates back up via goTo(0)
 - **Footer**: Removed AK circular monogram badge — all other footer content preserved
 - Build: ? 0 errors, 1650 modules, commit 89dfea6
+
+## [2026-10-03] - feat: remove photo gradients, align header to top on mobile, expand photo height on mobile & tablets
+
+- **FamilyGallery**: Removed top and bottom fade gradient overlays from the photo strip so photos render crisp and clean without white overlays
+- **FamilyGallery**: Positioned the 'Family Photo Album' header at the top of the mobile screen (justify-start pt-3), eliminating excess top whitespace
+- **FamilyGallery**: Expanded photo card height on mobile (< 640px) to dynamically adapt up to 490px and on tablet/iPad up to 520px, while strictly maintaining the existing 330/360px layout on desktop PC
+- Build: verified clean build with 0 errors

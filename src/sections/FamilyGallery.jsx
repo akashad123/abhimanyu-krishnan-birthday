@@ -165,11 +165,52 @@ export const FamilyGallery = () => {
     return () => window.removeEventListener('keydown', onKey);
   }, [lightboxIdx, total]);
 
+  /* ──────────────────── Responsive card dimensions ──────────── */
+
+  /**
+   * Compute card height and visible container height based on viewport dimensions.
+   * - Mobile (< 640px): expanded tall photo adapted to screen height, positioned near top
+   * - Tablet (640px–1023px, iPad / iPad Pro): comfortably large photo (up to 520px)
+   * - Desktop (≥ 1024px): strictly 330/360 unchanged
+   */
+  const getCardDims = () => {
+    if (typeof window === 'undefined') return { cardH: 330, visibleH: 360 };
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    // Desktop (≥ 1024px): keep original 330/360 unchanged
+    if (w >= 1024) {
+      return { cardH: 330, visibleH: 360 };
+    }
+
+    // Tablet / iPad / iPad Pro (640px to 1023px)
+    if (w >= 640) {
+      const tabH = Math.min(520, Math.max(380, Math.round(h * 0.52)));
+      return { cardH: tabH, visibleH: tabH + 20 };
+    }
+
+    // Mobile (< 640px): expanded height, filling mobile screen below top header
+    const mobH = Math.min(490, Math.max(360, Math.round(h * 0.53)));
+    return { cardH: mobH, visibleH: mobH + 16 };
+  };
+
+  const [cardDims, setCardDims] = useState(getCardDims);
+
+  useEffect(() => {
+    const onResize = () => setCardDims(getCardDims());
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  const cardH    = cardDims.cardH;
+  const cardUnit = cardH + CARD_GAP;      // CARD_GAP = 20 (unchanged)
+  const visibleH = cardDims.visibleH;
+
   /* ──────────────────── Derived values ───────────────────── */
 
   // TranslateY values to keep active items centred in their clipping containers
-  const stripTY = offset(activeIdx, CARD_UNIT, VISIBLE_H, CARD_H / 2);
-  const textTY  = offset(activeIdx, TEXT_H,    TEXT_VIS,  TEXT_H  / 2);
+  const stripTY = offset(activeIdx, cardUnit, visibleH, cardH / 2);
+  const textTY  = offset(activeIdx, TEXT_H,   TEXT_VIS, TEXT_H  / 2);
 
   const accentColor = ACCENT_COLORS[activeIdx % ACCENT_COLORS.length];
 
@@ -179,12 +220,12 @@ export const FamilyGallery = () => {
     <section
       id={APP_CONFIG.sections.family}
       ref={sectionRef}
-      className="relative z-30 bg-theme-creamLight min-h-screen min-h-[100dvh] w-full flex flex-col justify-center items-center py-4 sm:py-6 overflow-hidden"
+      className="relative z-30 bg-theme-creamLight min-h-screen min-h-[100dvh] w-full flex flex-col justify-start md:justify-center items-center pt-3 sm:pt-5 md:py-6 pb-4 sm:pb-6 overflow-hidden"
     >
-      {/* ── Section Header (Raised to center without redundant divider) ── */}
+      {/* ── Section Header (At the top on mobile) ── */}
       <div className="max-w-5xl mx-auto px-3 sm:px-6 w-full">
-        <div className="text-center max-w-2xl mx-auto mb-2.5 sm:mb-4 pt-1">
-          <div className="flex items-center justify-center gap-2 mb-1.5">
+        <div className="text-center max-w-2xl mx-auto mb-1.5 sm:mb-3">
+          <div className="flex items-center justify-center gap-2 mb-1">
             <img src="/decorations/layers/star-yellow.png" alt="" className="w-4 sm:w-5 h-auto animate-pulse" aria-hidden="true" />
             <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-theme-sky/20 text-theme-navy font-display font-semibold text-xs border border-theme-sky/30 bg-white/80">
               <Sparkles size={12} className="text-theme-sky fill-theme-sky" />
@@ -323,32 +364,17 @@ export const FamilyGallery = () => {
           {/* ── RIGHT: Vertical Photo Strip ── */}
           <div
             className="relative flex-1"
-            style={{ height: VISIBLE_H }}
+            style={{ height: visibleH }}
           >
-            {/* Top cream fade */}
-            <div
-              className="absolute top-0 left-0 right-0 z-10 pointer-events-none"
-              style={{
-                height: 75,
-                background: `linear-gradient(to bottom, ${CREAM} 0%, transparent 100%)`,
-              }}
-            />
-            {/* Bottom cream fade */}
-            <div
-              className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none"
-              style={{
-                height: 75,
-                background: `linear-gradient(to top, ${CREAM} 0%, transparent 100%)`,
-              }}
-            />
+            {/* No top/bottom fade overlays — single photo fills the container */}
 
             {/* Overflow clip */}
-            <div style={{ height: VISIBLE_H, overflow: 'hidden', position: 'relative' }}>
+            <div style={{ height: visibleH, overflow: 'hidden', position: 'relative' }}>
               {/* Scrolling photo track */}
               <div
                 style={{
                   position: 'relative',
-                  height: total * CARD_UNIT,
+                  height: total * cardUnit,
                   transform: `translateY(${stripTY}px)`,
                   transition: 'transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                   willChange: 'transform',
@@ -364,17 +390,16 @@ export const FamilyGallery = () => {
                       onClick={() => isActive && setLightboxIdx(idx)}
                       style={{
                         position: 'absolute',
-                        top: idx * CARD_UNIT,
+                        top: idx * cardUnit,
                         left: 10,
                         right: 10,
-                        height: CARD_H,
+                        height: cardH,
                         borderRadius: 14,
                         overflow: 'hidden',
                         cursor: isActive ? 'pointer' : 'default',
                         pointerEvents: isActive ? 'auto' : 'none',
 
-                        /* Only the active photo is visible; neighbours are fully hidden
-                           but still in DOM so the translateY strip slides smoothly */
+                        /* Only the active photo is visible */
                         opacity: isActive ? 1 : 0,
                         transition: 'opacity 0.4s ease, box-shadow 0.4s ease',
 
