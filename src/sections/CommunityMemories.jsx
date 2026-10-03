@@ -107,17 +107,7 @@ export const CommunityMemories = ({
       className="relative z-30 bg-theme-creamLight pt-6 sm:pt-10 pb-10 sm:pb-14 px-3 sm:px-6"
     >
       <div className="max-w-5xl mx-auto">
-        {/* Soft Decorative Divider */}
-        <div className="flex items-center justify-center gap-3 mb-10 sm:mb-14">
-          <div className="h-px bg-theme-rope/30 flex-1 max-w-[100px] sm:max-w-[160px]" />
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-theme-sky/20 text-theme-navy text-xs font-display font-semibold">
-            <Camera size={14} className="text-theme-sky" />
-            <span>Community Memories</span>
-          </div>
-          <div className="h-px bg-theme-rope/30 flex-1 max-w-[100px] sm:max-w-[160px]" />
-        </div>
-
-        {/* Optional Community / Guest Memories Grid (if any photos uploaded) */}
+        {/* Optional Guest / Shared Memories Grid (if any photos uploaded) */}
         {memories.length > 0 && (
           <div className="mb-14 sm:mb-20">
             <div className="text-center mb-8">

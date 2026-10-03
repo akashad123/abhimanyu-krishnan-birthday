@@ -1143,5 +1143,31 @@ Provide a safe, accessible, and user-friendly confirmation pop-up modal when del
 - Verified keyboard accessibility (Escape key closes confirmation modal).
 - Verified backdrop click dismissal and safe deletion execution upon confirmation.
 
+---
+
+### [2026-10-03] Remove "Community Memories" Divider & Badge
+
+**Purpose**
+Remove the impersonal, redundant "Community Memories" pill badge and horizontal divider line situated between the Family Moments section and the uploaded guest memories album, ensuring the section flows seamlessly and appropriately for a warm family birthday celebration.
+
+**User Flow**
+1. Visitors scroll past the Family Moments album.
+2. The awkward, redundant `[ 📷 Community Memories ]` divider pill is gone.
+3. The page flows directly and naturally into "Moments Shared with Love", featuring the celebration memories and the "Have a Photo of Baby Abhimanyu? Add a Memory to the Album" upload card.
+
+**Technical Changes**
+- `src/sections/CommunityMemories.jsx`:
+  - Removed lines rendering the decorative horizontal divider with `Camera` icon and `<span>Community Memories</span>` badge.
+  - Retained the clean, warm header `[ ❤️ Guest & Family Memories ]` and `Moments Shared with Love` when uploaded photos are present.
+
+**Files Modified**
+- `src/sections/CommunityMemories.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Verified with `npm run build` (compiled cleanly in 4.83s).
+- Confirmed zero remaining instances of "Community" in user-facing UI.
+
 
 
