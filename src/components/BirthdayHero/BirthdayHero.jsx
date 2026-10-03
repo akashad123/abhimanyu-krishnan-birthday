@@ -281,10 +281,11 @@ export const BirthdayHero = () => {
           className="flex flex-col items-center w-full"
           style={{ transformOrigin: 'top center' }}
         >
-          {/* Central Card with Baby Abhimanyu Krishnan
-              The birthday-card.png includes its own rope and bow at the top,
-              so no extra rope div is needed — the card hangs directly from the ceiling. */}
-          <div className="relative w-full max-w-[300px] min-[400px]:max-w-[330px] sm:max-w-[390px] md:max-w-[450px] lg:max-w-[370px] xl:max-w-[410px] px-1">
+          {/* Braided Rope extending directly from the top ceiling down to the card's knot */}
+          <div className="braided-rope w-3 sm:w-3.5 md:w-4 h-8 sm:h-10 md:h-12 -mb-2 z-10" />
+
+          {/* Central Card with Baby Abhimanyu Krishnan */}
+          <div className="relative w-full max-w-[300px] min-[400px]:max-w-[330px] sm:max-w-[390px] md:max-w-[450px] lg:max-w-[370px] xl:max-w-[410px] px-1 z-10">
             <img
               src="/decorations/layers/birthday-card.png"
               alt="One Whole Year of Abhimanyu Krishnan — First Birthday Plaque"
@@ -293,18 +294,21 @@ export const BirthdayHero = () => {
             />
           </div>
 
-          {/* Scroll Down button — between the birthday card and the Piñata */}
+          {/* Braided Rope connecting bottom of Birthday Plaque to the Scroll Down button */}
+          <div className="braided-rope w-2.5 sm:w-3 h-6 sm:h-7 -mt-2 -mb-1 z-10" />
+
+          {/* Connected Scroll Down button — white circular button sitting directly on the hanging rope */}
           <button
             type="button"
             onClick={handleScrollDown}
             aria-label="Scroll down to the memory album"
-            className="flex flex-col items-center gap-1 mt-1 sm:mt-2 mb-1 group focus:outline-none"
+            className="relative z-20 flex flex-col items-center group focus:outline-none cursor-pointer -my-0.5"
           >
-            <span className="font-display font-semibold text-[10px] sm:text-xs text-theme-navy/70 tracking-widest uppercase group-hover:text-theme-blue transition-colors">
+            <span className="font-display font-bold text-[9px] sm:text-[10px] text-theme-navy/70 tracking-widest uppercase bg-white/80 backdrop-blur-xs px-2 py-0.5 rounded-full mb-1 group-hover:text-theme-blue transition-colors shadow-2xs">
               Scroll Down
             </span>
-            <span className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm border border-theme-rope/30 shadow-md group-hover:bg-theme-sky/20 transition-all">
-              <ChevronDown size={16} className="text-theme-navy/70 group-hover:text-theme-blue transition-colors" />
+            <span className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full bg-white/95 backdrop-blur-sm border-2 border-theme-rope/40 shadow-md group-hover:bg-theme-sky/20 group-hover:border-theme-blue/50 transition-all">
+              <ChevronDown size={15} className="text-theme-navy/75 group-hover:text-theme-blue transition-colors" />
             </span>
           </button>
 
@@ -312,7 +316,7 @@ export const BirthdayHero = () => {
           <div
             id={APP_CONFIG.sections.pinata}
             ref={pinataRef}
-            className="relative z-10 w-full max-w-[250px] sm:max-w-[310px] md:max-w-[360px] lg:max-w-[260px] xl:max-w-[290px] mx-auto -mt-1 sm:-mt-2"
+            className="relative z-10 w-full max-w-[250px] sm:max-w-[310px] md:max-w-[360px] lg:max-w-[260px] xl:max-w-[290px] mx-auto -mt-1 sm:-mt-1.5"
           >
             <div
               ref={pinataSwingRef}

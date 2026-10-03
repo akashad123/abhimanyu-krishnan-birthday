@@ -1239,5 +1239,33 @@ Fix the visual bug where the fixed blue-and-white striped wallpaper was leaking 
 - Verified full-screen cream background coverage on mobile (iPhone 16 Pro Max 440x956), iPad Mini, iPad Pro, and desktop.
 - Verified visibility of both "Skip to 15th Photo" buttons on desktop PC and mobile viewports.
 
+---
+
+### [2026-10-03] Mobile Hero Physical Rope Connections & Scroll Down Button Joining
+
+**Purpose**
+Fix the visual disconnection in the mobile hero section where the hanging birthday plaque and scroll down button previously looked like an "unfinished product": (1) at the top of the mobile screen, the rope terminated with a floating flat cut-off edge below the bunting garland, and (2) at the bottom of the card, the white circular "Scroll Down" button was floating disconnected in mid-air with empty blue stripes above it.
+
+**User Flow**
+1. On mobile devices, visitors viewing the hero landing page see an authentic, physically connected hanging baby mobile.
+2. At the top, the central braided rope originates cleanly from the top ceiling (`top: 0`), passing behind the bunting and joining seamlessly into the card's bow knot.
+3. At the bottom of the card, a matching braided rope descends from the baby plaque directly into the white circular "Scroll Down" button.
+4. From the bottom of the white button, the rope continues directly into the Rainbow Number 1 Piñata, forming one continuous, finished physical mobile chain.
+
+**Technical Changes**
+- `src/components/BirthdayHero/BirthdayHero.jsx`:
+  - Added top braided rope segment (`<div className="braided-rope w-3 sm:w-3.5 md:w-4 h-8 sm:h-10 md:h-12 -mb-2 z-10" />`) extending from the ceiling to the card's knot.
+  - Added bottom braided rope segment (`<div className="braided-rope w-2.5 sm:w-3 h-6 sm:h-7 -mt-2 -mb-1 z-10" />`) connecting the bottom of the card directly into the white circular "Scroll Down" button.
+  - Adjusted the piñata top margin (`-mt-1 sm:-mt-1.5`) so the top of its rope touches the bottom of the scroll button.
+
+**Files Modified**
+- `src/components/BirthdayHero/BirthdayHero.jsx`
+- `CHANGELOG.md`
+- `FEATURE_LOG.md`
+
+**Verification**
+- Production build `npm run build` compiled cleanly in 8.18s with 0 errors.
+- Verified physical connection at the top (rope joins ceiling through bunting) and bottom (rope joins card to scroll down button to piñata) on mobile viewports.
+
 
 
